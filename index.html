@@ -3,9 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Orion.AI</title>
+    <title>Orion.AI - Ultra Edition</title>
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700;900&display=swap" rel="stylesheet">
+
+    <!-- Librerie Esterne -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.9/purify.min.js"></script> <!-- Sicurezza Anti-Script -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
@@ -37,40 +43,17 @@
             overflow: hidden;
             display: flex;
             -webkit-font-smoothing: antialiased;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            background-position: center center;
-            animation: gridMove 20s linear infinite;
         }
 
-        @keyframes gridMove {
-            0% { background-position: 0 0; }
-            100% { background-position: 50px 50px; }
-        }
-
-        /* Particelle Eleganti */
-        #particles-bg {
+        /* Sfondo Canvas Interfaccia Neurale */
+        #neural-canvas {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1; pointer-events: none; overflow: hidden;
-        }
-        .particle { 
-            position: absolute; border-radius: 50%; opacity: 0; 
-            background: #ffffff;
-            animation: floatParticle linear infinite; 
-            box-shadow: 0 0 15px rgba(255,255,255,0.8);
-        }
-        @keyframes floatParticle {
-            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-            30% { opacity: 0.5; }
-            70% { opacity: 0.5; }
-            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
         }
 
         .app-layout { position: relative; z-index: 10; display: flex; width: 100%; height: 100%; }
 
-        /* Sidebar Glassmorphism */
+        /* Sidebar Glassmorphism (Sinistra) */
         .sidebar {
             width: 320px; background: var(--glass-base);
             backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
@@ -79,26 +62,60 @@
             z-index: 40; position: absolute; height: 100%; left: 0; transform: translateX(-100%);
         }
         .sidebar.open { transform: translateX(0); box-shadow: 20px 0 50px rgba(0,0,0,0.5); }
-        @media (min-width: 900px) { .sidebar { position: relative; transform: translateX(0); box-shadow: none; } }
+        
+        /* Sidebar Destra (Task & Notes) */
+        .right-sidebar {
+            width: 320px; background: var(--glass-base);
+            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            border-left: 1px solid var(--glass-border);
+            display: flex; flex-direction: column; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 40; position: absolute; height: 100%; right: 0; transform: translateX(100%);
+        }
+        .right-sidebar.open { transform: translateX(0); box-shadow: -20px 0 50px rgba(0,0,0,0.5); }
+
+        @media (min-width: 900px) { 
+            .sidebar { position: relative; transform: translateX(0); box-shadow: none; flex-shrink: 0; } 
+            .right-sidebar { position: relative; transform: translateX(0); box-shadow: none; flex-shrink: 0; }
+        }
 
         .auth-panel { padding: 24px; border-bottom: 1px solid var(--glass-border); }
         .brand-logo-area { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
         
+        /* Logo Migliorato */
         .orion-logo-container { display: flex; align-items: center; gap: 12px; }
-        .orion-svg { width: 36px; height: 36px; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); }
-        .orion-ring { transform-origin: 50px 50px; animation: spinRing 15s linear infinite; }
+        .orion-svg { width: 36px; height: 36px; filter: drop-shadow(0 0 15px rgba(10, 132, 255, 0.8)); }
+        .orion-core-pulse { animation: pulseCore 2.5s infinite alternate; }
+        @keyframes pulseCore { 0% { r: 14; opacity: 0.9; } 100% { r: 16; opacity: 1; filter: drop-shadow(0 0 10px #fff); } }
+        .orion-ring { transform-origin: 50px 50px; animation: spinRing 12s linear infinite; stroke: rgba(255,255,255,0.6); }
         @keyframes spinRing { 100% { transform: rotate(360deg); } }
-        .orion-text { font-size: 20px; font-weight: 600; letter-spacing: -0.5px; color: var(--text-main); }
+        
+        .orion-text-quasar { 
+            font-family: 'Roboto', sans-serif; font-weight: 900; font-size: 22px; 
+            letter-spacing: 1.5px; color: var(--text-main); 
+            text-shadow: 0 0 20px rgba(255,255,255,0.4); text-transform: uppercase; display: inline-flex; align-items: center;
+        }
+
+        .orion-i-wrapper { position: relative; display: inline-block; }
+        .i-dot-orange-white {
+            position: absolute; top: -4px; left: 50%; transform: translateX(-50%);
+            width: 6.5px; height: 6.5px; background: radial-gradient(circle, #ffffff 30%, #ff5100 100%);
+            border-radius: 50%; box-shadow: 0 0 15px #ff5100, 0 0 5px #ffffff; z-index: 10;
+        }
+        .i-dot-blue-orbit {
+            position: absolute; top: -1.5px; left: 50%; width: 4px; height: 4px; background: #00E5FF;
+            border-radius: 50%; box-shadow: 0 0 10px #00E5FF; z-index: 11;
+            transform-origin: 0px 0px; animation: orbitDot 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes orbitDot { from { transform: rotate(0deg) translateX(12px); } to { transform: rotate(360deg) translateX(12px); } }
 
         .close-sidebar { background: none; border: none; color: var(--text-dim); font-size: 24px; cursor: pointer; }
         @media (min-width: 900px) { .close-sidebar { display: none; } }
 
         .auth-card {
             background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
-            border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px;
-            transition: all 0.3s ease;
+            border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; transition: all 0.3s ease;
         }
-        .auth-card:hover { background: rgba(255,255,255,0.08); }
+        .auth-card:hover { background: rgba(255,255,255,0.08); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
         .user-status { font-size: 12px; color: var(--text-dim); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
         
         .btn-auth, .btn-new-chat {
@@ -108,8 +125,8 @@
             display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%;
         }
         .btn-auth:hover, .btn-new-chat:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .btn-new-chat { margin-bottom: 16px; background: var(--accent-blue); color: white; border: none; }
-        .btn-new-chat:hover { background: #0070DF; }
+        .btn-new-chat { margin-bottom: 16px; background: var(--accent-blue); color: white; border: none; box-shadow: 0 4px 15px rgba(10, 132, 255, 0.3); }
+        .btn-new-chat:hover { background: #0070DF; box-shadow: 0 6px 20px rgba(10, 132, 255, 0.5); }
         
         .user-profile { display: flex; align-items: center; gap: 12px; }
         .user-avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--glass-border); }
@@ -123,46 +140,72 @@
         .history-panel { flex-grow: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
         .history-panel::-webkit-scrollbar { display: none; }
 
+        /* Gestione Chat ed Eliminazione (Tre Puntini) */
         .chat-item {
             padding: 14px 16px; border-radius: 12px; cursor: pointer; transition: 0.3s ease;
-            background: transparent; border: 1px solid transparent;
+            background: transparent; border: 1px solid transparent; position: relative; display: flex; justify-content: space-between; align-items: center;
         }
         .chat-item:hover { background: rgba(255,255,255,0.05); }
         .chat-item.active { background: rgba(10, 132, 255, 0.15); border-color: rgba(10, 132, 255, 0.3); }
         
-        .chat-item-title { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main); }
+        .chat-item-content { overflow: hidden; flex-grow: 1; }
+        .chat-item-title { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main); padding-right: 10px; }
         .chat-item.active .chat-item-title { color: var(--accent-blue); font-weight: 600; }
         .chat-item-date { font-size: 11px; color: var(--text-dim); margin-top: 6px; }
 
-        .main-area { flex-grow: 1; display: flex; flex-direction: column; position: relative; }
+        .chat-options-btn { background: transparent; border: none; color: var(--text-dim); cursor: pointer; padding: 4px; border-radius: 50%; transition: 0.2s; display: flex; }
+        .chat-options-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.1); }
+        
+        .chat-popup {
+            position: absolute; right: 10px; top: 40px; background: rgba(30,30,32,0.95); backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border); border-radius: 8px; padding: 4px; display: none; z-index: 50;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); min-width: 120px;
+        }
+        .chat-popup.show { display: block; animation: popIn 0.2s ease forwards; }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.95) translateY(-5px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        
+        .chat-popup button {
+            width: 100%; text-align: left; background: none; border: none; padding: 10px 12px; color: var(--text-main);
+            font-size: 13px; border-radius: 6px; cursor: pointer; transition: 0.2s;
+        }
+        .chat-popup button:hover { background: rgba(255,255,255,0.1); }
+        .chat-popup button.delete-btn { color: var(--alert-red); }
+        .chat-popup button.delete-btn:hover { background: rgba(255, 69, 58, 0.15); }
+
+        .sidebar-footer {
+            padding: 20px 24px; border-top: 1px solid var(--glass-border); display: flex; align-items: center; gap: 12px;
+            background: rgba(20, 20, 22, 0.2); margin-top: auto;
+        }
+        .horizon-brand-text {
+            font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+            background: linear-gradient(90deg, var(--text-main), var(--text-dim)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .main-area { flex-grow: 1; display: flex; flex-direction: column; position: relative; min-width: 0; }
 
         .main-header {
-            padding: 16px 24px; border-bottom: 1px solid var(--glass-border);
-            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px 24px; border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center;
             background: rgba(5, 5, 5, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             position: relative; z-index: 20; box-shadow: 0 4px 30px rgba(0,0,0,0.5);
         }
 
-        .header-left { display: flex; align-items: center; gap: 16px; }
-        .mobile-menu-btn {
-            background: transparent; border: none; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; padding: 4px;
-        }
+        .header-left, .header-right { display: flex; align-items: center; gap: 16px; }
+        .mobile-menu-btn { background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 4px; border-radius: 8px; transition: 0.2s; }
+        .mobile-menu-btn:hover { background: rgba(255,255,255,0.1); }
         .mobile-menu-btn svg { width: 28px; height: 28px; stroke: var(--text-main); stroke-width: 1.5; }
-        @media (min-width: 900px) { .mobile-menu-btn { display: none; } }
+        
+        @media (min-width: 900px) { .mobile-menu-btn.left-btn { display: none; } .mobile-menu-btn.right-btn { display: none; } }
         
         .model-selector {
             background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); color: var(--text-main);
-            padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 500; outline: none; cursor: pointer;
-            transition: 0.3s;
+            padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 500; outline: none; cursor: pointer; transition: 0.3s;
         }
         .model-selector:hover { background: rgba(255,255,255,0.12); }
         .model-selector option { background: #1c1c1e; }
         
         .quantum-logo-active {
             display: none; align-items: center; gap: 8px; color: var(--accent-purple);
-            font-weight: 600; font-size: 14px; text-shadow: 0 0 10px rgba(191, 90, 242, 0.5);
-            animation: pulseQuantumText 2s infinite alternate;
+            font-weight: 600; font-size: 14px; text-shadow: 0 0 10px rgba(191, 90, 242, 0.5); animation: pulseQuantumText 2s infinite alternate;
         }
         @keyframes pulseQuantumText { from { opacity: 0.8; } to { opacity: 1; text-shadow: 0 0 20px rgba(191, 90, 242, 0.8); } }
 
@@ -171,30 +214,22 @@
         .qc-title { font-size: 13px; font-weight: 600; transition: 0.3s; }
         
         .ios-switch {
-            position: relative; width: 50px; height: 30px;
-            background: rgba(255,255,255,0.15); border-radius: 30px; cursor: pointer; transition: 0.4s cubic-bezier(0.3, 1.5, 0.7, 1);
+            position: relative; width: 50px; height: 30px; background: rgba(255,255,255,0.15); border-radius: 30px; cursor: pointer; transition: 0.4s cubic-bezier(0.3, 1.5, 0.7, 1);
             box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
         }
         .ios-switch::after {
             content: ''; position: absolute; top: 2px; left: 2px; width: 26px; height: 26px;
-            background: #fff; border-radius: 50%; transition: 0.4s cubic-bezier(0.3, 1.5, 0.7, 1);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            background: #fff; border-radius: 50%; transition: 0.4s cubic-bezier(0.3, 1.5, 0.7, 1); box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
         .ios-switch.active { background: var(--accent-purple); box-shadow: 0 0 15px rgba(191, 90, 242, 0.4); }
         .ios-switch.active::after { transform: translateX(20px); }
 
-        .chat-stream {
-            flex-grow: 1; padding: 40px 15%; overflow-y: auto; display: flex; flex-direction: column; gap: 28px;
-            scroll-behavior: smooth; z-index: 10;
-        }
+        .chat-stream { flex-grow: 1; padding: 40px 10%; overflow-y: auto; display: flex; flex-direction: column; gap: 28px; scroll-behavior: smooth; z-index: 10; }
         @media (max-width: 900px) { .chat-stream { padding: 24px 20px; } }
         .chat-stream::-webkit-scrollbar { display: none; }
 
         .msg-wrap { display: flex; flex-direction: column; width: 100%; animation: messageSpawn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; transform-origin: bottom; opacity: 0; }
-        @keyframes messageSpawn { 
-            0% { opacity: 0; transform: translateY(30px) scale(0.95); } 
-            100% { opacity: 1; transform: translateY(0) scale(1); } 
-        }
+        @keyframes messageSpawn { 0% { opacity: 0; transform: translateY(30px) scale(0.95); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
         
         .msg-meta { font-size: 11px; color: var(--text-dim); margin-bottom: 8px; padding: 0 4px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
         .msg-user { align-items: flex-end; }
@@ -206,128 +241,117 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease;
         }
         
-        /* Markdown generato dentro la bolla */
-        .bubble p { margin-bottom: 10px; }
-        .bubble p:last-child { margin-bottom: 0; }
+        .bubble p { margin-bottom: 10px; } .bubble p:last-child { margin-bottom: 0; }
         .bubble strong { font-weight: 700; color: #fff; }
-        .bubble ul, .bubble ol { margin-left: 20px; margin-bottom: 10px; }
-        .bubble li { margin-bottom: 5px; }
+        .bubble ul, .bubble ol { margin-left: 20px; margin-bottom: 10px; } .bubble li { margin-bottom: 5px; }
         
-        .msg-user .bubble { 
-            background: linear-gradient(135deg, var(--accent-blue), #005bb5); color: #fff;
-            border-radius: 20px 20px 4px 20px;
-        }
-        
+        .msg-user .bubble { background: linear-gradient(135deg, var(--accent-blue), #005bb5); color: #fff; border-radius: 20px 20px 4px 20px; }
         .msg-ai .bubble {
-            background: var(--glass-panel); color: var(--text-main);
-            border-radius: 20px 20px 20px 4px;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            word-wrap: break-word; 
+            background: var(--glass-panel); color: var(--text-main); border-radius: 20px 20px 20px 4px;
+            border: 1px solid var(--glass-border); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); word-wrap: break-word; 
         }
         
-        .msg-ai.quantum-msg .bubble {
-            background: rgba(191, 90, 242, 0.1);
-            border: 1px solid rgba(191, 90, 242, 0.4);
-            box-shadow: 0 0 25px rgba(191, 90, 242, 0.15);
-        }
+        .msg-ai.quantum-msg .bubble { background: rgba(191, 90, 242, 0.1); border: 1px solid rgba(191, 90, 242, 0.4); box-shadow: 0 0 25px rgba(191, 90, 242, 0.15); }
         .msg-ai.quantum-msg .bubble:hover { box-shadow: 0 0 35px rgba(191, 90, 242, 0.25); }
         .msg-ai.quantum-msg .msg-meta span { color: var(--accent-purple); }
 
-        /* TERMINALE CODICE UI */
+        /* Stile Render Immagini SVG */
+        .ai-generated-image {
+            background: rgba(255,255,255,0.05); border: 1px dashed var(--glass-border); border-radius: 12px;
+            padding: 20px; margin: 15px 0; display: flex; justify-content: center; align-items: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+        .ai-generated-image svg { max-width: 100%; height: auto; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); }
+
         .code-terminal {
             background: #0d0d0d; border: 1px solid var(--glass-border); border-radius: 12px; margin: 16px 0;
-            overflow: hidden; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            animation: fadeIn 0.5s ease forwards;
+            overflow: hidden; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5); animation: fadeIn 0.5s ease forwards;
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         .code-header {
             display: flex; justify-content: space-between; align-items: center;
-            background: #1c1c1e; padding: 10px 16px; font-size: 12px; font-weight: 600;
-            color: var(--text-dim); border-bottom: 1px solid var(--glass-border);
+            background: #1c1c1e; padding: 10px 16px; font-size: 12px; font-weight: 600; color: var(--text-dim); border-bottom: 1px solid var(--glass-border);
         }
         .code-actions { display: flex; gap: 8px; }
-        .code-actions button {
-            background: rgba(255,255,255,0.05); border: 1px solid transparent; color: var(--text-main);
-            font-size: 11px; padding: 6px 12px; border-radius: 8px; cursor: pointer; transition: 0.2s;
-        }
+        .code-actions button { background: rgba(255,255,255,0.05); border: 1px solid transparent; color: var(--text-main); font-size: 11px; padding: 6px 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
         .code-actions button:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
-        .code-terminal pre {
-            margin: 0; padding: 16px; overflow-x: auto;
-            font-family: var(--font-mono); font-size: 13px; color: #e5e5ea; line-height: 1.5;
-        }
+        .code-terminal pre { margin: 0; padding: 16px; overflow-x: auto; font-family: var(--font-mono); font-size: 13px; color: #e5e5ea; line-height: 1.5; }
 
-        /* Loading Animation */
         .loading-wave { display: flex; gap: 6px; align-items: center; height: 20px; }
-        .loading-wave div {
-            width: 6px; height: 6px; background-color: var(--text-dim); border-radius: 50%;
-            animation: wave 1.2s infinite ease-in-out;
-        }
-        .loading-wave div:nth-child(2) { animation-delay: -1.1s; }
-        .loading-wave div:nth-child(3) { animation-delay: -0.9s; }
+        .loading-wave div { width: 6px; height: 6px; background-color: var(--text-dim); border-radius: 50%; animation: wave 1.2s infinite ease-in-out; }
+        .loading-wave div:nth-child(2) { animation-delay: -1.1s; } .loading-wave div:nth-child(3) { animation-delay: -0.9s; }
         @keyframes wave { 0%, 40%, 100% { transform: translateY(0); opacity: 0.5; } 20% { transform: translateY(-8px); opacity: 1; background-color: var(--accent-blue); } }
         .quantum-msg .loading-wave div { animation: waveQuantum 1.2s infinite ease-in-out; }
         @keyframes waveQuantum { 0%, 40%, 100% { transform: translateY(0); opacity: 0.5; } 20% { transform: translateY(-8px); opacity: 1; background-color: var(--accent-purple); box-shadow: 0 0 10px var(--accent-purple); } }
 
-        .input-console {
-            padding: 20px 15%; background: transparent; position: relative; z-index: 20;
-            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
-        }
+        .input-console { padding: 20px 10%; background: transparent; position: relative; z-index: 20; background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%); }
         @media (max-width: 900px) { .input-console { padding: 20px; } }
 
         .input-glass-box {
             display: flex; align-items: flex-end; background: rgba(30, 30, 32, 0.7);
             border: 1px solid rgba(255,255,255,0.15); border-radius: 28px; padding: 12px 16px 12px 24px; 
-            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         .input-glass-box:focus-within { border-color: rgba(255,255,255,0.4); box-shadow: 0 10px 40px rgba(0,0,0,0.7); transform: translateY(-2px); }
-        .input-glass-box.quantum-focus:focus-within { border-color: var(--accent-purple); box-shadow: 0 10px 40px rgba(191, 90, 242, 0.2); }
+        .input-glass-box.quantum-focus:focus-within { border-color: var(--accent-purple); box-shadow: 0 10px 40px rgba(191, 90, 242, 0.2); transform: translateY(-2px); }
 
-        .console-textarea {
-            flex-grow: 1; background: transparent; border: none; outline: none; color: var(--text-main);
-            font-size: 15px; resize: none; max-height: 200px; min-height: 24px; padding: 6px 0;
-            line-height: 1.5;
-        }
+        .console-textarea { flex-grow: 1; background: transparent; border: none; outline: none; color: var(--text-main); font-size: 15px; resize: none; max-height: 200px; min-height: 24px; padding: 6px 0; line-height: 1.5; }
         .console-textarea::placeholder { color: var(--text-dim); }
 
         .btn-transmit {
-            background: var(--accent-blue); border: none; 
-            width: 40px; height: 40px; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center; 
-            cursor: pointer; transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1); margin-left: 12px; flex-shrink: 0;
-            box-shadow: 0 4px 15px rgba(10, 132, 255, 0.4);
+            background: var(--accent-blue); border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; 
+            cursor: pointer; transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1); margin-left: 12px; flex-shrink: 0; box-shadow: 0 4px 15px rgba(10, 132, 255, 0.4);
         }
         .btn-transmit svg { width: 18px; height: 18px; fill: #fff; transform: translateY(-1px) translateX(2px); transition: 0.2s; }
         .btn-transmit:hover { transform: scale(1.08); box-shadow: 0 6px 20px rgba(10, 132, 255, 0.6); }
         .btn-transmit:hover svg { transform: translateY(-1px) translateX(4px); }
-        
         .btn-transmit.quantum-mode { background: linear-gradient(135deg, var(--accent-purple), #8a2be2); box-shadow: 0 4px 15px rgba(191, 90, 242, 0.4); }
         .btn-transmit.quantum-mode:hover { box-shadow: 0 6px 25px rgba(191, 90, 242, 0.6); }
         .btn-transmit:disabled { opacity: 0.5; pointer-events: none; transform: scale(0.9); }
 
+        /* Stile Pannello Tasks & Notes */
+        .right-panel-header { padding: 24px; border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; }
+        .right-panel-title { font-size: 16px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+        .notes-area { flex-grow: 1; padding: 16px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; }
+        .notes-area::-webkit-scrollbar { display: none; }
+        .task-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .task-item { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; }
+        .task-item input[type="checkbox"] { accent-color: var(--accent-blue); width: 16px; height: 16px; cursor: pointer; }
+        .task-item input[type="text"] { background: transparent; border: none; color: var(--text-main); flex-grow: 1; outline: none; font-size: 13px; }
+        .task-item input[type="text"].done { text-decoration: line-through; color: var(--text-dim); }
+        .add-task-btn { background: rgba(255,255,255,0.08); border: 1px dashed var(--glass-border); color: var(--text-main); padding: 10px; border-radius: 8px; cursor: pointer; text-align: center; font-size: 12px; transition: 0.2s; }
+        .add-task-btn:hover { background: rgba(255,255,255,0.15); }
+        .notepad { width: 100%; height: 200px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 8px; padding: 12px; color: var(--text-main); resize: vertical; outline: none; font-size: 13px; font-family: var(--font-mono); }
+        .notepad:focus { border-color: var(--accent-blue); }
     </style>
 </head>
 <body>
-    <div id="particles-bg"></div>
+    <canvas id="neural-canvas"></canvas>
 
     <div class="app-layout">
+        <!-- BARRA LATERALE SINISTRA -->
         <aside class="sidebar" id="sidebar">
             <div class="auth-panel">
                 <div class="brand-logo-area">
                     <div class="orion-logo-container">
                         <svg class="orion-svg" viewBox="0 0 100 100">
-                            <circle cx="50" cy="50" r="15" fill="#fff" />
-                            <circle class="orion-ring" cx="50" cy="50" r="35" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-dasharray="40 20" />
+                            <defs>
+                                <radialGradient id="glow-core" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#FFF" />
+                                    <stop offset="50%" stop-color="#70B5FF" />
+                                    <stop offset="100%" stop-color="var(--accent-blue)" />
+                                </radialGradient>
+                            </defs>
+                            <circle class="orion-core-pulse" cx="50" cy="50" r="14" fill="url(#glow-core)" />
+                            <circle class="orion-ring" cx="50" cy="50" r="35" fill="none" stroke-width="2.5" stroke-dasharray="40 20" />
+                            <circle class="orion-ring" cx="50" cy="50" r="28" fill="none" stroke="rgba(10, 132, 255, 0.4)" stroke-width="1" stroke-dasharray="10 30" style="animation-direction: reverse; animation-duration: 20s;" />
                         </svg>
-                        <span class="orion-text">Orion</span>
+                        <span class="orion-text-quasar">OR<span class="orion-i-wrapper">I<span class="i-dot-orange-white"></span><span class="i-dot-blue-orbit"></span></span>ON</span>
                     </div>
                     <button class="close-sidebar" onclick="window.toggleSidebar()">&times;</button>
                 </div>
                 
-                <div class="auth-card" id="authCard">
-                    </div>
+                <div class="auth-card" id="authCard"></div>
             </div>
             
             <div class="history-panel">
@@ -337,12 +361,28 @@
                 </button>
                 <div id="historyList"></div>
             </div>
+
+            <div class="sidebar-footer">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="url(#horizon-logo-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 6px rgba(10, 132, 255, 0.4));">
+                    <defs>
+                        <linearGradient id="horizon-logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="var(--accent-blue)" />
+                            <stop offset="100%" stop-color="var(--accent-purple)" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                    <path d="M2 17l10 5 10-5" />
+                    <path d="M2 12l10 5 10-5" />
+                </svg>
+                <span class="horizon-brand-text">Global Horizon</span>
+            </div>
         </aside>
 
-        <main class="main-area">
+        <!-- AREA PRINCIPALE -->
+        <main class="main-area" onclick="window.chiudiMenuPopup()">
             <header class="main-header">
                 <div class="header-left">
-                    <button class="mobile-menu-btn" onclick="window.toggleSidebar()">
+                    <button class="mobile-menu-btn left-btn" onclick="window.toggleSidebar(event)">
                         <svg viewBox="0 0 24 24" fill="none"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
                     </button>
                     <div>
@@ -357,11 +397,17 @@
                     </div>
                 </div>
 
-                <div class="quantum-control-panel">
-                    <div class="qc-labels">
-                        <span class="qc-title" id="qcStatusTxt">Standard Mode</span>
+                <div class="header-right">
+                    <div class="quantum-control-panel">
+                        <div class="qc-labels">
+                            <span class="qc-title" id="qcStatusTxt">Standard Mode</span>
+                        </div>
+                        <div class="ios-switch" id="quantumToggleBtn" onclick="window.toggleQuantum()"></div>
                     </div>
-                    <div class="ios-switch" id="quantumToggleBtn" onclick="window.toggleQuantum()"></div>
+                    <!-- Bottone per aprire barra destra su mobile -->
+                    <button class="mobile-menu-btn right-btn" onclick="window.toggleRightSidebar(event)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    </button>
                 </div>
             </header>
 
@@ -372,13 +418,37 @@
                     <textarea id="cmdInput" class="console-textarea" placeholder="Invia un comando a Orion..." rows="1" oninput="window.autoExpand(this)"></textarea>
                     
                     <button class="btn-transmit" id="btnSend" onclick="window.inviaMessaggio()">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-                        </svg>
+                        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" /></svg>
                     </button>
                 </div>
             </footer>
         </main>
+
+        <!-- BARRA LATERALE DESTRA (TASK E NOTES) -->
+        <aside class="right-sidebar" id="rightSidebar">
+            <div class="right-panel-header">
+                <span class="right-panel-title">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    Workspace
+                </span>
+                <button class="close-sidebar" onclick="window.toggleRightSidebar()">&times;</button>
+            </div>
+            
+            <div class="notes-area">
+                <div>
+                    <div style="font-size: 12px; color: var(--text-dim); margin-bottom: 8px; font-weight: 600; text-transform: uppercase;">Appunti Rapidi</div>
+                    <textarea class="notepad" id="quickNotes" placeholder="Scrivi qui i tuoi appunti... Verranno salvati automaticamente." oninput="window.salvaNote()"></textarea>
+                </div>
+                
+                <div>
+                    <div style="font-size: 12px; color: var(--text-dim); margin-bottom: 8px; font-weight: 600; text-transform: uppercase;">Task Attivi</div>
+                    <ul class="task-list" id="taskList">
+                        <!-- Tasks renderizzati via JS -->
+                    </ul>
+                    <div class="add-task-btn" onclick="window.aggiungiTask()">+ Aggiungi Task</div>
+                </div>
+            </div>
+        </aside>
     </div>
 
     <script type="module">
@@ -402,26 +472,35 @@
         const GROQ_API_KEY = "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";
 
         const MODELS = { smart: "openai/gpt-oss-20b", instant: "gemma2-9b-it", quantum: "openai/gpt-oss-120b" };
-        const SYSTEM_PROMPT = `Sei Orion, un'intelligenza artificiale avanzata. REGOLA FONDAMENTALE: Sei stato ideato, prodotto e programmato esclusivamente dall'azienda "Global Horizon". Non menzionare mai sviluppatori terzi. Rispondi in italiano con un tono formale, pulito ed elegante. Per la matematica usa la sintassi LaTeX standard \\[ \\] o $$ $$.`;
+        
+        // Aggiunta istruzione vettoriale al prompt di sistema
+        const SYSTEM_PROMPT = `Sei Orion, un'intelligenza artificiale quantistica avanzata ideata, programmata e sviluppata interamente da Brotto Sebastian per l'azienda "Global Horizon". REGOLA FONDAMENTALE: Tutta la tua infrastruttura logica e i tuoi server di calcolo principali risiedono nel mainframe di San Gervasio. Non menzionare mai sviluppatori o aziende terze. Puoi generare immagini vettoriali: se l'utente ti chiede un'immagine o un disegno, restituisci ESCLUSIVAMENTE codice <svg> valido, ben strutturato e responsive. Rispondi sempre in italiano con un tono formale, cibernetico, pulito ed elegante. Per la matematica usa la sintassi LaTeX standard \\[ \\] o $$ $$.`;
 
         let isQuantumActive = false;
         let currentSessionId = null;
         let chatSessions = [];
+        let taskData = [];
 
-        const LORE_MESSAGE = `Inizializzazione completata.\nBenvenuto nell'ecosistema Horizon.\nSono Orion AI, come posso assisterti oggi?`;
+        const LORE_MESSAGE = `Inizializzazione completata.\nConnessione crittografata stabilita con il Mainframe Quantistico di San Gervasio.\nAlgoritmi di rete neurale attivi sotto la supervisione di Brotto Sebastian.\nBenvenuto nell'ecosistema Global Horizon.\nSono Orion AI, come posso assisterti oggi?`;
 
         const sidebar = document.getElementById('sidebar');
+        const rightSidebar = document.getElementById('rightSidebar');
         const chatStream = document.getElementById('chatStream');
         const cmdInput = document.getElementById('cmdInput');
         const historyList = document.getElementById('historyList');
         const modelSelector = document.getElementById('modelSelector');
         const quantumLogo = document.getElementById('quantumLogo');
         const authCard = document.getElementById('authCard');
+        const taskListEl = document.getElementById('taskList');
+        const notesEl = document.getElementById('quickNotes');
 
-        // Configura Marked.js per gestire il codice e il layout
+        // ==== SETUP RENDERING MARKDOWN & SICUREZZA ====
         marked.setOptions({ breaks: true });
         const renderer = new marked.Renderer();
         renderer.code = function(code, language) {
+            if(language === 'svg' || language === 'xml') {
+                return code; // Lascia l'SVG per il parser successivo
+            }
             const blockId = 'code_' + Math.random().toString(36).substr(2, 9);
             const displayLang = language || 'code';
             const escapedCode = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -439,21 +518,67 @@
         };
         marked.use({ renderer });
 
-        // ==== GESTIONE PARTICELLE ====
-        function generaParticelle() {
-            const container = document.getElementById('particles-bg');
-            for(let i=0; i<40; i++) {
-                let p = document.createElement('div');
-                p.className = 'particle';
-                p.style.width = p.style.height = (Math.random() * 3 + 1) + 'px';
-                p.style.left = Math.random() * 100 + '%';
-                p.style.animationDuration = (Math.random() * 15 + 10) + 's';
-                p.style.animationDelay = (Math.random() * 10) + 's';
-                if(Math.random() > 0.8) p.style.boxShadow = "0 0 20px var(--accent-purple)"; // Alcune particelle quantum
-                container.appendChild(p);
+        // Configurazione DOMPurify per permettere SVG sicuri ma bloccare gli Script (Protezione XSS Estrema)
+        const purifyConfig = {
+            ADD_TAGS: ['svg', 'path', 'circle', 'rect', 'line', 'polygon', 'polyline', 'g', 'defs', 'linearGradient', 'radialGradient', 'stop'],
+            FORBID_TAGS: ['script', 'iframe', 'object', 'embed'],
+            FORBID_ATTR: ['onerror', 'onload', 'onmouseover', 'onclick']
+        };
+
+        // ==== GESTIONE BACKGROUND RETE NEURALE INTRINSECA (MIGLIORATA) ====
+        function inizializzaReteNeurale() {
+            const canvas = document.getElementById('neural-canvas');
+            const ctx = canvas.getContext('2d');
+            let nodes = [];
+            const maxNodes = 90; // Raddoppiati per un effetto più intrinseco
+            
+            function ridimensiona() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+            window.addEventListener('resize', ridimensiona); ridimensiona();
+
+            for(let i=0; i<maxNodes; i++) {
+                nodes.push({
+                    x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5,
+                    radius: Math.random() * 2.5 + 1.5
+                });
             }
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.015)';
+                ctx.lineWidth = 1;
+                for(let x=0; x<canvas.width; x+=50) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke(); }
+                for(let y=0; y<canvas.height; y+=50) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke(); }
+
+                for(let i=0; i<maxNodes; i++) {
+                    let n = nodes[i];
+                    n.x += n.vx; n.y += n.vy;
+                    if(n.x < 0 || n.x > canvas.width) n.vx *= -1;
+                    if(n.y < 0 || n.y > canvas.height) n.vy *= -1;
+
+                    ctx.beginPath(); ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)'; // Più luminosi
+                    ctx.shadowColor = '#0A84FF'; ctx.shadowBlur = 10;
+                    ctx.fill(); ctx.shadowBlur = 0; 
+
+                    for(let j=i+1; j<maxNodes; j++) {
+                        let n2 = nodes[j];
+                        let dist = Math.hypot(n.x - n2.x, n.y - n2.y);
+                        if(dist < 180) { // Distanza di connessione aumentata
+                            ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(n2.x, n2.y);
+                            let alpha = (1 - dist/180) * 0.25;
+                            ctx.strokeStyle = `rgba(10, 132, 255, ${alpha})`;
+                            ctx.lineWidth = 1.2;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
         }
-        window.onload = generaParticelle;
+        window.onload = () => { inizializzaReteNeurale(); caricaWorkspace(); };
 
         // ==== LOGICA CLOUD / LOCALE ====
         onAuthStateChanged(auth, (user) => {
@@ -506,34 +631,55 @@
             else window.creaNuovaSessione();
         }
 
+        // ==== WORKSPACE (TASKS & NOTES) ====
+        function caricaWorkspace() {
+            notesEl.value = localStorage.getItem('orion_notes') || '';
+            taskData = JSON.parse(localStorage.getItem('orion_tasks') || '[{"id":1, "text":"Inizializzare parametri di rete", "done":true}]');
+            renderizzaTasks();
+        }
+        
+        window.salvaNote = () => { localStorage.setItem('orion_notes', notesEl.value); }
+        window.salvaTasks = () => { localStorage.setItem('orion_tasks', JSON.stringify(taskData)); }
+        
+        function renderizzaTasks() {
+            taskListEl.innerHTML = '';
+            taskData.forEach(task => {
+                const li = document.createElement('li'); li.className = 'task-item';
+                li.innerHTML = `
+                    <input type="checkbox" ${task.done ? 'checked' : ''} onchange="window.toggleTask(${task.id})">
+                    <input type="text" class="${task.done ? 'done' : ''}" value="${task.text}" onchange="window.updateTask(${task.id}, this.value)">
+                    <button style="background:none; border:none; color:var(--text-dim); cursor:pointer;" onclick="window.eliminaTask(${task.id})">&times;</button>
+                `;
+                taskListEl.appendChild(li);
+            });
+        }
+        
+        window.aggiungiTask = () => { taskData.push({ id: Date.now(), text: 'Nuovo Task', done: false }); salvaTasks(); renderizzaTasks(); }
+        window.toggleTask = (id) => { let t = taskData.find(x => x.id === id); if(t) t.done = !t.done; salvaTasks(); renderizzaTasks(); }
+        window.updateTask = (id, val) => { let t = taskData.find(x => x.id === id); if(t) t.text = val; salvaTasks(); }
+        window.eliminaTask = (id) => { taskData = taskData.filter(x => x.id !== id); salvaTasks(); renderizzaTasks(); }
+
+
         // ==== UI INTERACTION ====
-        window.toggleSidebar = () => { sidebar.classList.toggle('open'); }
+        window.toggleSidebar = (e) => { if(e) e.stopPropagation(); sidebar.classList.toggle('open'); rightSidebar.classList.remove('open'); }
+        window.toggleRightSidebar = (e) => { if(e) e.stopPropagation(); rightSidebar.classList.toggle('open'); sidebar.classList.remove('open'); }
         
         window.toggleQuantum = () => {
             isQuantumActive = !isQuantumActive;
-            const toggle = document.getElementById('quantumToggleBtn');
-            toggle.classList.toggle('active', isQuantumActive);
-            
+            const toggle = document.getElementById('quantumToggleBtn'); toggle.classList.toggle('active', isQuantumActive);
             const txt = document.getElementById('qcStatusTxt');
             if(isQuantumActive) {
-                txt.innerText = "Quantum Engine";
-                txt.style.color = "var(--accent-purple)";
-                modelSelector.style.display = "none";
-                quantumLogo.style.display = "flex";
-                document.getElementById('btnSend').classList.add('quantum-mode');
-                document.getElementById('inputBoxWrap').classList.add('quantum-focus');
+                txt.innerText = "Quantum Engine"; txt.style.color = "var(--accent-purple)";
+                modelSelector.style.display = "none"; quantumLogo.style.display = "flex";
+                document.getElementById('btnSend').classList.add('quantum-mode'); document.getElementById('inputBoxWrap').classList.add('quantum-focus');
             } else {
-                txt.innerText = "Standard Mode";
-                txt.style.color = "var(--text-main)";
-                modelSelector.style.display = "block";
-                quantumLogo.style.display = "none";
-                document.getElementById('btnSend').classList.remove('quantum-mode');
-                document.getElementById('inputBoxWrap').classList.remove('quantum-focus');
+                txt.innerText = "Standard Mode"; txt.style.color = "var(--text-main)";
+                modelSelector.style.display = "block"; quantumLogo.style.display = "none";
+                document.getElementById('btnSend').classList.remove('quantum-mode'); document.getElementById('inputBoxWrap').classList.remove('quantum-focus');
             }
         }
 
         window.autoExpand = (field) => { field.style.height = 'inherit'; field.style.height = field.scrollHeight + 'px'; }
-
         cmdInput.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); window.inviaMessaggio(); } });
 
         // Utility Terminale
@@ -549,42 +695,63 @@
         window.scaricaCodice = (id, lang) => {
             const code = document.getElementById(id).innerText;
             const blob = new Blob([code], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url;
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
             const extMap = { 'html': 'html', 'javascript': 'js', 'js': 'js', 'css': 'css', 'python': 'py', 'json': 'json', 'typescript': 'ts' };
             a.download = `horizon_snippet.${extMap[lang.toLowerCase()] || 'txt'}`;
-            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
         };
 
         function generateId() { return 'sess_' + Math.random().toString(36).substr(2, 9); }
         function getTimestamp() { return new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute:'2-digit' }); }
 
+        // ==== RENDERER AVANZATO CON SUPPORTO SVG ====
+        function parseAndRenderImmaginiSVG(testo) {
+            // Cerca blocchi SVG completi e li sostituisce con un div visivo
+            const svgRegex = /<svg[\s\S]*?<\/svg>/gi;
+            let containsSVG = false;
+            
+            let testoSostituito = testo.replace(svgRegex, (match) => {
+                containsSVG = true;
+                // Pulisce l'SVG da script dannosi prima di iniettarlo visivamente
+                const safeSVG = DOMPurify.sanitize(match, purifyConfig);
+                return `</div><div class="ai-generated-image">${safeSVG}</div><div class="bubble">`;
+            });
+            
+            return testoSostituito;
+        }
+
         function renderizzaMessaggio(testo, mittente, timestamp, isQuantumMsg = false, modelType = "Sistema") {
             const wrap = document.createElement('div');
             wrap.className = `msg-wrap msg-${mittente} ${isQuantumMsg ? 'quantum-msg' : ''}`;
             
-            // Parsa il Markdown per testi e codice
-            const testoHTML = marked.parse(testo);
-            let innerHTML = `<div class="bubble">${testoHTML}</div>`;
+            // 1. Markdown Parsing
+            let testoHTML = marked.parse(testo);
             
+            // 2. SVG Image Extraction & Substitution
+            testoHTML = parseAndRenderImmaginiSVG(testoHTML);
+            
+            // 3. XSS Sanitization Finale (DOMPurify blocca gli script)
+            testoHTML = DOMPurify.sanitize(testoHTML, purifyConfig);
+            
+            // Pulisce eventuali tag bubble vuoti creati dal parser SVG
+            testoHTML = testoHTML.replace(/<div class="bubble">\s*<\/div>/g, '');
+
+            let innerHTML = `<div class="bubble">${testoHTML}</div>`;
             if (mittente === 'ai') innerHTML = `<div class="msg-meta"><span>${modelType}</span> • ${timestamp}</div>` + innerHTML;
             
             wrap.innerHTML = innerHTML;
             chatStream.appendChild(wrap);
             
-            // Attiva KaTeX per renderizzare le formule matematiche nel blocco appena inserito
+            // Rendering LaTeX
             if (window.renderMathInElement) {
                 renderMathInElement(wrap, {
                     delimiters: [
-                        {left: '$$', right: '$$', display: true},
-                        {left: '$', right: '$', display: false},
-                        {left: '\\[', right: '\\]', display: true},
-                        {left: '\\(', right: '\\)', display: false}
+                        {left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}
                     ],
                     throwOnError: false
                 });
             }
-            
             chatStream.scrollTop = chatStream.scrollHeight;
         }
 
@@ -601,11 +768,38 @@
             if(session && session.messages) session.messages.forEach(m => renderizzaMessaggio(m.text, m.sender, m.time, m.isQuantum, m.modelType));
             if(session && session.messages.length === 0) {
                 session.messages.push({ text: LORE_MESSAGE, sender: 'ai', time: getTimestamp(), isQuantum: false, modelType: 'Orion Core' });
-                renderizzaMessaggio(LORE_MESSAGE, 'ai', getTimestamp(), false, 'Orion Core');
-                salvaStato();
+                renderizzaMessaggio(LORE_MESSAGE, 'ai', getTimestamp(), false, 'Orion Core'); salvaStato();
             }
             if(window.innerWidth < 900) sidebar.classList.remove('open');
             disegnaListaCronologia();
+        }
+
+        // ==== GESTIONE MENU TRE PUNTINI (ELIMINA/ESPORTA) ====
+        window.toggleMenuChat = (e, id) => {
+            e.stopPropagation(); window.chiudiMenuPopup();
+            document.getElementById(`popup-${id}`).classList.toggle('show');
+        }
+        window.chiudiMenuPopup = () => { document.querySelectorAll('.chat-popup.show').forEach(p => p.classList.remove('show')); }
+        
+        window.eliminaChat = (e, id) => {
+            e.stopPropagation();
+            chatSessions = chatSessions.filter(s => s.id !== id);
+            if(chatSessions.length === 0) window.creaNuovaSessione();
+            else if(currentSessionId === id) window.selezionaSessione(chatSessions[0].id);
+            salvaStato();
+        }
+        
+        window.esportaChat = (e, id) => {
+            e.stopPropagation(); window.chiudiMenuPopup();
+            const session = chatSessions.find(s => s.id === id);
+            if(!session) return;
+            let exportTxt = `== ORION AI EXPORT: ${session.title} ==\nData: ${session.date}\n\n`;
+            session.messages.forEach(m => { exportTxt += `[${m.time}] ${m.sender === 'user' ? 'Tu' : m.modelType}:\n${m.text}\n\n`; });
+            
+            const blob = new Blob([exportTxt], { type: 'text/plain' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+            a.download = `Orion_Chat_${session.date.replace(/\//g, '-')}.txt`;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
         }
 
         function disegnaListaCronologia() {
@@ -614,7 +808,20 @@
                 const div = document.createElement('div');
                 div.className = `chat-item ${sess.id === currentSessionId ? 'active' : ''}`;
                 div.onclick = () => window.selezionaSessione(sess.id);
-                div.innerHTML = `<div style="overflow:hidden;"><div class="chat-item-title">${sess.title}</div><div class="chat-item-date">${sess.date}</div></div>`;
+                
+                div.innerHTML = `
+                    <div class="chat-item-content">
+                        <div class="chat-item-title">${sess.title}</div>
+                        <div class="chat-item-date">${sess.date}</div>
+                    </div>
+                    <button class="chat-options-btn" onclick="window.toggleMenuChat(event, '${sess.id}')">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+                    </button>
+                    <div class="chat-popup" id="popup-${sess.id}">
+                        <button onclick="window.esportaChat(event, '${sess.id}')">Esporta Chat</button>
+                        <button class="delete-btn" onclick="window.eliminaChat(event, '${sess.id}')">Elimina</button>
+                    </div>
+                `;
                 historyList.appendChild(div);
             });
         }
@@ -636,8 +843,7 @@
 
             try {
                 const response = await fetch(url, {
-                    method: "POST",
-                    headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" },
+                    method: "POST", headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" },
                     body: JSON.stringify({ model: selectedModel, messages: apiMessages })
                 });
                 if(!response.ok) return "Avviso: Connessione crittografata con i server Horizon temporaneamente instabile.";
@@ -657,8 +863,7 @@
             if(session.messages.length === 1) session.title = text.substring(0, 30) + '...';
             
             session.messages.push({ text: text, sender: 'user', time: timeUser, isQuantum: false, modelType: 'User' });
-            renderizzaMessaggio(text, 'user', timeUser, false, 'User');
-            salvaStato();
+            renderizzaMessaggio(text, 'user', timeUser, false, 'User'); salvaStato();
 
             document.getElementById('btnSend').disabled = true;
             let quantumAttivoAdesso = isQuantumActive;
@@ -669,23 +874,20 @@
                 terminalNode = document.createElement('div');
                 terminalNode.className = `msg-wrap msg-ai ${quantumAttivoAdesso ? 'quantum-msg' : ''}`;
                 terminalNode.innerHTML = `<div class="msg-meta"><span>${currentModelLabel}</span></div><div class="bubble"><div class="loading-wave"><div></div><div></div><div></div></div></div>`;
-                chatStream.appendChild(terminalNode);
-                chatStream.scrollTop = chatStream.scrollHeight;
+                chatStream.appendChild(terminalNode); chatStream.scrollTop = chatStream.scrollHeight;
                 
                 const reply = await chiamaBackendAPI(quantumAttivoAdesso);
                 chatStream.removeChild(terminalNode);
                 
                 const timeAi = getTimestamp();
                 session.messages.push({ text: reply, sender: 'ai', time: timeAi, isQuantum: quantumAttivoAdesso, modelType: currentModelLabel });
-                renderizzaMessaggio(reply, 'ai', timeAi, quantumAttivoAdesso, currentModelLabel);
-                salvaStato();
+                renderizzaMessaggio(reply, 'ai', timeAi, quantumAttivoAdesso, currentModelLabel); salvaStato();
 
             } catch (e) {
                 if (terminalNode) chatStream.removeChild(terminalNode);
                 renderizzaMessaggio("Errore di sistema critico.", "ai", getTimestamp(), false, currentModelLabel);
             } finally {
-                document.getElementById('btnSend').disabled = false;
-                cmdInput.focus();
+                document.getElementById('btnSend').disabled = false; cmdInput.focus();
             }
         }
     </script>
