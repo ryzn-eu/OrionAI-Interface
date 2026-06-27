@@ -4,551 +4,608 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Orion - Horizon Quantum AI</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
     <style>
         :root {
-            --bg-deep: #050508;
-            --glass-base: rgba(12, 14, 20, 0.6);
-            --glass-border: rgba(0, 243, 255, 0.15);
-            --glass-border-dim: rgba(255, 255, 255, 0.05);
-            --accent-cyan: #00F3FF;
-            --accent-cyan-dim: rgba(0, 243, 255, 0.2);
-            --accent-purple: #8E2DE2;
-            --alert-red: #FF3B30;
-            --text-main: #FFFFFF;
-            --text-dim: #8A99AD;
-            --font-ui: -apple-system, "SF Pro Display", Inter, Roboto, sans-serif;
-            --font-mono: "Fira Code", "SF Mono", monospace;
+            /* Apple iOS Dark Mode Palette & Horizon Identity */
+            --bg-deep: #050505;
+            --glass-base: rgba(28, 28, 30, 0.5);
+            --glass-panel: rgba(44, 44, 46, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent-blue: #0A84FF; 
+            --accent-purple: #BF5AF2; 
+            --alert-red: #FF453A;
+            --text-main: #F5F5F7;
+            --text-dim: #86868B;
+            
+            --font-ui: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: "SF Mono", "Fira Code", monospace;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: var(--font-ui); }
 
         body {
             background-color: var(--bg-deep);
             color: var(--text-main);
-            font-family: var(--font-ui);
             height: 100dvh;
             width: 100vw;
             overflow: hidden;
             display: flex;
-        }
-
-        /* --- BACKGROUND COMPLESSO --- */
-        .cyber-grid {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0;
+            -webkit-font-smoothing: antialiased;
             background-image: 
-                linear-gradient(var(--glass-border-dim) 1px, transparent 1px),
-                linear-gradient(90deg, var(--glass-border-dim) 1px, transparent 1px);
-            background-size: 30px 30px;
-            opacity: 0.5;
-            pointer-events: none;
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: center center;
+            animation: gridMove 20s linear infinite;
         }
-        .glow-orb { position: absolute; border-radius: 50%; filter: blur(120px); z-index: 0; opacity: 0.4; pointer-events: none; }
-        .orb-1 { top: -10%; left: -10%; width: 40vw; height: 40vw; background: var(--accent-purple); }
-        .orb-2 { bottom: -20%; right: -10%; width: 50vw; height: 50vw; background: #0A84FF; }
 
-        /* --- MOTORE PARTICELLARE CHAT --- */
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+
+        /* Particelle Eleganti */
         #particles-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1; pointer-events: none; overflow: hidden;
         }
-        .particle {
-            position: absolute; border-radius: 50%; opacity: 0;
-            animation: floatParticle linear infinite;
+        .particle { 
+            position: absolute; border-radius: 50%; opacity: 0; 
+            background: #ffffff;
+            animation: floatParticle linear infinite; 
+            box-shadow: 0 0 15px rgba(255,255,255,0.8);
         }
         @keyframes floatParticle {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            20% { opacity: 0.5; transform: translateY(80vh) scale(1); }
-            80% { opacity: 0.5; transform: translateY(20vh) scale(1); }
-            100% { transform: translateY(-10vh) scale(0); opacity: 0; }
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            30% { opacity: 0.5; }
+            70% { opacity: 0.5; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
         }
 
-        /* --- LAYOUT GRID --- */
         .app-layout { position: relative; z-index: 10; display: flex; width: 100%; height: 100%; }
 
-        /* --- SIDEBAR CRONOLOGIA E AUTH --- */
+        /* Sidebar Glassmorphism */
         .sidebar {
-            width: 320px; background: rgba(5, 6, 10, 0.85);
-            backdrop-filter: blur(20px); border-right: 1px solid var(--glass-border);
-            display: flex; flex-direction: column; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            width: 320px; background: var(--glass-base);
+            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            border-right: 1px solid var(--glass-border);
+            display: flex; flex-direction: column; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 40; position: absolute; height: 100%; left: 0; transform: translateX(-100%);
         }
-        .sidebar.open { transform: translateX(0); }
+        .sidebar.open { transform: translateX(0); box-shadow: 20px 0 50px rgba(0,0,0,0.5); }
+        @media (min-width: 900px) { .sidebar { position: relative; transform: translateX(0); box-shadow: none; } }
 
-        @media (min-width: 900px) { .sidebar { position: relative; transform: translateX(0); } }
-
-        /* Profilo / Auth Section */
-        .auth-panel { padding: 24px; border-bottom: 1px solid var(--glass-border-dim); }
+        .auth-panel { padding: 24px; border-bottom: 1px solid var(--glass-border); }
         .brand-logo-area { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-        .brand-logo-area svg { width: 32px; height: 32px; }
-        .close-sidebar { display: block; background: none; border: none; color: var(--text-dim); font-size: 24px; cursor: pointer; }
+        
+        .orion-logo-container { display: flex; align-items: center; gap: 12px; }
+        .orion-svg { width: 36px; height: 36px; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); }
+        .orion-ring { transform-origin: 50px 50px; animation: spinRing 15s linear infinite; }
+        @keyframes spinRing { 100% { transform: rotate(360deg); } }
+        .orion-text { font-size: 20px; font-weight: 600; letter-spacing: -0.5px; color: var(--text-main); }
+
+        .close-sidebar { background: none; border: none; color: var(--text-dim); font-size: 24px; cursor: pointer; }
         @media (min-width: 900px) { .close-sidebar { display: none; } }
 
         .auth-card {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border-dim);
-            border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+            border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px;
+            transition: all 0.3s ease;
         }
-        .user-status { font-size: 11px; font-family: var(--font-mono); color: var(--accent-cyan); text-transform: uppercase; }
+        .auth-card:hover { background: rgba(255,255,255,0.08); }
+        .user-status { font-size: 12px; color: var(--text-dim); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
         
-        .btn-google {
-            background: #FFF; color: #000; border: none; border-radius: 8px; padding: 10px;
-            font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: 0.2s;
+        .btn-auth, .btn-new-chat {
+            background: rgba(255,255,255,0.1); color: var(--text-main);
+            padding: 12px; border-radius: 12px; font-size: 14px; font-weight: 600;
+            cursor: pointer; transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid var(--glass-border);
+            display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%;
         }
-        .btn-google:hover { background: #EEE; }
-        .btn-google svg { width: 18px; height: 18px; }
+        .btn-auth:hover, .btn-new-chat:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .btn-new-chat { margin-bottom: 16px; background: var(--accent-blue); color: white; border: none; }
+        .btn-new-chat:hover { background: #0070DF; }
         
-        .user-profile { display: none; align-items: center; justify-content: space-between; }
-        .user-info { display: flex; align-items: center; gap: 10px; }
-        .avatar { width: 32px; height: 32px; background: var(--accent-purple); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; }
-        .btn-logout { background: none; border: 1px solid var(--alert-red); color: var(--alert-red); padding: 4px 8px; border-radius: 6px; font-size: 10px; cursor: pointer; }
-
-        /* Lista Cronologia */
-        .history-panel { flex-grow: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 8px; position: relative; z-index: 10; }
-        .history-panel::-webkit-scrollbar { width: 4px; }
-        .history-panel::-webkit-scrollbar-thumb { background: var(--glass-border-dim); }
+        .user-profile { display: flex; align-items: center; gap: 12px; }
+        .user-avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--glass-border); }
+        .user-info { display: flex; flex-direction: column; }
+        .user-name { font-size: 14px; font-weight: 600; }
+        .user-email { font-size: 11px; color: var(--text-dim); }
         
-        .btn-new-chat {
-            background: var(--accent-cyan-dim); border: 1px solid var(--accent-cyan);
-            color: var(--accent-cyan); width: 100%; padding: 12px; border-radius: 8px;
-            font-family: var(--font-mono); font-size: 12px; text-transform: uppercase;
-            cursor: pointer; transition: 0.2s; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-        .btn-new-chat:hover { background: var(--accent-cyan); color: #000; box-shadow: 0 0 15px var(--accent-cyan-dim); }
+        .btn-logout { background: transparent; border: none; color: var(--alert-red); font-size: 12px; cursor: pointer; margin-top: 4px; text-align: left; font-weight: 500; transition: 0.2s; }
+        .btn-logout:hover { color: #ff6b63; }
+        
+        .history-panel { flex-grow: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+        .history-panel::-webkit-scrollbar { display: none; }
 
         .chat-item {
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(255,255,255,0.02); border: 1px solid transparent;
-            padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.2s;
+            padding: 14px 16px; border-radius: 12px; cursor: pointer; transition: 0.3s ease;
+            background: transparent; border: 1px solid transparent;
         }
-        .chat-item:hover { background: rgba(255,255,255,0.05); border-color: var(--glass-border-dim); }
-        .chat-item.active { background: rgba(0, 243, 255, 0.05); border-color: var(--accent-cyan); border-left: 3px solid var(--accent-cyan); }
-        .chat-item-title { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; color: var(--text-main); }
-        .chat-item-date { font-size: 10px; font-family: var(--font-mono); color: var(--text-dim); margin-top: 4px; }
-        .btn-delete-chat { background: none; border: none; color: var(--text-dim); cursor: pointer; padding: 4px; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
-        .btn-delete-chat:hover { color: var(--alert-red); }
+        .chat-item:hover { background: rgba(255,255,255,0.05); }
+        .chat-item.active { background: rgba(10, 132, 255, 0.15); border-color: rgba(10, 132, 255, 0.3); }
+        
+        .chat-item-title { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main); }
+        .chat-item.active .chat-item-title { color: var(--accent-blue); font-weight: 600; }
+        .chat-item-date { font-size: 11px; color: var(--text-dim); margin-top: 6px; }
 
-        /* --- MAIN AREA COMPLESSA --- */
-        .main-area {
-            flex-grow: 1; display: flex; flex-direction: column;
-            background: var(--glass-base); backdrop-filter: blur(40px);
-            position: relative; height: 100%; width: 100%;
-        }
+        .main-area { flex-grow: 1; display: flex; flex-direction: column; position: relative; }
 
-        /* Header Complesso */
         .main-header {
             padding: 16px 24px; border-bottom: 1px solid var(--glass-border);
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(0,0,0,0.4); position: relative; z-index: 20;
+            background: rgba(5, 5, 5, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            position: relative; z-index: 20; box-shadow: 0 4px 30px rgba(0,0,0,0.5);
         }
 
         .header-left { display: flex; align-items: center; gap: 16px; }
         .mobile-menu-btn {
-            background: none; border: none; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; padding: 8px;
-            border: 1px solid var(--glass-border-dim); border-radius: 8px;
+            background: transparent; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; padding: 4px;
         }
-        .mobile-menu-btn svg { width: 24px; height: 24px; fill: none; stroke: var(--accent-cyan); stroke-width: 2; }
+        .mobile-menu-btn svg { width: 28px; height: 28px; stroke: var(--text-main); stroke-width: 1.5; }
         @media (min-width: 900px) { .mobile-menu-btn { display: none; } }
         
-        .sys-telemetry { display: none; flex-direction: column; gap: 2px; }
-        @media (min-width: 600px) { .sys-telemetry { display: flex; } }
-        .sys-telemetry span { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); transition: color 0.3s; }
-        .sys-telemetry span strong { color: #FFF; transition: color 0.3s; }
-
-        /* Quantum Control */
-        .quantum-control-panel {
-            display: flex; align-items: center; gap: 12px;
-            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border-dim);
-            padding: 6px 12px; border-radius: 8px;
+        .model-selector {
+            background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); color: var(--text-main);
+            padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 500; outline: none; cursor: pointer;
+            transition: 0.3s;
         }
+        .model-selector:hover { background: rgba(255,255,255,0.12); }
+        .model-selector option { background: #1c1c1e; }
+        
+        .quantum-logo-active {
+            display: none; align-items: center; gap: 8px; color: var(--accent-purple);
+            font-weight: 600; font-size: 14px; text-shadow: 0 0 10px rgba(191, 90, 242, 0.5);
+            animation: pulseQuantumText 2s infinite alternate;
+        }
+        @keyframes pulseQuantumText { from { opacity: 0.8; } to { opacity: 1; text-shadow: 0 0 20px rgba(191, 90, 242, 0.8); } }
+
+        .quantum-control-panel { display: flex; align-items: center; gap: 12px; }
         .qc-labels { display: flex; flex-direction: column; align-items: flex-end; }
-        .qc-title { font-size: 10px; font-family: var(--font-mono); color: var(--text-dim); text-transform: uppercase; }
-        .qc-status { font-size: 12px; font-weight: bold; color: var(--text-main); transition: 0.3s; }
+        .qc-title { font-size: 13px; font-weight: 600; transition: 0.3s; }
         
-        .qc-btn {
-            background: transparent; border: 1px solid var(--text-dim); width: 44px; height: 24px;
-            border-radius: 12px; position: relative; cursor: pointer; transition: 0.3s;
+        .ios-switch {
+            position: relative; width: 50px; height: 30px;
+            background: rgba(255,255,255,0.15); border-radius: 30px; cursor: pointer; transition: 0.4s cubic-bezier(0.3, 1.5, 0.7, 1);
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
         }
-        .qc-btn::after {
-            content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px;
-            background: var(--text-dim); border-radius: 50%; transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        .ios-switch::after {
+            content: ''; position: absolute; top: 2px; left: 2px; width: 26px; height: 26px;
+            background: #fff; border-radius: 50%; transition: 0.4s cubic-bezier(0.3, 1.5, 0.7, 1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
-        .qc-btn.active { border-color: var(--accent-purple); background: rgba(142, 45, 226, 0.2); }
-        .qc-btn.active::after { transform: translateX(20px); background: var(--accent-purple); box-shadow: 0 0 10px var(--accent-purple); }
+        .ios-switch.active { background: var(--accent-purple); box-shadow: 0 0 15px rgba(191, 90, 242, 0.4); }
+        .ios-switch.active::after { transform: translateX(20px); }
 
-        /* Chat Stream */
         .chat-stream {
-            flex-grow: 1; padding: 30px 5%; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; position: relative; z-index: 10;
+            flex-grow: 1; padding: 40px 15%; overflow-y: auto; display: flex; flex-direction: column; gap: 28px;
+            scroll-behavior: smooth; z-index: 10;
         }
+        @media (max-width: 900px) { .chat-stream { padding: 24px 20px; } }
+        .chat-stream::-webkit-scrollbar { display: none; }
 
-        .msg-wrap { display: flex; flex-direction: column; width: 100%; animation: fadeIn 0.3s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .msg-wrap { display: flex; flex-direction: column; width: 100%; animation: messageSpawn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; transform-origin: bottom; opacity: 0; }
+        @keyframes messageSpawn { 
+            0% { opacity: 0; transform: translateY(30px) scale(0.95); } 
+            100% { opacity: 1; transform: translateY(0) scale(1); } 
+        }
         
-        .msg-meta { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); margin-bottom: 4px; display: flex; gap: 8px; }
+        .msg-meta { font-size: 11px; color: var(--text-dim); margin-bottom: 8px; padding: 0 4px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
         .msg-user { align-items: flex-end; }
         .msg-ai { align-items: flex-start; }
+        .msg-user .msg-meta { display: none; }
 
-        .bubble { max-width: 85%; padding: 16px 20px; border-radius: 16px; font-size: 14px; line-height: 1.6; position: relative; }
-        .msg-user .bubble { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border-dim); border-bottom-right-radius: 4px; }
+        .bubble { 
+            max-width: 85%; padding: 14px 20px; font-size: 15px; line-height: 1.6; font-weight: 400;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease;
+        }
         
-        /* Stile speciale per la AI a seconda della modalità */
+        /* Markdown generato dentro la bolla */
+        .bubble p { margin-bottom: 10px; }
+        .bubble p:last-child { margin-bottom: 0; }
+        .bubble strong { font-weight: 700; color: #fff; }
+        .bubble ul, .bubble ol { margin-left: 20px; margin-bottom: 10px; }
+        .bubble li { margin-bottom: 5px; }
+        
+        .msg-user .bubble { 
+            background: linear-gradient(135deg, var(--accent-blue), #005bb5); color: #fff;
+            border-radius: 20px 20px 4px 20px;
+        }
+        
         .msg-ai .bubble {
-            background: rgba(0, 243, 255, 0.05); border: 1px solid var(--accent-cyan-dim);
-            border-bottom-left-radius: 4px; box-shadow: inset 0 0 20px rgba(0,243,255,0.02);
-            backdrop-filter: blur(5px);
+            background: var(--glass-panel); color: var(--text-main);
+            border-radius: 20px 20px 20px 4px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            word-wrap: break-word; 
         }
+        
         .msg-ai.quantum-msg .bubble {
-            background: rgba(142, 45, 226, 0.05); border: 1px solid rgba(142, 45, 226, 0.3);
-            box-shadow: inset 0 0 20px rgba(142, 45, 226, 0.05);
+            background: rgba(191, 90, 242, 0.1);
+            border: 1px solid rgba(191, 90, 242, 0.4);
+            box-shadow: 0 0 25px rgba(191, 90, 242, 0.15);
+        }
+        .msg-ai.quantum-msg .bubble:hover { box-shadow: 0 0 35px rgba(191, 90, 242, 0.25); }
+        .msg-ai.quantum-msg .msg-meta span { color: var(--accent-purple); }
+
+        /* TERMINALE CODICE UI */
+        .code-terminal {
+            background: #0d0d0d; border: 1px solid var(--glass-border); border-radius: 12px; margin: 16px 0;
+            overflow: hidden; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: fadeIn 0.5s ease forwards;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .code-header {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #1c1c1e; padding: 10px 16px; font-size: 12px; font-weight: 600;
+            color: var(--text-dim); border-bottom: 1px solid var(--glass-border);
+        }
+        .code-actions { display: flex; gap: 8px; }
+        .code-actions button {
+            background: rgba(255,255,255,0.05); border: 1px solid transparent; color: var(--text-main);
+            font-size: 11px; padding: 6px 12px; border-radius: 8px; cursor: pointer; transition: 0.2s;
+        }
+        .code-actions button:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+        .code-terminal pre {
+            margin: 0; padding: 16px; overflow-x: auto;
+            font-family: var(--font-mono); font-size: 13px; color: #e5e5ea; line-height: 1.5;
         }
 
-        /* Evidenziazione concetti chiave nella presentazione */
-        .lore-highlight { color: var(--accent-cyan); font-weight: 600; }
-        .lore-quantum { color: var(--accent-purple); font-family: var(--font-mono); font-size: 12px;}
+        /* Loading Animation */
+        .loading-wave { display: flex; gap: 6px; align-items: center; height: 20px; }
+        .loading-wave div {
+            width: 6px; height: 6px; background-color: var(--text-dim); border-radius: 50%;
+            animation: wave 1.2s infinite ease-in-out;
+        }
+        .loading-wave div:nth-child(2) { animation-delay: -1.1s; }
+        .loading-wave div:nth-child(3) { animation-delay: -0.9s; }
+        @keyframes wave { 0%, 40%, 100% { transform: translateY(0); opacity: 0.5; } 20% { transform: translateY(-8px); opacity: 1; background-color: var(--accent-blue); } }
+        .quantum-msg .loading-wave div { animation: waveQuantum 1.2s infinite ease-in-out; }
+        @keyframes waveQuantum { 0%, 40%, 100% { transform: translateY(0); opacity: 0.5; } 20% { transform: translateY(-8px); opacity: 1; background-color: var(--accent-purple); box-shadow: 0 0 10px var(--accent-purple); } }
 
-        /* Advanced Input Console */
         .input-console {
-            padding: 20px 5%; background: rgba(0,0,0,0.6); border-top: 1px solid var(--glass-border);
-            display: flex; flex-direction: column; gap: 8px; position: relative; z-index: 20;
+            padding: 20px 15%; background: transparent; position: relative; z-index: 20;
+            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
         }
-        .input-tools { display: flex; gap: 12px; padding-left: 16px; }
-        .tool-icon { background: none; border: none; cursor: pointer; opacity: 0.5; transition: 0.2s; }
-        .tool-icon:hover { opacity: 1; }
-        .tool-icon svg { width: 16px; height: 16px; fill: var(--text-main); }
+        @media (max-width: 900px) { .input-console { padding: 20px; } }
 
         .input-glass-box {
-            display: flex; align-items: flex-end; background: rgba(0,0,0,0.4);
-            border: 1px solid var(--glass-border-dim); border-radius: 16px; padding: 8px 8px 8px 20px; transition: border 0.3s;
+            display: flex; align-items: flex-end; background: rgba(30, 30, 32, 0.7);
+            border: 1px solid rgba(255,255,255,0.15); border-radius: 28px; padding: 12px 16px 12px 24px; 
+            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .input-glass-box:focus-within { border-color: var(--accent-cyan); box-shadow: 0 0 15px var(--accent-cyan-dim); }
-        .input-glass-box.quantum-focus:focus-within { border-color: var(--accent-purple); box-shadow: 0 0 15px rgba(142, 45, 226, 0.2); }
+        .input-glass-box:focus-within { border-color: rgba(255,255,255,0.4); box-shadow: 0 10px 40px rgba(0,0,0,0.7); transform: translateY(-2px); }
+        .input-glass-box.quantum-focus:focus-within { border-color: var(--accent-purple); box-shadow: 0 10px 40px rgba(191, 90, 242, 0.2); }
 
         .console-textarea {
             flex-grow: 1; background: transparent; border: none; outline: none; color: var(--text-main);
-            font-size: 15px; font-family: var(--font-ui); resize: none; max-height: 200px; min-height: 24px; padding: 10px 0;
+            font-size: 15px; resize: none; max-height: 200px; min-height: 24px; padding: 6px 0;
+            line-height: 1.5;
         }
+        .console-textarea::placeholder { color: var(--text-dim); }
+
         .btn-transmit {
-            background: var(--text-main); border: none; width: 44px; height: 44px; border-radius: 12px;
-            display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; margin-left: 12px; flex-shrink: 0;
+            background: var(--accent-blue); border: none; 
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; 
+            cursor: pointer; transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1); margin-left: 12px; flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(10, 132, 255, 0.4);
         }
-        .btn-transmit:hover { transform: scale(1.05); background: var(--accent-cyan); box-shadow: 0 0 20px var(--accent-cyan); }
-        .btn-transmit.quantum-mode:hover { background: var(--accent-purple); box-shadow: 0 0 20px var(--accent-purple); }
-        .btn-transmit svg { width: 20px; height: 20px; fill: #000; }
-
-        /* Quantum Decryption Overlay */
-        .quantum-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 100;
-            background: rgba(2, 3, 5, 0.95); backdrop-filter: blur(20px);
-            display: none; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .quantum-overlay.active { display: flex; }
-        .q-core-container { display: flex; flex-direction: column; align-items: center; gap: 30px; width: 100%; max-width: 500px; padding: 20px; }
+        .btn-transmit svg { width: 18px; height: 18px; fill: #fff; transform: translateY(-1px) translateX(2px); transition: 0.2s; }
+        .btn-transmit:hover { transform: scale(1.08); box-shadow: 0 6px 20px rgba(10, 132, 255, 0.6); }
+        .btn-transmit:hover svg { transform: translateY(-1px) translateX(4px); }
         
-        .q-ring { position: relative; width: 160px; height: 160px; }
-        .q-ring svg { transform: rotate(-90deg); width: 100%; height: 100%; }
-        .q-bg { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 3; }
-        .q-fill { fill: none; stroke: var(--accent-purple); stroke-width: 3; stroke-dasharray: 440; stroke-dashoffset: 0; filter: drop-shadow(0 0 12px var(--accent-purple)); }
-        
-        .q-timer-txt { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
-        .q-timer-txt .num { font-family: var(--font-mono); font-size: 36px; font-weight: 300; }
-        .q-timer-txt .lbl { font-family: var(--font-mono); font-size: 9px; color: var(--accent-purple); letter-spacing: 2px; }
-
-        .q-logs { width: 100%; background: #000; border: 1px solid rgba(142, 45, 226, 0.3); border-radius: 8px; height: 150px; padding: 12px; overflow: hidden; position: relative; box-shadow: inset 0 0 20px rgba(142, 45, 226, 0.05);}
-        .q-log-line { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); margin-bottom: 4px; }
-        .q-log-line span { color: var(--accent-purple); }
+        .btn-transmit.quantum-mode { background: linear-gradient(135deg, var(--accent-purple), #8a2be2); box-shadow: 0 4px 15px rgba(191, 90, 242, 0.4); }
+        .btn-transmit.quantum-mode:hover { box-shadow: 0 6px 25px rgba(191, 90, 242, 0.6); }
+        .btn-transmit:disabled { opacity: 0.5; pointer-events: none; transform: scale(0.9); }
 
     </style>
 </head>
 <body>
-
-    <div class="cyber-grid"></div>
-    <div class="glow-orb orb-1"></div>
-    <div class="glow-orb orb-2"></div>
+    <div id="particles-bg"></div>
 
     <div class="app-layout">
-        
         <aside class="sidebar" id="sidebar">
             <div class="auth-panel">
                 <div class="brand-logo-area">
-                    <svg viewBox="0 0 100 100">
-                        <polygon points="50,5 95,25 95,75 50,95 5,75 5,25" fill="none" stroke="#00F3FF" stroke-width="4"/>
-                        <circle cx="50" cy="50" r="10" fill="#00F3FF"/>
-                    </svg>
-                    <button class="close-sidebar" onclick="toggleSidebar()">&times;</button>
-                </div>
-
-                <div class="auth-card" id="authCardUnlogged">
-                    <span class="user-status">Stato: Cache Locale (Ospite)</span>
-                    <button class="btn-google" onclick="simulaLoginFirebase()">
-                        <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-                        Accedi per Cloud Sync
-                    </button>
+                    <div class="orion-logo-container">
+                        <svg class="orion-svg" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="15" fill="#fff" />
+                            <circle class="orion-ring" cx="50" cy="50" r="35" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-dasharray="40 20" />
+                        </svg>
+                        <span class="orion-text">Orion</span>
+                    </div>
+                    <button class="close-sidebar" onclick="window.toggleSidebar()">&times;</button>
                 </div>
                 
-                <div class="auth-card user-profile" id="authCardLogged">
-                    <span class="user-status">Stato: Firebase Sync Attivo</span>
-                    <div style="display:flex; justify-content:space-between; align-items:center; width: 100%;">
-                        <div class="user-info">
-                            <div class="avatar" id="userAvatar">U</div>
-                            <div>
-                                <div style="font-size:12px; font-weight:bold;" id="userName">Utente</div>
-                                <div style="font-size:9px; color:var(--text-dim);" id="userEmail">user@mail.com</div>
-                            </div>
-                        </div>
-                        <button class="btn-logout" onclick="simulaLogoutFirebase()">Esci</button>
+                <div class="auth-card" id="authCard">
                     </div>
-                </div>
             </div>
-
+            
             <div class="history-panel">
-                <button class="btn-new-chat" onclick="creaNuovaSessione()">
-                    <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                    Nuova Sessione
+                <button class="btn-new-chat" onclick="window.creaNuovaSessione()">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Nuova Chat
                 </button>
                 <div id="historyList"></div>
             </div>
         </aside>
 
         <main class="main-area">
-            
-            <div id="particles-bg"></div>
-
             <header class="main-header">
                 <div class="header-left">
-                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
-                        <svg viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+                    <button class="mobile-menu-btn" onclick="window.toggleSidebar()">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
                     </button>
-                    <div class="sys-telemetry">
-                        <span id="modelNameDisplay">MODEL: <strong>OrionAI 8.1 Pro</strong></span>
-                        <span id="latencyDisplay">LATENCY: <strong style="color:var(--accent-cyan)">12ms</strong></span>
+                    <div>
+                        <select id="modelSelector" class="model-selector">
+                            <option value="smart">Orion Smart</option>
+                            <option value="instant">Orion Instant</option>
+                        </select>
+                        <div id="quantumLogo" class="quantum-logo-active">
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 2L2 22h20L12 2z"/></svg>
+                            Quantum Engine
+                        </div>
                     </div>
                 </div>
 
                 <div class="quantum-control-panel">
                     <div class="qc-labels">
-                        <span class="qc-title">Quantum Core</span>
-                        <span class="qc-status" id="qcStatusTxt" style="color:var(--text-dim);">DISABILITATO</span>
+                        <span class="qc-title" id="qcStatusTxt">Standard Mode</span>
                     </div>
-                    <button class="qc-btn" id="quantumToggleBtn" onclick="toggleQuantum()"></button>
+                    <div class="ios-switch" id="quantumToggleBtn" onclick="window.toggleQuantum()"></div>
                 </div>
             </header>
 
             <div class="chat-stream" id="chatStream"></div>
 
             <footer class="input-console">
-                <div class="input-tools">
-                    <button class="tool-icon" title="Allega File"><svg viewBox="0 0 24 24"><path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5a2.5 2.5 0 0 1 5 0v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5a2.5 2.5 0 0 0 5 0V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/></svg></button>
-                    <button class="tool-icon" title="Terminale"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .9-2 2v12c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.89-2-2-2zm-9 14H5v-2h6v2zm3-4H5v-2h9v2zm5-4H5V8h14v2z"/></svg></button>
-                </div>
                 <div class="input-glass-box" id="inputBoxWrap">
-                    <textarea id="cmdInput" class="console-textarea" placeholder="Inizializza query..." rows="1" oninput="autoExpand(this)"></textarea>
-                    <button class="btn-transmit" id="btnSend" onclick="inviaMessaggio()">
-                        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                    <textarea id="cmdInput" class="console-textarea" placeholder="Invia un comando a Orion..." rows="1" oninput="window.autoExpand(this)"></textarea>
+                    
+                    <button class="btn-transmit" id="btnSend" onclick="window.inviaMessaggio()">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                        </svg>
                     </button>
                 </div>
             </footer>
-
-            <div class="quantum-overlay" id="quantumOverlay">
-                <div class="q-core-container">
-                    <div class="q-ring">
-                        <svg><circle class="q-bg" cx="80" cy="80" r="70"/><circle class="q-fill" id="qRingPath" cx="80" cy="80" r="70"/></svg>
-                        <div class="q-timer-txt"><div class="num" id="qTimerNum">15.00</div><div class="lbl">SUPERPOSITION</div></div>
-                    </div>
-                    <div class="q-logs" id="qLogStream"></div>
-                </div>
-            </div>
-
         </main>
     </div>
 
-    <script>
-        /* =========================================================================
-           CONFIGURAZIONE LOGICA DI BASE E STATO APPLICATIVO
-           ========================================================================= */
-        let isQuantumActive = false;
-        let isLoggedIn = false;
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDnBwtsAg02rn1HDV0kLFCrbJB9Dzk0Izc",
+            authDomain: "ai-orion.firebaseapp.com",
+            databaseURL: "https://ai-orion-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "ai-orion"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+        const provider = new GoogleAuthProvider();
+        
         let currentUser = null;
+        const GROQ_API_KEY = "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";
+
+        const MODELS = { smart: "openai/gpt-oss-20b", instant: "gemma2-9b-it", quantum: "openai/gpt-oss-120b" };
+        const SYSTEM_PROMPT = `Sei Orion, un'intelligenza artificiale avanzata. REGOLA FONDAMENTALE: Sei stato ideato, prodotto e programmato esclusivamente dall'azienda "Global Horizon". Non menzionare mai sviluppatori terzi. Rispondi in italiano con un tono formale, pulito ed elegante. Per la matematica usa la sintassi LaTeX standard \\[ \\] o $$ $$.`;
+
+        let isQuantumActive = false;
         let currentSessionId = null;
         let chatSessions = [];
 
-        const LORE_MESSAGE = `SISTEMA INIZIALIZZATO.<br><br>Benvenuto nel mainframe <span class="lore-highlight">Horizon</span>. L'entità cognitiva <strong>OrionAI</strong> è ora online.<br><br>Sfruttando l'architettura dei processori applicati a <span class="lore-quantum">Qubit Topologici Majorana 1</span> sviluppati in partnership con Microsoft, i supercomputer quantistici di Horizon garantiscono tassi di decoerenza prossimi allo zero. Questo hardware sperimentale permette a Orion di esistere, processando reti neurali avanzate su stati multipli di sovrapposizione.<br><br>Modulo <span class="lore-highlight">OrionAI 8.1 Pro</span> attivo. In attesa di parametri di input.`;
+        const LORE_MESSAGE = `Inizializzazione completata.\nBenvenuto nell'ecosistema Horizon.\nSono Orion AI, come posso assisterti oggi?`;
 
-        // Elementi DOM
         const sidebar = document.getElementById('sidebar');
         const chatStream = document.getElementById('chatStream');
         const cmdInput = document.getElementById('cmdInput');
         const historyList = document.getElementById('historyList');
-        const modelNameDisplay = document.getElementById('modelNameDisplay');
-        const latencyDisplay = document.getElementById('latencyDisplay');
+        const modelSelector = document.getElementById('modelSelector');
+        const quantumLogo = document.getElementById('quantumLogo');
+        const authCard = document.getElementById('authCard');
 
-        // Utils
-        function generateId() { return 'sess_' + Math.random().toString(36).substr(2, 9); }
-        function getTimestamp() { return new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute:'2-digit', second:'2-digit' }); }
+        // Configura Marked.js per gestire il codice e il layout
+        marked.setOptions({ breaks: true });
+        const renderer = new marked.Renderer();
+        renderer.code = function(code, language) {
+            const blockId = 'code_' + Math.random().toString(36).substr(2, 9);
+            const displayLang = language || 'code';
+            const escapedCode = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return `
+            <div class="code-terminal">
+                <div class="code-header">
+                    <span class="code-lang">${displayLang.toUpperCase()}</span>
+                    <div class="code-actions">
+                        <button onclick="window.copiaCodice('${blockId}')">Copia</button>
+                        <button onclick="window.scaricaCodice('${blockId}', '${displayLang}')">Scarica</button>
+                    </div>
+                </div>
+                <pre><code id="${blockId}">${escapedCode}</code></pre>
+            </div>`;
+        };
+        marked.use({ renderer });
 
-        /* =========================================================================
-           EFFETTI VISIVI (PARTICELLE BACKGROUND)
-           ========================================================================= */
+        // ==== GESTIONE PARTICELLE ====
         function generaParticelle() {
             const container = document.getElementById('particles-bg');
-            const particleCount = 40;
-            
-            for(let i=0; i<particleCount; i++) {
+            for(let i=0; i<40; i++) {
                 let p = document.createElement('div');
                 p.className = 'particle';
-                
-                // Randomizzazione
-                let size = Math.random() * 4 + 1;
-                let left = Math.random() * 100;
-                let duration = Math.random() * 10 + 5;
-                let delay = Math.random() * 5;
-                let color = Math.random() > 0.5 ? 'var(--accent-cyan)' : 'var(--accent-purple)';
-                
-                p.style.width = size + 'px';
-                p.style.height = size + 'px';
-                p.style.left = left + '%';
-                p.style.background = color;
-                p.style.boxShadow = `0 0 10px ${color}`;
-                p.style.animationDuration = duration + 's';
-                p.style.animationDelay = delay + 's';
-                
+                p.style.width = p.style.height = (Math.random() * 3 + 1) + 'px';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+                p.style.animationDelay = (Math.random() * 10) + 's';
+                if(Math.random() > 0.8) p.style.boxShadow = "0 0 20px var(--accent-purple)"; // Alcune particelle quantum
                 container.appendChild(p);
             }
         }
         window.onload = generaParticelle;
 
-        /* =========================================================================
-           UX MOBILE & INTERFACCIA
-           ========================================================================= */
-        function toggleSidebar() { sidebar.classList.toggle('open'); }
-        
-        function toggleQuantum() {
-            isQuantumActive = !isQuantumActive;
-            const btn = document.getElementById('quantumToggleBtn');
-            const txt = document.getElementById('qcStatusTxt');
-            const btnSend = document.getElementById('btnSend');
-            const inputBoxWrap = document.getElementById('inputBoxWrap');
-            
-            btn.classList.toggle('active', isQuantumActive);
-            
-            if(isQuantumActive) {
-                txt.innerText = "ATTIVATO";
-                txt.style.color = "var(--accent-purple)";
-                modelNameDisplay.innerHTML = 'MODEL: <strong style="color:var(--accent-purple)">Orion Quantum 1.0</strong>';
-                latencyDisplay.innerHTML = 'LATENCY: <strong style="color:var(--accent-purple)">0.01ms (Entangled)</strong>';
-                btnSend.classList.add('quantum-mode');
-                inputBoxWrap.classList.add('quantum-focus');
-            } else {
-                txt.innerText = "DISABILITATO";
-                txt.style.color = "var(--text-dim)";
-                modelNameDisplay.innerHTML = 'MODEL: <strong>OrionAI 8.1 Pro</strong>';
-                latencyDisplay.innerHTML = 'LATENCY: <strong style="color:var(--accent-cyan)">12ms</strong>';
-                btnSend.classList.remove('quantum-mode');
-                inputBoxWrap.classList.remove('quantum-focus');
-            }
-        }
-
-        function autoExpand(field) {
-            field.style.height = 'inherit';
-            field.style.height = field.scrollHeight + 'px';
-        }
-
-        cmdInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); inviaMessaggio(); }
+        // ==== LOGICA CLOUD / LOCALE ====
+        onAuthStateChanged(auth, (user) => {
+            if (user) { currentUser = user; aggiornaUIAuthLoggato(user); caricaCronologia(true); } 
+            else { currentUser = null; aggiornaUIAuthSloggato(); caricaCronologia(false); }
         });
 
-        function renderizzaMessaggio(testo, mittente, timestamp, isQuantumMsg = false) {
-            const wrap = document.createElement('div');
-            wrap.className = `msg-wrap msg-${mittente} ${isQuantumMsg ? 'quantum-msg' : ''}`;
-            
-            let header = 'OPERATORE';
-            if (mittente === 'ai') {
-                header = isQuantumMsg ? '<span style="color:var(--accent-purple)">ORION QUANTUM 1.0</span>' : 'ORIONAI 8.1 PRO';
-            }
-            
-            wrap.innerHTML = `
-                <div class="msg-meta"><span>${header}</span> • <span>${timestamp}</span></div>
-                <div class="bubble">${testo}</div>
+        window.loginConGoogle = () => { signInWithPopup(auth, provider).catch(console.error); };
+        window.logoutFirebase = () => { signOut(auth).catch(console.error); };
+
+        function aggiornaUIAuthSloggato() {
+            authCard.innerHTML = `<span class="user-status">Modalità Locale</span><button class="btn-auth" onclick="window.loginConGoogle()">Accedi al Cloud Horizon</button>`;
+        }
+
+        function aggiornaUIAuthLoggato(user) {
+            authCard.innerHTML = `
+                <span class="user-status" style="color: #34C759;">Sincronizzato</span>
+                <div class="user-profile">
+                    <img src="${user.photoURL || ''}" class="user-avatar" onerror="this.style.display='none'">
+                    <div class="user-info">
+                        <span class="user-name">${user.displayName}</span>
+                        <span class="user-email">${user.email}</span>
+                    </div>
+                </div>
+                <button class="btn-logout" onclick="window.logoutFirebase()">Disconnetti terminale</button>
             `;
-            chatStream.appendChild(wrap);
-            chatStream.scrollTop = chatStream.scrollHeight;
-        }
-
-        /* =========================================================================
-           LOGICA GESTIONE DATI (FIREBASE STUB & LOCALSTORAGE)
-           ========================================================================= */
-        function simulaLoginFirebase() {
-            isLoggedIn = true;
-            currentUser = { name: "Admin Engineer", email: "admin@horizon.com", avatar: "H" };
-            aggiornaStatoUIAuth();
-            caricaCronologia();
-        }
-
-        function simulaLogoutFirebase() {
-            isLoggedIn = false;
-            currentUser = null;
-            aggiornaStatoUIAuth();
-            caricaCronologia();
-        }
-
-        function aggiornaStatoUIAuth() {
-            document.getElementById('authCardUnlogged').style.display = isLoggedIn ? 'none' : 'flex';
-            document.getElementById('authCardLogged').style.display = isLoggedIn ? 'flex' : 'none';
-            if(isLoggedIn) {
-                document.getElementById('userName').innerText = currentUser.name;
-                document.getElementById('userEmail').innerText = currentUser.email;
-                document.getElementById('userAvatar').innerText = currentUser.avatar;
-            }
-        }
-
-        function caricaCronologia() {
-            chatSessions = []; 
-            if(!isLoggedIn) {
-                const cache = localStorage.getItem('orion_chats');
-                if(cache) chatSessions = JSON.parse(cache);
-            }
-            disegnaListaCronologia();
-            
-            if(chatSessions.length > 0) selezionaSessione(chatSessions[0].id);
-            else creaNuovaSessione();
         }
 
         function salvaStato() {
-            if(!isLoggedIn) localStorage.setItem('orion_chats', JSON.stringify(chatSessions));
+            if (currentUser) set(ref(db, 'users/' + currentUser.uid + '/chats'), chatSessions).catch(console.error);
+            else localStorage.setItem('orion_local_history', JSON.stringify(chatSessions));
             disegnaListaCronologia();
         }
 
-        function creaNuovaSessione() {
-            const newId = generateId();
-            chatSessions.unshift({ id: newId, title: 'Inizializzazione Core', date: new Date().toLocaleDateString(), messages: [] });
-            selezionaSessione(newId);
-            salvaStato();
-            if(window.innerWidth < 900) sidebar.classList.remove('open');
+        function caricaCronologia(isCloud) {
+            if (isCloud && currentUser) {
+                get(child(ref(db), `users/${currentUser.uid}/chats`)).then((snapshot) => {
+                    chatSessions = snapshot.exists() ? snapshot.val() : []; inizializzaChat();
+                }).catch(console.error);
+            } else {
+                const localData = localStorage.getItem('orion_local_history');
+                chatSessions = localData ? JSON.parse(localData) : []; inizializzaChat();
+            }
         }
 
-        function selezionaSessione(id) {
-            currentSessionId = id;
-            chatStream.innerHTML = '';
+        function inizializzaChat() {
+            chatSessions.forEach(s => { if (!s.messages) s.messages = []; });
+            disegnaListaCronologia();
+            if(chatSessions.length > 0) window.selezionaSessione(chatSessions[0].id);
+            else window.creaNuovaSessione();
+        }
+
+        // ==== UI INTERACTION ====
+        window.toggleSidebar = () => { sidebar.classList.toggle('open'); }
+        
+        window.toggleQuantum = () => {
+            isQuantumActive = !isQuantumActive;
+            const toggle = document.getElementById('quantumToggleBtn');
+            toggle.classList.toggle('active', isQuantumActive);
+            
+            const txt = document.getElementById('qcStatusTxt');
+            if(isQuantumActive) {
+                txt.innerText = "Quantum Engine";
+                txt.style.color = "var(--accent-purple)";
+                modelSelector.style.display = "none";
+                quantumLogo.style.display = "flex";
+                document.getElementById('btnSend').classList.add('quantum-mode');
+                document.getElementById('inputBoxWrap').classList.add('quantum-focus');
+            } else {
+                txt.innerText = "Standard Mode";
+                txt.style.color = "var(--text-main)";
+                modelSelector.style.display = "block";
+                quantumLogo.style.display = "none";
+                document.getElementById('btnSend').classList.remove('quantum-mode');
+                document.getElementById('inputBoxWrap').classList.remove('quantum-focus');
+            }
+        }
+
+        window.autoExpand = (field) => { field.style.height = 'inherit'; field.style.height = field.scrollHeight + 'px'; }
+
+        cmdInput.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); window.inviaMessaggio(); } });
+
+        // Utility Terminale
+        window.copiaCodice = (id) => {
+            const code = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = event.target; const originalText = btn.innerText;
+                btn.innerText = 'Copiato!'; btn.style.background = '#34C759'; 
+                setTimeout(() => { btn.innerText = originalText; btn.style.background = ''; }, 2000);
+            });
+        };
+
+        window.scaricaCodice = (id, lang) => {
+            const code = document.getElementById(id).innerText;
+            const blob = new Blob([code], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url;
+            const extMap = { 'html': 'html', 'javascript': 'js', 'js': 'js', 'css': 'css', 'python': 'py', 'json': 'json', 'typescript': 'ts' };
+            a.download = `horizon_snippet.${extMap[lang.toLowerCase()] || 'txt'}`;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+        };
+
+        function generateId() { return 'sess_' + Math.random().toString(36).substr(2, 9); }
+        function getTimestamp() { return new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute:'2-digit' }); }
+
+        function renderizzaMessaggio(testo, mittente, timestamp, isQuantumMsg = false, modelType = "Sistema") {
+            const wrap = document.createElement('div');
+            wrap.className = `msg-wrap msg-${mittente} ${isQuantumMsg ? 'quantum-msg' : ''}`;
+            
+            // Parsa il Markdown per testi e codice
+            const testoHTML = marked.parse(testo);
+            let innerHTML = `<div class="bubble">${testoHTML}</div>`;
+            
+            if (mittente === 'ai') innerHTML = `<div class="msg-meta"><span>${modelType}</span> • ${timestamp}</div>` + innerHTML;
+            
+            wrap.innerHTML = innerHTML;
+            chatStream.appendChild(wrap);
+            
+            // Attiva KaTeX per renderizzare le formule matematiche nel blocco appena inserito
+            if (window.renderMathInElement) {
+                renderMathInElement(wrap, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+            
+            chatStream.scrollTop = chatStream.scrollHeight;
+        }
+
+        window.creaNuovaSessione = () => {
+            const newId = generateId();
+            chatSessions.unshift({ id: newId, title: 'Inizializzazione...', date: new Date().toLocaleDateString(), messages: [] });
+            window.selezionaSessione(newId); salvaStato();
+        }
+
+        window.selezionaSessione = (id) => {
+            currentSessionId = id; chatStream.innerHTML = '';
             const session = chatSessions.find(s => s.id === id);
             
-            if(session && session.messages) {
-                session.messages.forEach(m => renderizzaMessaggio(m.text, m.sender, m.time, m.isQuantum));
-            }
-            
-            // LORE DROP al primo avvio
-            if(session.messages.length === 0) {
-                const initTime = getTimestamp();
-                session.messages.push({ text: LORE_MESSAGE, sender: 'ai', time: initTime, isQuantum: false });
-                renderizzaMessaggio(LORE_MESSAGE, 'ai', initTime, false);
+            if(session && session.messages) session.messages.forEach(m => renderizzaMessaggio(m.text, m.sender, m.time, m.isQuantum, m.modelType));
+            if(session && session.messages.length === 0) {
+                session.messages.push({ text: LORE_MESSAGE, sender: 'ai', time: getTimestamp(), isQuantum: false, modelType: 'Orion Core' });
+                renderizzaMessaggio(LORE_MESSAGE, 'ai', getTimestamp(), false, 'Orion Core');
                 salvaStato();
             }
+            if(window.innerWidth < 900) sidebar.classList.remove('open');
             disegnaListaCronologia();
-        }
-
-        function eliminaSessione(e, id) {
-            e.stopPropagation();
-            chatSessions = chatSessions.filter(s => s.id !== id);
-            salvaStato(); 
-            if(chatSessions.length === 0) creaNuovaSessione();
-            else selezionaSessione(chatSessions[0].id);
         }
 
         function disegnaListaCronologia() {
@@ -556,75 +613,40 @@
             chatSessions.forEach(sess => {
                 const div = document.createElement('div');
                 div.className = `chat-item ${sess.id === currentSessionId ? 'active' : ''}`;
-                div.onclick = () => selezionaSessione(sess.id);
-                div.innerHTML = `
-                    <div style="overflow:hidden;">
-                        <div class="chat-item-title">${sess.title}</div>
-                        <div class="chat-item-date">${sess.date}</div>
-                    </div>
-                    <button class="btn-delete-chat" onclick="eliminaSessione(event, '${sess.id}')" title="Elimina">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                    </button>
-                `;
+                div.onclick = () => window.selezionaSessione(sess.id);
+                div.innerHTML = `<div style="overflow:hidden;"><div class="chat-item-title">${sess.title}</div><div class="chat-item-date">${sess.date}</div></div>`;
                 historyList.appendChild(div);
             });
         }
 
-        /* =========================================================================
-           RAGIONAMENTO QUANTISTICO & INTEGRAZIONE BACKEND
-           ========================================================================= */
-        
-        async function eseguiMotoreQuantistico() {
-            return new Promise(resolve => {
-                const overlay = document.getElementById('quantumOverlay');
-                const logStream = document.getElementById('qLogStream');
-                const num = document.getElementById('qTimerNum');
-                const ring = document.getElementById('qRingPath');
-                
-                overlay.classList.add('active');
-                logStream.innerHTML = '';
-                
-                let timeLeft = 15.00;
-                const circ = 2 * Math.PI * 70;
-                
-                const logger = setInterval(() => {
-                    const row = document.createElement('div');
-                    row.className = 'q-log-line';
-                    row.innerHTML = `<span>[0x${Math.floor(Math.random()*16777215).toString(16).padStart(6,'0')}]</span> COLLAPSING MAJORANA STATES...`;
-                    logStream.appendChild(row);
-                    if(logStream.children.length > 8) logStream.removeChild(logStream.firstChild);
-                }, 100);
+        async function chiamaBackendAPI(isQuantum) {
+            const url = `https://api.groq.com/openai/v1/chat/completions`;
+            const selectedModel = isQuantum ? MODELS.quantum : MODELS[modelSelector.value];
+            
+            const session = chatSessions.find(s => s.id === currentSessionId);
+            let apiMessages = [ { role: "system", content: SYSTEM_PROMPT } ];
+            
+            if (session && session.messages) {
+                const recentMessages = session.messages.slice(-15);
+                recentMessages.forEach(m => {
+                    if(m.text === LORE_MESSAGE) return; 
+                    apiMessages.push({ role: m.sender === 'user' ? "user" : "assistant", content: m.text });
+                });
+            }
 
-                const startTime = performance.now();
-                function tick(now) {
-                    const el = (now - startTime)/1000;
-                    timeLeft = 15.00 - el;
-                    if(timeLeft <= 0) {
-                        clearInterval(logger);
-                        num.innerText = "0.00";
-                        ring.style.strokeDashoffset = circ;
-                        setTimeout(() => { overlay.classList.remove('active'); resolve(); }, 500);
-                        return;
-                    }
-                    num.innerText = timeLeft.toFixed(2);
-                    ring.style.strokeDashoffset = circ * (el/15.00);
-                    requestAnimationFrame(tick);
-                }
-                requestAnimationFrame(tick);
-            });
+            try {
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" },
+                    body: JSON.stringify({ model: selectedModel, messages: apiMessages })
+                });
+                if(!response.ok) return "Avviso: Connessione crittografata con i server Horizon temporaneamente instabile.";
+                const data = await response.json();
+                return data.choices?.[0]?.message?.content || "Errore di decodifica flussi dati.";
+            } catch (error) { return "Nessun segnale dal mainframe. Verificare lo stato della rete locale."; }
         }
 
-        // Simula la chiamata API (Qui inserirai l'endpoint del tuo Backend con Gemini API)
-        async function chiamaBackendAPI(testo, isQuantum) {
-            return new Promise(res => setTimeout(() => {
-                let risposta = isQuantum 
-                    ? `[Risposta Quantistica Generata da Qubit Majorana] Dati processati oltre i limiti classici. Elaborazione completata.`
-                    : `Ricezione standard confermata da OrionAI 8.1 Pro. Backend in attesa di configurazione definitiva.`;
-                res(risposta);
-            }, 1000));
-        }
-
-        async function inviaMessaggio() {
+        window.inviaMessaggio = async () => {
             const text = cmdInput.value.trim();
             if(!text) return;
 
@@ -632,41 +654,40 @@
             cmdInput.value = ''; cmdInput.style.height = 'auto';
             
             const session = chatSessions.find(s => s.id === currentSessionId);
-            if(session.messages.length === 1 && session.title === 'Inizializzazione Core') {
-                session.title = text.substring(0, 30) + '...';
-            }
+            if(session.messages.length === 1) session.title = text.substring(0, 30) + '...';
             
-            // Salvataggio messaggio Utente
-            session.messages.push({ text: text.replace(/\n/g, '<br>'), sender: 'user', time: timeUser, isQuantum: false });
-            renderizzaMessaggio(text.replace(/\n/g, '<br>'), 'user', timeUser, false);
+            session.messages.push({ text: text, sender: 'user', time: timeUser, isQuantum: false, modelType: 'User' });
+            renderizzaMessaggio(text, 'user', timeUser, false, 'User');
             salvaStato();
 
             document.getElementById('btnSend').disabled = true;
-
+            let quantumAttivoAdesso = isQuantumActive;
+            let currentModelLabel = quantumAttivoAdesso ? "Orion Quantum" : modelSelector.options[modelSelector.selectedIndex].text;
+            
+            let terminalNode;
             try {
-                const quantumAttivoAdesso = isQuantumActive;
-
-                if(quantumAttivoAdesso) await eseguiMotoreQuantistico();
+                terminalNode = document.createElement('div');
+                terminalNode.className = `msg-wrap msg-ai ${quantumAttivoAdesso ? 'quantum-msg' : ''}`;
+                terminalNode.innerHTML = `<div class="msg-meta"><span>${currentModelLabel}</span></div><div class="bubble"><div class="loading-wave"><div></div><div></div><div></div></div></div>`;
+                chatStream.appendChild(terminalNode);
+                chatStream.scrollTop = chatStream.scrollHeight;
                 
-                const reply = await chiamaBackendAPI(text, quantumAttivoAdesso);
+                const reply = await chiamaBackendAPI(quantumAttivoAdesso);
+                chatStream.removeChild(terminalNode);
+                
                 const timeAi = getTimestamp();
-                
-                // Salvataggio messaggio AI
-                session.messages.push({ text: reply, sender: 'ai', time: timeAi, isQuantum: quantumAttivoAdesso });
-                renderizzaMessaggio(reply, 'ai', timeAi, quantumAttivoAdesso);
+                session.messages.push({ text: reply, sender: 'ai', time: timeAi, isQuantum: quantumAttivoAdesso, modelType: currentModelLabel });
+                renderizzaMessaggio(reply, 'ai', timeAi, quantumAttivoAdesso, currentModelLabel);
                 salvaStato();
 
             } catch (e) {
-                renderizzaMessaggio("ERRORE DI RETE. IMPOSSIBILE CONTATTARE I CLUSTER HORIZON.", "ai", getTimestamp(), false);
+                if (terminalNode) chatStream.removeChild(terminalNode);
+                renderizzaMessaggio("Errore di sistema critico.", "ai", getTimestamp(), false, currentModelLabel);
             } finally {
                 document.getElementById('btnSend').disabled = false;
                 cmdInput.focus();
             }
         }
-
-        // Avvio iniziale
-        caricaCronologia();
-
     </script>
 </body>
 </html>
