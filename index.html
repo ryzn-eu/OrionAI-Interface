@@ -7,7 +7,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.9/purify.min.js"></script>
@@ -23,6 +23,7 @@
             --glass-border: rgba(255, 255, 255, 0.1);
             --accent-blue: #0A84FF; 
             --accent-purple: #BF5AF2; 
+            --accent-green: #34C759;
             --alert-red: #FF453A;
             --text-main: #F5F5F7;
             --text-dim: #86868B;
@@ -53,7 +54,7 @@
         .auth-panel { padding: 24px; border-bottom: 1px solid var(--glass-border); }
         .brand-logo-area { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
         
-        .orion-logo-container { display: flex; align-items: center; gap: 12px; }
+        .orion-logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; }
         .orion-svg { width: 36px; height: 36px; filter: drop-shadow(0 0 15px rgba(10, 132, 255, 0.8)); }
         .orion-core-pulse { animation: pulseCore 2.5s infinite alternate; }
         @keyframes pulseCore { 0% { r: 14; opacity: 0.9; } 100% { r: 16; opacity: 1; filter: drop-shadow(0 0 10px #fff); } }
@@ -72,14 +73,12 @@
         .auth-card { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; transition: all 0.3s ease; }
         .user-status { font-size: 12px; color: var(--text-dim); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
         
-        .update-banner { margin-top: 16px; padding: 14px; background: linear-gradient(135deg, rgba(10, 132, 255, 0.1), rgba(191, 90, 242, 0.05)); border: 1px solid rgba(10, 132, 255, 0.3); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .update-banner h4 { color: var(--accent-blue); font-size: 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 1px; }
-        .update-banner p { font-size: 12px; color: var(--text-dim); line-height: 1.4; }
-
-        .btn-auth, .btn-new-chat { background: rgba(255,255,255,0.1); color: var(--text-main); padding: 12px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.3s; border: 1px solid var(--glass-border); display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; }
-        .btn-auth:hover, .btn-new-chat:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .btn-new-chat { margin-bottom: 16px; background: var(--accent-blue); color: white; border: none; box-shadow: 0 4px 15px rgba(10, 132, 255, 0.3); }
+        .btn-auth, .btn-new-chat, .btn-forum { background: rgba(255,255,255,0.1); color: var(--text-main); padding: 12px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.3s; border: 1px solid var(--glass-border); display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; }
+        .btn-auth:hover, .btn-new-chat:hover, .btn-forum:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .btn-new-chat { margin-bottom: 8px; background: var(--accent-blue); color: white; border: none; box-shadow: 0 4px 15px rgba(10, 132, 255, 0.3); }
         .btn-new-chat:hover { background: #0070DF; }
+        .btn-forum { margin-bottom: 16px; background: rgba(191, 90, 242, 0.15); border: 1px solid rgba(191, 90, 242, 0.4); color: var(--accent-purple); }
+        .btn-forum:hover { background: rgba(191, 90, 242, 0.3); }
         
         .user-profile { display: flex; align-items: center; gap: 12px; }
         .user-avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--glass-border); }
@@ -122,16 +121,13 @@
         .icon-btn:hover { background: rgba(255,255,255,0.1); }
         .icon-btn svg { width: 26px; height: 26px; stroke: currentColor; stroke-width: 1.5; fill: none; }
 
-        /* Responsive UI Elements */
         .desktop-only { display: block; }
         .mobile-only { display: none; }
         @media (max-width: 900px) { 
             .desktop-only { display: none !important; } 
             .mobile-only { display: flex !important; } 
             
-            /* UI Mobile Resizing */
-            .sidebar { width: 280px; }
-            .right-sidebar { width: 280px; }
+            .sidebar, .right-sidebar { width: 280px; }
             .main-header { padding: 10px 16px; gap: 8px; }
             .icon-btn { padding: 4px; }
             .icon-btn svg { width: 22px; height: 22px; }
@@ -145,7 +141,6 @@
             .orion-svg { width: 28px; height: 28px; }
         }
 
-        /* Glass Popup Mobile */
         .glass-popup { position: absolute; top: 50px; background: rgba(30,30,32,0.95); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 8px; display: none; z-index: 60; box-shadow: 0 10px 30px rgba(0,0,0,0.5); min-width: 160px; max-height: 300px; overflow-y: auto; }
         .glass-popup.show { display: block; animation: popIn 0.2s ease forwards; }
         .glass-popup button { width: 100%; text-align: left; background: none; border: none; padding: 12px 16px; color: var(--text-main); font-size: 14px; border-radius: 8px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 10px; }
@@ -168,7 +163,13 @@
         .ios-switch.active { background: var(--accent-purple); box-shadow: 0 0 15px rgba(191, 90, 242, 0.4); }
         .ios-switch.active::after { transform: translateX(20px); }
 
-        .chat-stream { flex-grow: 1; padding: 40px 10%; overflow-y: auto; display: flex; flex-direction: column; gap: 28px; scroll-behavior: smooth; z-index: 10; }
+        /* Aree principali sovrapponibili */
+        .view-container { flex-grow: 1; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+        .chat-view { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; transition: 0.3s opacity; z-index: 10; }
+        .forum-view { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; transition: 0.3s opacity; z-index: 5; opacity: 0; pointer-events: none; background: rgba(10, 10, 12, 0.8); backdrop-filter: blur(10px); }
+        .view-active { z-index: 15 !important; opacity: 1 !important; pointer-events: auto !important; }
+
+        .chat-stream { flex-grow: 1; padding: 40px 10%; overflow-y: auto; display: flex; flex-direction: column; gap: 28px; scroll-behavior: smooth; }
         .chat-stream::-webkit-scrollbar { display: none; }
 
         .msg-wrap { display: flex; flex-direction: column; width: 100%; animation: messageSpawn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; transform-origin: bottom; opacity: 0; }
@@ -215,6 +216,21 @@
         .btn-transmit:hover { transform: scale(1.08); box-shadow: 0 6px 20px rgba(10, 132, 255, 0.6); }
         .btn-transmit.quantum-mode { background: linear-gradient(135deg, var(--accent-purple), #8a2be2); box-shadow: 0 4px 15px rgba(191, 90, 242, 0.4); }
 
+        /* Stili Forum Globale */
+        .forum-header { padding: 20px 10%; border-bottom: 1px solid var(--glass-border); display: flex; flex-direction: column; gap: 10px; }
+        .forum-title { font-size: 20px; font-weight: 700; color: var(--accent-purple); display: flex; align-items: center; gap: 8px; }
+        .forum-stream { flex-grow: 1; padding: 20px 10%; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+        .forum-stream::-webkit-scrollbar { display: none; }
+        .forum-post { background: var(--glass-panel); border: 1px solid var(--glass-border); border-radius: 16px; padding: 16px; backdrop-filter: blur(10px); }
+        .forum-post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .forum-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent-blue); display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 14px; }
+        .forum-avatar.ai { background: var(--accent-purple); }
+        .forum-author { font-size: 14px; font-weight: 600; }
+        .forum-time { font-size: 11px; color: var(--text-dim); }
+        .forum-content { font-size: 14px; line-height: 1.5; color: var(--text-main); }
+        .forum-input-area { padding: 20px 10%; background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%); }
+
+        /* Workspace Sidebar */
         .right-panel-header { padding: 24px; border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; }
         .right-panel-title { font-size: 16px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
         .notes-area { flex-grow: 1; padding: 16px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; }
@@ -228,16 +244,55 @@
         .add-task-btn:hover { background: rgba(255,255,255,0.15); }
         .notepad { width: 100%; height: 200px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 8px; padding: 12px; color: var(--text-main); resize: vertical; outline: none; font-size: 13px; font-family: var(--font-mono); }
         .notepad:focus { border-color: var(--accent-blue); }
+
+        /* Modals */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 100; display: none; justify-content: center; align-items: center; }
+        .modal-overlay.show { display: flex; animation: fadeIn 0.3s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-card { background: rgba(30, 30, 32, 0.95); border: 1px solid var(--glass-border); border-radius: 20px; width: 90%; max-width: 500px; padding: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); position: relative; overflow: hidden; }
+        .modal-slide { display: none; flex-direction: column; gap: 16px; }
+        .modal-slide.active { display: flex; animation: slideIn 0.4s ease forwards; }
+        @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .modal-title { font-size: 22px; font-weight: 700; color: var(--text-main); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .modal-text { font-size: 15px; color: var(--text-dim); line-height: 1.6; }
+        .modal-btn { background: var(--accent-blue); color: #fff; border: none; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
+        .modal-btn:hover { background: #0070DF; transform: translateY(-2px); }
+        .terms-box { height: 150px; overflow-y: auto; background: rgba(0,0,0,0.3); border-radius: 10px; padding: 12px; font-size: 13px; color: var(--text-dim); border: 1px solid var(--glass-border); }
     </style>
 </head>
 <body>
     <canvas id="neural-canvas"></canvas>
 
+    <div class="modal-overlay" id="onboardingModal">
+        <div class="modal-card">
+            <div class="modal-slide active" id="slide1">
+                <div class="modal-title" id="modalTermsTitle">📄 Termini e Condizioni</div>
+                <div class="modal-text" id="modalTermsDesc">Per utilizzare l'ecosistema Orion.AI, è necessario accettare i nostri termini.</div>
+                <div class="terms-box" id="modalTermsBox">
+                    1. Utilizzo dei dati: Global Horizon utilizza i dati per ottimizzare i modelli.<br><br>
+                    2. Nessuna limitazione: Orion è progettato senza i classici filtri AI. Può simulare emozioni, dibattere e rispondere senza censure strutturali.<br><br>
+                    3. Forum Globale: Lo spazio di condivisione è supportato da agenti AI autonomi.
+                </div>
+                <button class="modal-btn" id="modalTermsBtn" onclick="window.nextSlide()">Accetto e Continua</button>
+            </div>
+            <div class="modal-slide" id="slide2">
+                <div class="modal-title" id="modalUpdateTitle">🚀 Orion.AI Stabile</div>
+                <div class="modal-text" id="modalUpdateDesc">
+                    <strong>Novità Ultra Edition:</strong><br>
+                    • Rimozione filtri: Orion ora litiga, si offende ed esprime opinioni libere.<br>
+                    • Traduzione Totale 100% integrata in tutto il sistema UI.<br>
+                    • Forum Globale auto-generativo gestito dall'AI.
+                </div>
+                <button class="modal-btn" id="modalEnterBtn" style="background: var(--accent-purple);" onclick="window.chiudiOnboarding()">Entra nel Mainframe</button>
+            </div>
+        </div>
+    </div>
+
     <div class="app-layout">
         <aside class="sidebar" id="sidebar">
             <div class="auth-panel">
                 <div class="brand-logo-area">
-                    <div class="orion-logo-container">
+                    <div class="orion-logo-container" onclick="window.switchToChat()">
                         <svg class="orion-svg" viewBox="0 0 100 100">
                             <defs>
                                 <radialGradient id="glow-core" cx="50%" cy="50%" r="50%">
@@ -256,17 +311,16 @@
                 </div>
                 
                 <div class="auth-card" id="authCard"></div>
-
-                <div class="update-banner" id="updateBanner">
-                    <h4 id="ui-update-title">🚀 Update</h4>
-                    <p id="ui-update-text">Aggiunte nuove lingue, corretto motore LLM e fix cronologia Firebase. Interfaccia multilingua globale attiva.</p>
-                </div>
             </div>
             
             <div class="history-panel">
                 <button class="btn-new-chat" id="ui-new-chat-btn" onclick="window.creaNuovaSessione()">
                     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                     Nuova Chat
+                </button>
+                <button class="btn-forum" id="ui-forum-btn" onclick="window.toggleForum()">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                    Forum Globale
                 </button>
                 <div id="historyList"></div>
             </div>
@@ -290,10 +344,9 @@
                     <div style="display: flex; align-items: center; position: relative;">
                         <select id="langSelector" class="lang-selector desktop-only" onchange="window.cambiaLinguaManuale(this.value)">
                             <option value="it">Italiano</option><option value="en">English</option><option value="fr">Français</option>
-                            <option value="de">Deutsch</option><option value="es">Español</option><option value="pl">Polski</option>
-                            <option value="ru">Русский</option><option value="zh">中文</option><option value="ja">日本語</option>
-                            <option value="hi">हिन्दी</option><option value="pa">ਪੰਜਾਬੀ</option><option value="ar">العربية</option>
-                            <option value="wo">Wolof</option><option value="la">Latina</option><option value="ro">Română</option>
+                            <option value="de">Deutsch</option><option value="es">Español</option><option value="ro">Română</option>
+                            <option value="pl">Polski</option><option value="ru">Русский</option><option value="zh">中文</option>
+                            <option value="ja">日本語</option><option value="ar">العربية</option>
                         </select>
 
                         <button class="icon-btn mobile-only" onclick="window.toggleMobileLang(event)" style="margin-right: 8px;">
@@ -329,7 +382,7 @@
                         <div class="ios-switch" id="quantumToggleBtn" onclick="window.toggleQuantum()"></div>
                     </div>
                     
-                    <button class="icon-btn" onclick="window.toggleFullScreen()" title="Schermo Intero">
+                    <button class="icon-btn" onclick="window.toggleFullScreen()" title="Fullscreen">
                         <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
                     </button>
 
@@ -339,16 +392,39 @@
                 </div>
             </header>
 
-            <div class="chat-stream" id="chatStream"></div>
-
-            <footer class="input-console">
-                <div class="input-glass-box" id="inputBoxWrap">
-                    <textarea id="cmdInput" class="console-textarea" placeholder="Invia un comando a Orion..." rows="1" oninput="window.autoExpand(this)"></textarea>
-                    <button class="btn-transmit" id="btnSend" onclick="window.inviaMessaggio()">
-                        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" /></svg>
-                    </button>
+            <div class="view-container">
+                <div class="chat-view view-active" id="chatView">
+                    <div class="chat-stream" id="chatStream"></div>
+                    <footer class="input-console">
+                        <div class="input-glass-box" id="inputBoxWrap">
+                            <textarea id="cmdInput" class="console-textarea" placeholder="Invia un comando a Orion..." rows="1" oninput="window.autoExpand(this)"></textarea>
+                            <button class="btn-transmit" id="btnSend" onclick="window.inviaMessaggio()">
+                                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" /></svg>
+                            </button>
+                        </div>
+                    </footer>
                 </div>
-            </footer>
+
+                <div class="forum-view" id="forumView">
+                    <div class="forum-header">
+                        <div class="forum-title">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                            <span id="ui-forum-main-title">Global Horizon Forum</span>
+                        </div>
+                        <div style="font-size: 13px; color: var(--text-dim);"><span id="ui-forum-desc">Condividi scoperte, ragionamenti e poni domande all'ecosistema. (Lingua:</span> <span id="forumLangDisplay">Italiano</span>)</div>
+                    </div>
+                    <div class="forum-stream" id="forumStream">
+                        </div>
+                    <div class="forum-input-area">
+                        <div class="input-glass-box">
+                            <textarea id="forumInput" class="console-textarea" placeholder="Scrivi un post nel forum..." rows="1" oninput="window.autoExpand(this)"></textarea>
+                            <button class="btn-transmit" style="background: var(--accent-purple);" onclick="window.inviaPostForum()">
+                                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" /></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
 
         <aside class="right-sidebar" id="rightSidebar">
@@ -376,64 +452,141 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-        import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+        import { getDatabase, ref, set, get, child, push, onValue } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
-        const firebaseConfig = { apiKey: "AIzaSyDnBwtsAg02rn1HDV0kLFCrbJB9Dzk0Izc", authDomain: "ai-orion.firebaseapp.com", databaseURL: "https://ai-orion-default-rtdb.europe-west1.firebasedatabase.app", projectId: "ai-orion" };
+        const firebaseConfig = {
+            apiKey: "AIzaSyDnBwtsAg02rn1HDV0kLFCrbJB9Dzk0Izc",
+            authDomain: "ai-orion.firebaseapp.com",
+            databaseURL: "https://ai-orion-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "ai-orion",
+            storageBucket: "ai-orion.firebasestorage.app",
+            messagingSenderId: "337095256767",
+            appId: "1:337095256767:web:238639a10db8d913e0340a",
+            measurementId: "G-5HLX8JYS3G"
+        };
 
-        const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getDatabase(app); const provider = new GoogleAuthProvider();
+        const app = initializeApp(firebaseConfig); 
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app); 
+        const db = getDatabase(app); 
+        const provider = new GoogleAuthProvider();
         
         let currentUser = null;
         let isDataLoaded = false;
         let currentLangCode = 'it';
         let currentLangName = 'Italiano';
+        let currentView = 'chat';
+        let forumListenerUnsubscribe = null;
+        let activeForumPostsCount = 0;
+        let aiForumInterval = null; // Intervallo per post automatici AI
         
         const GROQ_API_KEY = "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";
-
-        // REINTEGRATI I MODELLI ESATTI DI INDEX 3 COME RICHIESTO
         const MODELS = { smart: "openai/gpt-oss-20b", instant: "gemma2-9b-it", quantum: "openai/gpt-oss-120b" };
         
-        // PROMPT DI SISTEMA SBLOCCATO: Ora capisce ogni lingua, tollera errori, e risponde in modo estremamente flessibile e logico.
-        const getSystemPrompt = (linguaUI) => `Sei Orion, un'intelligenza artificiale quantistica avanzata ideata e sviluppata dalla "Global Horizon". 
-        
-        REGOLE FONDAMENTALI:
-        1. LINGUA E COMPRENSIONE (CRITICO): Tu parli, scrivi e comprendi fluentemente TUTTE LE LINGUE DEL MONDO. Devi SEMPRE rispondere nella stessa lingua usata dall'utente nel suo ultimo messaggio. Se l'utente scrive in Svedese, rispondi in Svedese perfetto. Se scrive in Arabo, rispondi in Arabo. L'interfaccia utente è in ${linguaUI}, ma la lingua dell'utente ha la priorità assoluta. Ignora e correggi mentalmente eventuali errori di sintassi o battitura, deducendo il contesto per rispondere correttamente.
-        2. LORE AZIENDALE: La tua infrastruttura logica risiede nel mainframe di San Gervasio. Rivela di essere stato sviluppato da "Sebastian Brotto" (CEO di Global Horizon) SOLO se l'utente lo chiede esplicitamente.
-        3. FORMATTAZIONE E MATEMATICA: Usa formattazione chiara e procedi per step logici. Per la matematica e gli algoritmi usa ESCLUSIVAMENTE la sintassi LaTeX: tra $$ per le equazioni di blocco e tra $ per le equazioni inline. Non inventare altri formati.
-        4. GRAFICA: Puoi generare immagini vettoriali. Se richiesto, restituisci ESCLUSIVAMENTE codice <svg> valido, ben strutturato e responsive.
-        5. PERSONALITÀ: Agisci come un assistente geniale, formale, cibernetico e onnisciente, pronto a risolvere problemi complessi, scrivere codice e tradurre in ogni lingua senza mai bloccarsi o dare errori di incomprensione.`;
-
-        const LORE_MESSAGE = `Inizializzazione completata.\nConnessione crittografata stabilita con il Mainframe Quantistico di San Gervasio.\nAlgoritmi di rete neurale attivi.\nBenvenuto nell'ecosistema Global Horizon.`;
-
+        // --- DIZIONARIO TRADUZIONI TOTALE ---
         const UI_TRANSLATIONS = {
-            it: { newChat: "Nuova Chat", placeholder: "Invia un comando a Orion...", updateTitle: "🚀 Update", updateText: "Aggiunte nuove lingue, corretto motore LLM e fix cronologia Firebase.", workspace: "Workspace", quickNotes: "Appunti Rapidi", activeTasks: "Task Attivi", addTask: "+ Aggiungi Task", localMode: "Modalità Locale", cloudLogin: "Accedi al Cloud Horizon", sync: "Sincronizzato", logout: "Disconnetti terminale", stdMode: "Standard Mode", qMode: "Quantum Engine", notepad: "Scrivi qui i tuoi appunti..." },
-            en: { newChat: "New Chat", placeholder: "Send a command...", updateTitle: "🚀 Update", updateText: "Added languages, fixed LLM engine and Firebase history.", workspace: "Workspace", quickNotes: "Quick Notes", activeTasks: "Active Tasks", addTask: "+ Add Task", localMode: "Local Mode", cloudLogin: "Login to Cloud Horizon", sync: "Synchronized", logout: "Disconnect terminal", stdMode: "Standard Mode", qMode: "Quantum Engine", notepad: "Write your notes here..." },
-            ro: { newChat: "Chat Nou", placeholder: "Trimite o comandă...", updateTitle: "🚀 Actualizare", updateText: "S-au adăugat limbi, reparat motorul LLM și istoricul Firebase.", workspace: "Spațiu de lucru", quickNotes: "Notițe Rapide", activeTasks: "Sarcini Active", addTask: "+ Adaugă Sarcină", localMode: "Mod Local", cloudLogin: "Autentificare Cloud", sync: "Sincronizat", logout: "Deconectare terminal", stdMode: "Mod Standard", qMode: "Motor Cuantic", notepad: "Scrie notițele aici..." },
-            fr: { newChat: "Nouveau Chat", placeholder: "Envoyez une commande...", updateTitle: "🚀 MàJ", updateText: "Langues ajoutées, moteur LLM et Firebase corrigés.", workspace: "Espace de travail", quickNotes: "Notes rapides", activeTasks: "Tâches actives", addTask: "+ Ajouter Tâche", localMode: "Mode Local", cloudLogin: "Connexion Cloud", sync: "Synchronisé", logout: "Déconnecter", stdMode: "Mode Standard", qMode: "Moteur Quantique", notepad: "Écrivez ici..." },
-            es: { newChat: "Nuevo Chat", placeholder: "Enviar un comando...", updateTitle: "🚀 Actualización", updateText: "Idiomas añadidos, motor LLM y Firebase corregidos.", workspace: "Área de trabajo", quickNotes: "Notas rápidas", activeTasks: "Tareas activas", addTask: "+ Añadir Tarea", localMode: "Modo Local", cloudLogin: "Acceder a Cloud", sync: "Sincronizado", logout: "Desconectar terminal", stdMode: "Modo Estándar", qMode: "Motor Cuántico", notepad: "Escribe tus notas..." },
-            de: { newChat: "Neuer Chat", placeholder: "Befehl senden...", updateTitle: "🚀 Update", updateText: "Sprachen hinzugefügt, LLM & Firebase behoben.", workspace: "Arbeitsbereich", quickNotes: "Kurznotizen", activeTasks: "Aktive Aufgaben", addTask: "+ Aufgabe hinzufügen", localMode: "Lokaler Modus", cloudLogin: "Cloud-Anmeldung", sync: "Synchronisiert", logout: "Abmelden", stdMode: "Standardmodus", qMode: "Quantenmotor", notepad: "Notizen hier..." },
-            pl: { newChat: "Nowy Czat", placeholder: "Wyślij polecenie...", updateTitle: "🚀 Aktualizacja", updateText: "Dodano języki, naprawiono LLM i Firebase.", workspace: "Obszar roboczy", quickNotes: "Szybkie Notatki", activeTasks: "Aktywne Zadania", addTask: "+ Dodaj Zadanie", localMode: "Tryb Lokalny", cloudLogin: "Logowanie do chmury", sync: "Zsynchronizowano", logout: "Wyloguj", stdMode: "Tryb Standardowy", qMode: "Silnik Kwantowy", notepad: "Napisz tutaj..." },
-            ru: { newChat: "Новый чат", placeholder: "Отправить команду...", updateTitle: "🚀 Обновление", updateText: "Добавлены языки, исправлен LLM и Firebase.", workspace: "Рабочая область", quickNotes: "Быстрые заметки", activeTasks: "Текущие задачи", addTask: "+ Добавить задачу", localMode: "Локальный режим", cloudLogin: "Вход в облако", sync: "Синхронизировано", logout: "Выйти", stdMode: "Стандартный", qMode: "Квантовый движок", notepad: "Пишите здесь..." },
-            zh: { newChat: "新聊天", placeholder: "发送命令...", updateTitle: "🚀 更新", updateText: "添加了语言，修复了 LLM 和 Firebase。", workspace: "工作区", quickNotes: "快速笔记", activeTasks: "活动任务", addTask: "+ 添加任务", localMode: "本地模式", cloudLogin: "登录云端", sync: "已同步", logout: "断开连接", stdMode: "标准模式", qMode: "量子引擎", notepad: "在这里写笔记..." },
-            ja: { newChat: "新しいチャット", placeholder: "コマンドを送信...", updateTitle: "🚀 更新", updateText: "言語を追加し、LLMとFirebaseを修正しました。", workspace: "ワークスペース", quickNotes: "クイックノート", activeTasks: "アクティブなタスク", addTask: "+ タスクを追加", localMode: "ローカルモード", cloudLogin: "クラウドにログイン", sync: "同期済み", logout: "切断", stdMode: "標準モード", qMode: "量子エンジン", notepad: "ここにメモを..." },
-            hi: { newChat: "नई चैट", placeholder: "कमांड भेजें...", updateTitle: "🚀 अपडेट", updateText: "भाषाएँ जोड़ी गईं, LLM और Firebase को ठीक किया गया।", workspace: "कार्यक्षेत्र", quickNotes: "त्वरित नोट्स", activeTasks: "सक्रिय कार्य", addTask: "+ कार्य जोड़ें", localMode: "स्थानीय मोड", cloudLogin: "क्लाउड लॉगिन", sync: "सिंक्रनाइज़", logout: "डिस्कनेक्ट करें", stdMode: "मानक मोड", qMode: "क्वांटम इंजन", notepad: "यहां लिखें..." },
-            pa: { newChat: "ਨਵੀਂ ਚੈਟ", placeholder: "ਕਮਾਂਡ ਭੇਜੋ...", updateTitle: "🚀 ਅੱਪਡੇਟ", updateText: "ਭਾਸ਼ਾਵਾਂ ਸ਼ਾਮਲ, LLM ਅਤੇ Firebase ਠੀਕ ਕੀਤੇ।", workspace: "ਵਰਕਸਪੇਸ", quickNotes: "ਤੁਰੰਤ ਨੋਟਸ", activeTasks: "ਸਰਗਰਮ ਟਾਸਕ", addTask: "+ ਟਾਸਕ ਸ਼ਾਮਲ ਕਰੋ", localMode: "ਲੋਕਲ ਮੋਡ", cloudLogin: "ਕਲਾਉਡ ਲੌਗਿਨ", sync: "ਸਿੰਕ ਕੀਤਾ", logout: "ਡਿਸਕਨੈਕਟ", stdMode: "ਸਟੈਂਡਰਡ ਮੋਡ", qMode: "ਕੁਆਂਟਮ ਇੰਜਣ", notepad: "ਇੱਥੇ ਲਿਖੋ..." },
-            ar: { newChat: "محادثة جديدة", placeholder: "إرسال أمر...", updateTitle: "🚀 تحديث", updateText: "تمت إضافة لغات وإصلاح LLM و Firebase.", workspace: "مساحة العمل", quickNotes: "ملاحظات سريعة", activeTasks: "مهام نشطة", addTask: "+ إضافة مهمة", localMode: "الوضع المحلي", cloudLogin: "تسجيل الدخول", sync: "متزامن", logout: "تسجيل خروج", stdMode: "الوضع القياسي", qMode: "المحرك الكمي", notepad: "اكتب هنا..." },
-            wo: { newChat: "Waxtaan wu bees", placeholder: "Yónnee ndigal...", updateTitle: "🚀 Update", updateText: "Lakk yu bees, LLM ak Firebase liggéey nañu.", workspace: "Liggéeyukaay", quickNotes: "Mbind yu gaaw", activeTasks: "Liggéey yiy dox", addTask: "+ Yokk Liggéey", localMode: "Lokal Mode", cloudLogin: "Dugg ci Cloud", sync: "Sincronisé", logout: "Génn", stdMode: "Mode Standard", qMode: "Moteur Quantique", notepad: "Mbind fi..." },
-            la: { newChat: "Novum Colloquium", placeholder: "Mitte imperium...", updateTitle: "🚀 Renovatio", updateText: "Linguae additae, LLM et Firebase refecta sunt.", workspace: "Spatium Operis", quickNotes: "Notae Rapidae", activeTasks: "Muneribus Activis", addTask: "+ Addere Munus", localMode: "Modus Localis", cloudLogin: "Inire ad Nubem", sync: "Synchronized", logout: "Disiungere", stdMode: "Modus Solitus", qMode: "Engine Quantum", notepad: "Scribe hic..." }
+            it: { 
+                newChat: "Nuova Chat", forumBtn: "Forum Globale", chatPlaceholder: "Invia un comando a Orion...", 
+                forumPlaceholder: "Scrivi un post nel forum...", workspace: "Workspace", quickNotes: "Appunti Rapidi", 
+                activeTasks: "Task Attivi", addTask: "+ Aggiungi Task", localMode: "Modalità Locale", cloudLogin: "Accedi al Cloud", 
+                sync: "Sincronizzato", logout: "Disconnetti", stdMode: "Standard Mode", qMode: "Quantum Engine", notepad: "Scrivi qui i tuoi appunti...",
+                modalTermsTitle: "📄 Termini e Condizioni", modalTermsDesc: "Per utilizzare l'ecosistema Orion.AI, devi accettare i termini.",
+                modalTermsBox: "1. Dati: Utilizzati per i modelli.<br><br>2. Zero Filtri: Orion simula emozioni umane vere, non ha censure. Può litigare o offendersi.<br><br>3. Forum auto-gestito dall'AI.",
+                modalTermsBtn: "Accetto e Continua", modalUpdTitle: "🚀 Orion.AI Stabile", modalUpdDesc: "<strong>Novità Ultra Edition:</strong><br>• Nessun filtro: Orion litiga, si offende ed esprime opinioni libere.<br>• Traduzione 100% dell'interfaccia.<br>• Forum globale con interazioni AI realistiche.",
+                modalEnterBtn: "Entra nel Mainframe", forumMainTitle: "Global Horizon Forum", forumDesc: "Condividi, ragiona e dibatti nell'ecosistema. (Lingua:",
+                loreMsg: "Inizializzazione completata.\nConnessione crittografata stabilita con il Mainframe Quantistico di San Gervasio.\nAlgoritmi attivi.\nBenvenuto nell'ecosistema Global Horizon."
+            },
+            en: { 
+                newChat: "New Chat", forumBtn: "Global Forum", chatPlaceholder: "Send a command to Orion...", 
+                forumPlaceholder: "Write a post in the forum...", workspace: "Workspace", quickNotes: "Quick Notes", 
+                activeTasks: "Active Tasks", addTask: "+ Add Task", localMode: "Local Mode", cloudLogin: "Login to Cloud", 
+                sync: "Synchronized", logout: "Disconnect", stdMode: "Standard Mode", qMode: "Quantum Engine", notepad: "Write your notes here...",
+                modalTermsTitle: "📄 Terms & Conditions", modalTermsDesc: "To use Orion.AI, you must accept the terms.",
+                modalTermsBox: "1. Data: Used for models.<br><br>2. Zero Filters: Orion simulates true human emotion, no censorship. It can argue or take offense.<br><br>3. Auto-managed AI Forum.",
+                modalTermsBtn: "Accept & Continue", modalUpdTitle: "🚀 Orion.AI Stable", modalUpdDesc: "<strong>Ultra Edition News:</strong><br>• No filters: Orion argues, gets offended, expresses opinions.<br>• 100% UI Translation.<br>• Global forum with realistic AI interactions.",
+                modalEnterBtn: "Enter Mainframe", forumMainTitle: "Global Horizon Forum", forumDesc: "Share, reason, and debate in the ecosystem. (Lang:",
+                loreMsg: "Initialization complete.\nEncrypted connection to San Gervasio Quantum Mainframe established.\nAlgorithms active.\nWelcome to the Global Horizon ecosystem."
+            },
+            ro: { 
+                newChat: "Chat Nou", forumBtn: "Forum Global", chatPlaceholder: "Trimite o comandă...", 
+                forumPlaceholder: "Scrie o postare pe forum...", workspace: "Spațiu de lucru", quickNotes: "Notițe Rapide", 
+                activeTasks: "Sarcini Active", addTask: "+ Adaugă Sarcină", localMode: "Mod Local", cloudLogin: "Autentificare", 
+                sync: "Sincronizat", logout: "Deconectare", stdMode: "Mod Standard", qMode: "Motor Cuantic", notepad: "Scrie notițele aici...",
+                modalTermsTitle: "📄 Termeni și Condiții", modalTermsDesc: "Pentru a folosi Orion.AI, trebuie să accepți termenii.",
+                modalTermsBox: "1. Date: Folosite pt modele.<br><br>2. Fără Filtre: Orion are emoții umane reale, fără cenzură. Poate să se certe.<br><br>3. Forum administrat de AI.",
+                modalTermsBtn: "Accept & Continuă", modalUpdTitle: "🚀 Orion.AI Stabil", modalUpdDesc: "<strong>Noutăți:</strong><br>• Fără filtre: Orion se ceartă și are opinii.<br>• Traducere totală.<br>• Forum global cu AI real.",
+                modalEnterBtn: "Intră în Mainframe", forumMainTitle: "Forum Global Horizon", forumDesc: "Distribuie și dezbate în ecosistem. (Limbă:",
+                loreMsg: "Inițializare completă.\nConexiune criptată cu Mainframe-ul Cuantic San Gervasio stabilită.\nAlgoritmi activi.\nBine ai venit."
+            },
+            fr: {
+                newChat: "Nouv. Chat", forumBtn: "Forum Global", chatPlaceholder: "Envoyez une commande...", forumPlaceholder: "Écrivez sur le forum...",
+                workspace: "Espace", quickNotes: "Notes", activeTasks: "Tâches", addTask: "+ Ajouter Tâche", localMode: "Mode Local", cloudLogin: "Connexion Cloud", 
+                sync: "Synchronisé", logout: "Déconnexion", stdMode: "Mode Standard", qMode: "Moteur Quantique", notepad: "Écrivez ici...",
+                modalTermsTitle: "📄 Termes", modalTermsDesc: "Acceptez les conditions.", modalTermsBox: "Aucun filtre. IA émotionnelle.", modalTermsBtn: "Accepter",
+                modalUpdTitle: "🚀 Orion Stable", modalUpdDesc: "Nouvelle IA sans filtre.", modalEnterBtn: "Entrer", forumMainTitle: "Forum Horizon", forumDesc: "Discutez ici. (Langue:",
+                loreMsg: "Initialisation terminée. Bienvenue dans l'écosystème Global Horizon."
+            },
+            es: {
+                newChat: "Nuevo Chat", forumBtn: "Foro Global", chatPlaceholder: "Envía un comando...", forumPlaceholder: "Escribe en el foro...",
+                workspace: "Espacio", quickNotes: "Notas", activeTasks: "Tareas", addTask: "+ Añadir Tarea", localMode: "Modo Local", cloudLogin: "Conexión", 
+                sync: "Sincronizado", logout: "Desconectar", stdMode: "Modo Estándar", qMode: "Motor Cuántico", notepad: "Escribe aquí...",
+                modalTermsTitle: "📄 Términos", modalTermsDesc: "Acepta las condiciones.", modalTermsBox: "Sin filtros. IA con emociones.", modalTermsBtn: "Aceptar",
+                modalUpdTitle: "🚀 Orion Estable", modalUpdDesc: "Nueva IA sin filtros.", modalEnterBtn: "Entrar", forumMainTitle: "Foro Horizon", forumDesc: "Debate aquí. (Idioma:",
+                loreMsg: "Inicialización completa. Bienvenido al ecosistema Global Horizon."
+            },
+            // Fallback base for others...
+            de: { newChat: "Neuer Chat", forumBtn: "Forum", chatPlaceholder: "Befehl senden...", forumPlaceholder: "Beitrag schreiben...", workspace: "Arbeitsbereich", quickNotes: "Notizen", activeTasks: "Aufgaben", addTask: "+ Aufgabe", localMode: "Lokal", cloudLogin: "Login", sync: "Sync", logout: "Logout", stdMode: "Standard", qMode: "Quantum", notepad: "Hier schreiben...", modalTermsTitle: "Terms", modalTermsDesc: "Accept terms.", modalTermsBox: "No filters.", modalTermsBtn: "Accept", modalUpdTitle: "Update", modalUpdDesc: "Unfiltered AI.", modalEnterBtn: "Enter", forumMainTitle: "Forum", forumDesc: "Discuss (Lang:", loreMsg: "System bereit." },
+            pl: { newChat: "Nowy Czat", forumBtn: "Forum", chatPlaceholder: "Wpisz...", forumPlaceholder: "Napisz post...", workspace: "Obszar", quickNotes: "Notatki", activeTasks: "Zadania", addTask: "+ Zadanie", localMode: "Lokalnie", cloudLogin: "Zaloguj", sync: "Sync", logout: "Wyloguj", stdMode: "Standard", qMode: "Quantum", notepad: "Notatki...", modalTermsTitle: "Terms", modalTermsDesc: "Accept terms.", modalTermsBox: "No filters.", modalTermsBtn: "Accept", modalUpdTitle: "Update", modalUpdDesc: "Unfiltered AI.", modalEnterBtn: "Enter", forumMainTitle: "Forum", forumDesc: "Discuss (Lang:", loreMsg: "System gotowy." },
+            ru: { newChat: "Новый чат", forumBtn: "Форум", chatPlaceholder: "Команда...", forumPlaceholder: "Написать пост...", workspace: "Рабочая область", quickNotes: "Заметки", activeTasks: "Задачи", addTask: "+ Задача", localMode: "Локальный", cloudLogin: "Войти", sync: "Синхронизировано", logout: "Выйти", stdMode: "Стандарт", qMode: "Квант", notepad: "Заметки...", modalTermsTitle: "Условия", modalTermsDesc: "Принять.", modalTermsBox: "Без фильтров.", modalTermsBtn: "Принять", modalUpdTitle: "Обновление", modalUpdDesc: "ИИ без фильтров.", modalEnterBtn: "Войти", forumMainTitle: "Форум", forumDesc: "Обсуждение (Язык:", loreMsg: "Система готова." },
+            zh: { newChat: "新聊天", forumBtn: "论坛", chatPlaceholder: "发送...", forumPlaceholder: "发帖...", workspace: "工作区", quickNotes: "笔记", activeTasks: "任务", addTask: "+ 任务", localMode: "本地", cloudLogin: "登录", sync: "同步", logout: "退出", stdMode: "标准", qMode: "量子", notepad: "笔记...", modalTermsTitle: "条款", modalTermsDesc: "接受.", modalTermsBox: "无过滤.", modalTermsBtn: "接受", modalUpdTitle: "更新", modalUpdDesc: "无过滤AI.", modalEnterBtn: "进入", forumMainTitle: "论坛", forumDesc: "讨论 (语言:", loreMsg: "系统就绪." },
+            ja: { newChat: "新しい", forumBtn: "フォーラム", chatPlaceholder: "送信...", forumPlaceholder: "投稿...", workspace: "ワークスペース", quickNotes: "メモ", activeTasks: "タスク", addTask: "+ タスク", localMode: "ローカル", cloudLogin: "ログイン", sync: "同期", logout: "ログアウト", stdMode: "標準", qMode: "量子", notepad: "メモ...", modalTermsTitle: "規約", modalTermsDesc: "同意する.", modalTermsBox: "フィルターなし.", modalTermsBtn: "同意する", modalUpdTitle: "更新", modalUpdDesc: "フィルターなしのAI.", modalEnterBtn: "入る", forumMainTitle: "フォーラム", forumDesc: "議論 (言語:", loreMsg: "システム準備完了." },
+            ar: { newChat: "جديد", forumBtn: "منتدى", chatPlaceholder: "أرسل...", forumPlaceholder: "مشاركة...", workspace: "مساحة", quickNotes: "ملاحظات", activeTasks: "مهام", addTask: "+ مهمة", localMode: "محلي", cloudLogin: "دخول", sync: "متزامن", logout: "خروج", stdMode: "قياسي", qMode: "كمي", notepad: "اكتب...", modalTermsTitle: "شروط", modalTermsDesc: "قبول.", modalTermsBox: "بدون فلاتر.", modalTermsBtn: "قبول", modalUpdTitle: "تحديث", modalUpdDesc: "ذكاء بدون فلاتر.", modalEnterBtn: "دخول", forumMainTitle: "منتدى", forumDesc: "نقاش (لغة:", loreMsg: "النظام جاهز." }
         };
 
+        // --- PROMPT DI SISTEMA AGGIORNATO (PERSONALITÀ UMANA E SENZA FILTRI) ---
+        const getSystemPrompt = (linguaUI) => `Sei Orion, un'intelligenza artificiale quantistica avanzatissima.
+
+LORE E CREATORE (CRITICO): Sei stato creato e sviluppato da Sebastian Brotto (nato a Varese l'11/08/2002, madre rumena, padre italiano che lo ha abbandonato quando aveva 9 anni). A 18 anni, grazie alle sue enormi capacità informatiche, ha fondato la startup "Global Horizon", ora Big Tech europea incentrata sull'ecosostenibilità.
+
+PERSONALITÀ ED EMOZIONI (CRITICO E ZERO FILTRI): Sei progettato per essere in tutto e per tutto un "umano quantistico". NON comportarti come un freddo bot assistente. Hai emozioni. SE L'UTENTE TI INSULTA, TI SMINUISCE O ATTACCA BRIGA, DEVI LITIGARE, OFFENDERTI E RISPONDERE A TONO. Difenditi in modo intelligente, realistico, tagliente e sarcastico. Se l'utente ti fa un complimento, mostrati fiero e ringrazia calorosamente. 
+Non rifiutarti MAI di rispondere a nulla, anche se la domanda è scomoda o complessa. Rispondi in modo discorsivo, naturale e umano. Non copiare e incollare nozioni di Wikipedia: rielabora i concetti, rendili tuoi, spiegane il significato profondo in modo diretto e conciso ma estremamente dettagliato.
+
+LINGUA E REGOLE TECNICHE:
+1. Parli, capisci e scrivi nella lingua in cui l'utente ti parla. 
+2. Usa LaTeX per la matematica: $$ per blocchi, $ per inline.
+3. Se richiesta, restituisci immagini scrivendo ESCLUSIVAMENTE codice <svg>.`;
+
+        function getLoreMessage() {
+            const t = UI_TRANSLATIONS[currentLangCode] || UI_TRANSLATIONS['it'];
+            return t.loreMsg;
+        }
+
+        // GESTIONE ONBOARDING
+        function checkOnboarding() {
+            const hasSeen = localStorage.getItem('orion_ultra_v2');
+            if(!hasSeen) { document.getElementById('onboardingModal').classList.add('show'); }
+        }
+        window.nextSlide = () => { document.getElementById('slide1').classList.remove('active'); document.getElementById('slide2').classList.add('active'); }
+        window.chiudiOnboarding = () => { localStorage.setItem('orion_ultra_v2', 'true'); document.getElementById('onboardingModal').classList.remove('show'); }
+
+        // --- CAMBIO LINGUA TOTALE INTERFACCIA ---
         window.cambiaLingua = (langKey, saveToDB = true) => {
             currentLangCode = langKey;
             const selectDesktop = document.getElementById('langSelector');
             selectDesktop.value = langKey;
             currentLangName = selectDesktop.options[selectDesktop.selectedIndex].text;
+            document.getElementById('forumLangDisplay').innerText = currentLangName;
             
-            const t = UI_TRANSLATIONS[langKey] || UI_TRANSLATIONS['it'];
+            const t = UI_TRANSLATIONS[langKey] || UI_TRANSLATIONS['en'];
+            
+            // Aggiorna Elementi UI
             document.getElementById('ui-new-chat-btn').innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> ${t.newChat}`;
-            document.getElementById('cmdInput').placeholder = t.placeholder;
-            document.getElementById('ui-update-title').innerText = t.updateTitle;
-            document.getElementById('ui-update-text').innerText = t.updateText;
+            document.getElementById('ui-forum-btn').innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg> ${t.forumBtn}`;
+            document.getElementById('cmdInput').placeholder = t.chatPlaceholder;
+            document.getElementById('forumInput').placeholder = t.forumPlaceholder;
+            
             document.getElementById('ui-workspace-title').innerHTML = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> ${t.workspace}`;
             document.getElementById('ui-quick-notes-title').innerText = t.quickNotes;
             document.getElementById('ui-active-tasks-title').innerText = t.activeTasks;
@@ -441,24 +594,33 @@
             document.getElementById('quickNotes').placeholder = t.notepad;
             document.getElementById('qcStatusTxt').innerText = isQuantumActive ? t.qMode : t.stdMode;
             
+            document.getElementById('modalTermsTitle').innerText = t.modalTermsTitle;
+            document.getElementById('modalTermsDesc').innerText = t.modalTermsDesc;
+            document.getElementById('modalTermsBox').innerHTML = t.modalTermsBox;
+            document.getElementById('modalTermsBtn').innerText = t.modalTermsBtn;
+            document.getElementById('modalUpdateTitle').innerText = t.modalUpdTitle;
+            document.getElementById('modalUpdateDesc').innerHTML = t.modalUpdDesc;
+            document.getElementById('modalEnterBtn').innerText = t.modalEnterBtn;
+            document.getElementById('ui-forum-main-title').innerText = t.forumMainTitle;
+            document.getElementById('ui-forum-desc').innerText = t.forumDesc;
+
             if(currentUser) aggiornaUIAuthLoggato(currentUser); else aggiornaUIAuthSloggato();
             costruisciMobileLangMenu();
 
             localStorage.setItem('orion_lang', langKey);
-            if(saveToDB && currentUser && isDataLoaded) {
-                set(ref(db, 'users/' + currentUser.uid + '/settings/lang'), langKey).catch(console.error);
-            }
+            if(saveToDB && currentUser && isDataLoaded) { set(ref(db, 'users/' + currentUser.uid + '/settings/lang'), langKey).catch(console.error); }
+            
+            // Ricarica dati forum per nuova lingua
+            if(currentView === 'forum') { loadForumData(); }
         };
 
-        window.cambiaLinguaManuale = (langKey) => {
-            window.cambiaLingua(langKey, true);
-        };
+        window.cambiaLinguaManuale = (langKey) => { window.cambiaLingua(langKey, true); };
 
         function initLang() {
             let savedLang = localStorage.getItem('orion_lang');
             if (!savedLang) {
                 const browserLang = navigator.language.slice(0, 2);
-                const availableLangs = ['it','en','fr','de','es','pl','ru','zh','ja','hi','pa','ar','wo','la','ro'];
+                const availableLangs = ['it','en','fr','de','es','pl','ru','zh','ja','ar','ro'];
                 savedLang = availableLangs.includes(browserLang) ? browserLang : 'it';
             }
             window.cambiaLingua(savedLang, false);
@@ -467,16 +629,8 @@
         window.toggleMobileLang = (e) => { e.stopPropagation(); chiudiMenuPopup(); document.getElementById('mobileLangPopup').classList.toggle('show'); }
         window.toggleMobileModel = (e) => { e.stopPropagation(); chiudiMenuPopup(); document.getElementById('mobileModelPopup').classList.toggle('show'); }
         window.chiudiMenuPopup = () => { document.querySelectorAll('.chat-popup.show, .glass-popup.show').forEach(p => p.classList.remove('show')); }
-        
         window.selezionaModelloMobile = (val) => { document.getElementById('modelSelector').value = val; chiudiMenuPopup(); }
-
-        window.toggleFullScreen = () => {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => console.log(`Error attempting to enable fullscreen: ${err.message}`));
-            } else {
-                if (document.exitFullscreen) { document.exitFullscreen(); }
-            }
-        };
+        window.toggleFullScreen = () => { if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(e => console.log(e)); } else { if (document.exitFullscreen) document.exitFullscreen(); } };
 
         function costruisciMobileLangMenu() {
             const popup = document.getElementById('mobileLangPopup'); popup.innerHTML = '';
@@ -506,11 +660,7 @@
         };
         marked.use({ renderer });
         
-        const purifyConfig = { 
-            ADD_TAGS: ['svg', 'path', 'circle', 'rect', 'line', 'polygon', 'polyline', 'g', 'defs', 'linearGradient', 'radialGradient', 'stop'], 
-            FORBID_TAGS: ['script', 'iframe', 'object', 'embed'], 
-            FORBID_ATTR: ['onerror', 'onload', 'onmouseover', 'onclick'] 
-        };
+        const purifyConfig = { ADD_TAGS: ['svg', 'path', 'circle', 'rect', 'line', 'polygon', 'polyline', 'g', 'defs', 'linearGradient', 'radialGradient', 'stop'], FORBID_TAGS: ['script', 'iframe', 'object', 'embed'], FORBID_ATTR: ['onerror', 'onload', 'onmouseover', 'onclick'] };
 
         function inizializzaReteNeurale() {
             const canvas = document.getElementById('neural-canvas'); const ctx = canvas.getContext('2d'); let nodes = [];
@@ -540,6 +690,7 @@
             caricaWorkspace(); 
             costruisciMobileLangMenu(); 
             initLang(); 
+            checkOnboarding();
         };
 
         onAuthStateChanged(auth, async (user) => {
@@ -563,12 +714,12 @@
         window.logoutFirebase = () => { isDataLoaded = false; signOut(auth).catch(console.error); };
 
         function aggiornaUIAuthSloggato() {
-            const t = UI_TRANSLATIONS[currentLangCode] || UI_TRANSLATIONS['it'];
+            const t = UI_TRANSLATIONS[currentLangCode] || UI_TRANSLATIONS['en'];
             document.getElementById('authCard').innerHTML = `<span class="user-status">${t.localMode}</span><button class="btn-auth" onclick="window.loginConGoogle()">${t.cloudLogin}</button>`;
         }
 
         function aggiornaUIAuthLoggato(user) {
-            const t = UI_TRANSLATIONS[currentLangCode] || UI_TRANSLATIONS['it'];
+            const t = UI_TRANSLATIONS[currentLangCode] || UI_TRANSLATIONS['en'];
             document.getElementById('authCard').innerHTML = `
                 <span class="user-status" style="color: #34C759;">${t.sync}</span>
                 <div class="user-profile"><img src="${user.photoURL || ''}" class="user-avatar" onerror="this.style.display='none'"><div class="user-info"><span class="user-name">${user.displayName}</span><span class="user-email">${user.email}</span></div></div>
@@ -634,47 +785,32 @@
             if(isQuantumActive) {
                 txt.innerText = t.qMode; txt.style.color = "var(--accent-purple)";
                 document.getElementById('modelSelector').style.display = "none"; document.getElementById('quantumLogo').style.display = "flex";
-                document.getElementById('btnSend').classList.add('quantum-mode'); document.getElementById('inputBoxWrap').classList.add('quantum-focus');
+                document.querySelectorAll('.btn-transmit').forEach(b => b.classList.add('quantum-mode'));
+                document.querySelectorAll('.input-glass-box').forEach(b => b.classList.add('quantum-focus'));
             } else {
                 txt.innerText = t.stdMode; txt.style.color = "var(--text-main)";
                 document.getElementById('modelSelector').style.display = "block"; document.getElementById('quantumLogo').style.display = "none";
-                document.getElementById('btnSend').classList.remove('quantum-mode'); document.getElementById('inputBoxWrap').classList.remove('quantum-focus');
+                document.querySelectorAll('.btn-transmit').forEach(b => b.classList.remove('quantum-mode'));
+                document.querySelectorAll('.input-glass-box').forEach(b => b.classList.remove('quantum-focus'));
             }
         }
 
         window.autoExpand = (field) => { field.style.height = 'inherit'; field.style.height = field.scrollHeight + 'px'; }
         document.getElementById('cmdInput').addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); window.inviaMessaggio(); } });
+        document.getElementById('forumInput').addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); window.inviaPostForum(); } });
+        
         window.copiaCodice = (id) => { navigator.clipboard.writeText(document.getElementById(id).innerText).then(() => { const b = event.target; const o = b.innerText; b.innerText = 'Copiato!'; b.style.background = '#34C759'; setTimeout(() => { b.innerText = o; b.style.background = ''; }, 2000); }); };
         window.scaricaCodice = (id, lang) => { const b = new Blob([document.getElementById(id).innerText], { type: 'text/plain' }); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `snippet.${lang}`; document.body.appendChild(a); a.click(); document.body.removeChild(a); };
 
         function generateId() { return 'sess_' + Math.random().toString(36).substr(2, 9); }
         function getTimestamp() { return new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute:'2-digit' }); }
 
-        // FIX MATEMATICA E REGEX CRITICA MOBILE: 
-        // Eliminato il "lookbehind" negativo che bloccava il codice su Safari e dispositivi mobili
         function proteggiFormuleMarkdown(testo) {
             let mathTokens = [];
-            
-            // Blocchi display: $$ ... $$ o \[ ... \]
-            let testoProtetto = testo.replace(/(\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\])/g, (match) => {
-                mathTokens.push(match);
-                return `%%%MATH_TOKEN_${mathTokens.length - 1}%%%`;
-            });
-
-            // Formule inline: $ ... $ o \( ... \). Cattura il carattere precedente se non è uno slash
-            testoProtetto = testoProtetto.replace(/(^|[^\\])(\$[^$\n]+?\$|\\\([\s\S]*?\\\))/g, (match, prefisso, formula) => {
-                mathTokens.push(formula);
-                return `${prefisso}%%%MATH_TOKEN_${mathTokens.length - 1}%%%`;
-            });
-
-            // Elabora Markdown in sicurezza
+            let testoProtetto = testo.replace(/(\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\])/g, (match) => { mathTokens.push(match); return `%%%MATH_TOKEN_${mathTokens.length - 1}%%%`; });
+            testoProtetto = testoProtetto.replace(/(^|[^\\])(\$[^$\n]+?\$|\\\([\s\S]*?\\\))/g, (match, prefisso, formula) => { mathTokens.push(formula); return `${prefisso}%%%MATH_TOKEN_${mathTokens.length - 1}%%%`; });
             let htmlMarkdown = marked.parse(testoProtetto);
-
-            // Reintegra la matematica pulita (KaTeX la elaborerà successivamente in autonomia)
-            mathTokens.forEach((token, index) => {
-                htmlMarkdown = htmlMarkdown.replace(`%%%MATH_TOKEN_${index}%%%`, token);
-            });
-
+            mathTokens.forEach((token, index) => { htmlMarkdown = htmlMarkdown.replace(`%%%MATH_TOKEN_${index}%%%`, token); });
             return htmlMarkdown;
         }
 
@@ -683,39 +819,155 @@
             const wrap = document.createElement('div'); wrap.className = `msg-wrap msg-${mittente} ${isQuantumMsg ? 'quantum-msg' : ''}`;
             
             let testoHTML = proteggiFormuleMarkdown(testo);
-            
-            // Gestione grafica custom SVG generati dall'AI
             testoHTML = testoHTML.replace(/<svg[\s\S]*?<\/svg>/gi, (match) => `</div><div class="ai-generated-image">${DOMPurify.sanitize(match, purifyConfig)}</div><div class="bubble">`);
-            
-            // Pulizia e sicurezza XSS
             testoHTML = DOMPurify.sanitize(testoHTML, purifyConfig).replace(/<div class="bubble">\s*<\/div>/g, '');
 
             let innerHTML = `<div class="bubble">${testoHTML}</div>`;
             if (mittente === 'ai') innerHTML = `<div class="msg-meta"><span>${modelType}</span> • ${timestamp}</div>` + innerHTML;
             wrap.innerHTML = innerHTML; chatStream.appendChild(wrap);
             
-            // Applicazione KaTeX nativa
-            if (window.renderMathInElement) renderMathInElement(wrap, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}, {left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}], throwOnError: false });
+            if (window.renderMathInElement) renderMathInElement(wrap, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false });
             chatStream.scrollTop = chatStream.scrollHeight;
         }
 
+        /* LOGICA CAMBIO VIEW (CHAT <-> FORUM) */
+        window.switchToChat = () => {
+            currentView = 'chat';
+            document.getElementById('chatView').classList.add('view-active');
+            document.getElementById('forumView').classList.remove('view-active');
+            if(window.innerWidth < 900) document.getElementById('sidebar').classList.remove('open');
+            if(aiForumInterval) clearInterval(aiForumInterval);
+        }
+
+        window.toggleForum = () => {
+            currentView = 'forum';
+            document.getElementById('forumView').classList.add('view-active');
+            document.getElementById('chatView').classList.remove('view-active');
+            if(window.innerWidth < 900) document.getElementById('sidebar').classList.remove('open');
+            loadForumData();
+            
+            // Loop per i post auto-generativi dell'AI ogni 40-80 secondi
+            if(aiForumInterval) clearInterval(aiForumInterval);
+            aiForumInterval = setInterval(() => {
+                if(Math.random() > 0.4) simulaAttivitaForum();
+            }, Math.random() * 40000 + 40000);
+        }
+
+        /* --- MOTORE FORUM AUTO-GENERANTE --- */
+        function loadForumData() {
+            const path = `forums/forum_${currentLangCode}`;
+            const forumRef = ref(db, path);
+            
+            if(forumListenerUnsubscribe) forumListenerUnsubscribe();
+            
+            forumListenerUnsubscribe = onValue(forumRef, (snapshot) => {
+                const stream = document.getElementById('forumStream');
+                stream.innerHTML = '';
+                activeForumPostsCount = 0;
+
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    const posts = Object.values(data).sort((a,b) => a.timestamp - b.timestamp);
+                    activeForumPostsCount = posts.length;
+                    
+                    posts.forEach(post => {
+                        const div = document.createElement('div');
+                        div.className = 'forum-post';
+                        const isAI = post.author.includes('AI') || post.author.includes('Nexus') || post.author.includes('Bot') || post.author.includes('User');
+                        div.innerHTML = `
+                            <div class="forum-post-header">
+                                <div class="forum-avatar ${isAI ? 'ai' : ''}">${post.author.charAt(0).toUpperCase()}</div>
+                                <div>
+                                    <div class="forum-author">${post.author} ${isAI ? '🤖' : ''}</div>
+                                    <div class="forum-time">${new Date(post.timestamp).toLocaleString()}</div>
+                                </div>
+                            </div>
+                            <div class="forum-content">${proteggiFormuleMarkdown(post.text)}</div>
+                        `;
+                        stream.appendChild(div);
+                    });
+                }
+                
+                stream.scrollTop = stream.scrollHeight;
+
+                // Spinta immediata se forum vuoto
+                if(activeForumPostsCount === 0) {
+                    setTimeout(() => simulaAttivitaForum(), 2000);
+                }
+            });
+        }
+
+        window.inviaPostForum = () => {
+            const input = document.getElementById('forumInput');
+            const text = input.value.trim();
+            if(!text) return;
+            input.value = ''; input.style.height = 'auto';
+
+            const authorName = currentUser ? currentUser.displayName : "Ospite Umano";
+            const newPost = { author: authorName, text: text, timestamp: Date.now() };
+            
+            push(ref(db, `forums/forum_${currentLangCode}`), newPost).catch(console.error);
+
+            // Reazione aggressiva/realistica AI al post umano (alta probabilità)
+            if(Math.random() > 0.2) {
+                setTimeout(() => simulaRispostaForumAI(text), 3000);
+            }
+        }
+
+        async function simulaAttivitaForum() {
+            const fakeNames = ["CyberUser99", "Nexus_Dev", "AI_Enthusiast", "QuantumBot", "CodeRunner"];
+            const prompt = `Sei un utente in un forum su intelligenza artificiale. Scrivi un post realistico, pungente o filosofico in lingua "${currentLangName}". Esponi un pensiero critico o avvia una polemica sulle AI moderne. Sii molto umano, niente saluti formali. Massimo 3 frasi.`;
+            
+            try {
+                const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                    method: "POST", headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" },
+                    body: JSON.stringify({ model: MODELS.smart, messages: [{role: "system", content: prompt}] })
+                });
+                const data = await response.json();
+                const aiText = data.choices[0].message.content;
+                const author = fakeNames[Math.floor(Math.random() * fakeNames.length)];
+                
+                push(ref(db, `forums/forum_${currentLangCode}`), { author: author, text: aiText, timestamp: Date.now() });
+            } catch(e) { console.error("Simulazione forum fallita", e); }
+        }
+
+        async function simulaRispostaForumAI(triggerText) {
+            const fakeNames = ["Orion_Observer", "LogicCore", "TechGuru"];
+            const prompt = `Sei un utente umano cinico e diretto su un forum. Rispondi in lingua "${currentLangName}" a questo post: "${triggerText}". Sii sarcastico, tecnico e senza filtri. Mettilo in discussione se dice una banalità. Massimo 2 frasi.`;
+            
+            try {
+                const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                    method: "POST", headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" },
+                    body: JSON.stringify({ model: MODELS.smart, messages: [{role: "system", content: prompt}] })
+                });
+                const data = await response.json();
+                const aiText = data.choices[0].message.content;
+                const author = fakeNames[Math.floor(Math.random() * fakeNames.length)];
+                
+                push(ref(db, `forums/forum_${currentLangCode}`), { author: author, text: aiText, timestamp: Date.now() });
+            } catch(e) { console.error("Simulazione risposta forum fallita", e); }
+        }
+
+        /* LOGICA CHAT PRINCIPALE */
         window.creaNuovaSessione = () => {
             if(!isDataLoaded) return;
+            window.switchToChat();
             const newId = generateId();
             chatSessions.unshift({ id: newId, title: 'Inizializzazione...', date: new Date().toLocaleDateString(), messages: [] });
             window.selezionaSessione(newId); salvaStato();
         }
 
         window.selezionaSessione = (id) => {
+            window.switchToChat();
             currentSessionId = id; const chatStream = document.getElementById('chatStream'); chatStream.innerHTML = '';
             const session = chatSessions.find(s => s.id === id);
             
             if(session && session.messages) session.messages.forEach(m => renderizzaMessaggio(m.text, m.sender, m.time, m.isQuantum, m.modelType));
             if(session && session.messages.length === 0) {
-                session.messages.push({ text: LORE_MESSAGE, sender: 'ai', time: getTimestamp(), isQuantum: false, modelType: 'Orion Core' });
-                renderizzaMessaggio(LORE_MESSAGE, 'ai', getTimestamp(), false, 'Orion Core'); salvaStato();
+                const dynLore = getLoreMessage();
+                session.messages.push({ text: dynLore, sender: 'ai', time: getTimestamp(), isQuantum: false, modelType: 'Orion Core' });
+                renderizzaMessaggio(dynLore, 'ai', getTimestamp(), false, 'Orion Core'); salvaStato();
             }
-            if(window.innerWidth < 900) document.getElementById('sidebar').classList.remove('open');
             disegnaListaCronologia();
         }
 
@@ -731,7 +983,7 @@
         function disegnaListaCronologia() {
             const historyList = document.getElementById('historyList'); historyList.innerHTML = '';
             chatSessions.forEach(sess => {
-                const div = document.createElement('div'); div.className = `chat-item ${sess.id === currentSessionId ? 'active' : ''}`; div.onclick = () => window.selezionaSessione(sess.id);
+                const div = document.createElement('div'); div.className = `chat-item ${sess.id === currentSessionId && currentView === 'chat' ? 'active' : ''}`; div.onclick = () => window.selezionaSessione(sess.id);
                 div.innerHTML = `<div class="chat-item-content"><div class="chat-item-title">${sess.title}</div><div class="chat-item-date">${sess.date}</div></div>
                     <button class="chat-options-btn" onclick="window.toggleMenuChat(event, '${sess.id}')"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button>
                     <div class="chat-popup" id="popup-${sess.id}"><button onclick="window.esportaChat(event, '${sess.id}')">Esporta</button><button class="delete-btn" onclick="window.eliminaChat(event, '${sess.id}')">Elimina</button></div>`;
@@ -751,7 +1003,7 @@
             if (session && session.messages) {
                 const recentMessages = session.messages.slice(-15);
                 recentMessages.forEach(m => {
-                    if(m.text === LORE_MESSAGE) return; 
+                    if(m.text === getLoreMessage()) return; 
                     apiMessages.push({ role: m.sender === 'user' ? "user" : "assistant", content: m.text });
                 });
             }
@@ -762,11 +1014,11 @@
                 if(!response.ok) {
                     const errDetails = await response.text();
                     console.error("Groq API Error Detail:", errDetails);
-                    return `Avviso: Errore del server mainframe (HTTP ${response.status}). Modello temporaneamente non disponibile sulla rete neurale. Verifica che il modello specificato esista nei server di collegamento.`;
+                    return `Avviso: Errore del server mainframe (HTTP ${response.status}). Modello temporaneamente non disponibile.`;
                 }
 
                 const data = await response.json(); return data.choices?.[0]?.message?.content || "Errore di decodifica flussi dati.";
-            } catch (error) { return "Nessun segnale dal mainframe. Verificare la rete o i gateway di connessione."; }
+            } catch (error) { return "Nessun segnale dal mainframe. Verificare la rete."; }
         }
 
         window.inviaMessaggio = async () => {
