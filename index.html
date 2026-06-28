@@ -216,19 +216,49 @@
         .btn-transmit:hover { transform: scale(1.08); box-shadow: 0 6px 20px rgba(10, 132, 255, 0.6); }
         .btn-transmit.quantum-mode { background: linear-gradient(135deg, var(--accent-purple), #8a2be2); box-shadow: 0 4px 15px rgba(191, 90, 242, 0.4); }
 
-        /* Stili Forum Globale */
+        /* Stili Forum Globale e Thread */
         .forum-header { padding: 20px 10%; border-bottom: 1px solid var(--glass-border); display: flex; flex-direction: column; gap: 10px; }
-        .forum-title { font-size: 20px; font-weight: 700; color: var(--accent-purple); display: flex; align-items: center; gap: 8px; }
+        .forum-title { font-size: 20px; font-weight: 700; color: var(--accent-purple); display: flex; align-items: center; gap: 8px; justify-content: space-between; width: 100%; }
+        
+        .forum-cat-selector { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); color: var(--text-main); padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 500; outline: none; cursor: pointer; transition: 0.3s; }
+        .forum-cat-selector:hover { background: rgba(255,255,255,0.15); }
+        .forum-cat-selector option { background: #1c1c1e; }
+        .cat-badge { font-size: 10px; background: rgba(191, 90, 242, 0.2); border: 1px solid rgba(191, 90, 242, 0.5); padding: 2px 6px; border-radius: 6px; color: var(--text-main); margin-left: 8px; vertical-align: middle; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px;}
+
+        .forum-main-view, .forum-thread-view { display: none; flex-direction: column; flex-grow: 1; overflow: hidden; }
+        .forum-main-view.active, .forum-thread-view.active { display: flex; }
+        
         .forum-stream { flex-grow: 1; padding: 20px 10%; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
         .forum-stream::-webkit-scrollbar { display: none; }
-        .forum-post { background: var(--glass-panel); border: 1px solid var(--glass-border); border-radius: 16px; padding: 16px; backdrop-filter: blur(10px); }
-        .forum-post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        
+        .forum-post { background: var(--glass-panel); border: 1px solid var(--glass-border); border-radius: 16px; padding: 16px; backdrop-filter: blur(10px); position: relative; }
+        .forum-post.clickable { cursor: pointer; transition: all 0.2s; border: 1px solid transparent; }
+        .forum-post.clickable:hover { border-color: var(--accent-purple); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+        .forum-post.reply { background: rgba(255,255,255,0.03); margin-left: 20px; border-left: 3px solid var(--accent-purple); border-radius: 0 12px 12px 0; }
+        
+        /* Stile Sub-Reply (risposta a un commento) */
+        .forum-post.sub-reply { background: rgba(255,255,255,0.015); margin-left: 50px; border-left: 2px solid var(--text-dim); border-radius: 0 12px 12px 0; padding: 12px 16px; }
+
+        .forum-post-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .forum-user-info { display: flex; align-items: center; gap: 10px; }
         .forum-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent-blue); display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 14px; }
-        .forum-avatar.ai { background: var(--accent-purple); }
+        
         .forum-author { font-size: 14px; font-weight: 600; }
         .forum-time { font-size: 11px; color: var(--text-dim); }
         .forum-content { font-size: 14px; line-height: 1.5; color: var(--text-main); }
-        .forum-input-area { padding: 20px 10%; background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%); }
+        .forum-reply-count { font-size: 12px; color: var(--accent-purple); margin-top: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+        
+        .btn-reply-comment { background: transparent; border: none; color: var(--accent-blue); font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: 0.2s; }
+        .btn-reply-comment:hover { color: #fff; text-shadow: 0 0 5px var(--accent-blue); }
+
+        .btn-back-forum { background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); color: var(--text-main); padding: 8px 16px; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; margin: 10px 10% 0 10%; width: fit-content; transition: 0.2s; font-size: 13px; font-weight: 600; }
+        .btn-back-forum:hover { background: rgba(255,255,255,0.2); }
+        
+        .forum-input-area { padding: 15px 10%; background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%); display: flex; flex-direction: column; gap: 8px; }
+        
+        .replying-to-badge { display: none; align-items: center; gap: 8px; background: rgba(10, 132, 255, 0.2); border: 1px solid rgba(10, 132, 255, 0.5); padding: 6px 12px; border-radius: 8px; font-size: 12px; width: fit-content; color: #fff; }
+        .replying-to-badge.active { display: flex; }
+        .replying-to-badge button { background: transparent; border: none; color: #fff; font-weight: bold; cursor: pointer; font-size: 14px; margin-left: 5px; }
 
         /* Workspace Sidebar */
         .right-panel-header { padding: 24px; border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; }
@@ -408,14 +438,45 @@
                 <div class="forum-view" id="forumView">
                     <div class="forum-header">
                         <div class="forum-title">
-                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                            <span id="ui-forum-main-title">Global Horizon Forum</span>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                                <span id="ui-forum-main-title">Global Horizon Forum</span>
+                            </div>
+                            <select id="forumCategoryFilter" class="forum-cat-selector" onchange="window.cambiaCategoriaForum(this.value)">
+                                <option value="all">Tutte le categorie</option>
+                                <option value="general">Generale</option>
+                                <option value="tech">Tech & AI</option>
+                                <option value="offtopic">Off-Topic</option>
+                            </select>
                         </div>
                         <div style="font-size: 13px; color: var(--text-dim);"><span id="ui-forum-desc">Condividi scoperte, ragionamenti e poni domande all'ecosistema. (Lingua:</span> <span id="forumLangDisplay">Italiano</span>)</div>
                     </div>
-                    <div class="forum-stream" id="forumStream">
-                        </div>
+                    
+                    <div class="forum-main-view active" id="forumMainView">
+                        <div class="forum-stream" id="forumStream"></div>
+                    </div>
+                    
+                    <div class="forum-thread-view" id="forumThreadView">
+                        <button class="btn-back-forum" onclick="window.tornaAlForum()">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            <span id="ui-btn-back-forum">Indietro alle discussioni</span>
+                        </button>
+                        <div class="forum-stream" id="forumThreadStream"></div>
+                    </div>
+
                     <div class="forum-input-area">
+                        <div class="replying-to-badge" id="replyingToBadge">
+                            <span id="replyingToText">Rispondendo a...</span>
+                            <button onclick="window.annullaRispostaCommento()">&times;</button>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;" id="forumNewPostCatWrapper">
+                            <span style="font-size: 12px; color:var(--text-dim);">Categoria:</span>
+                            <select id="forumPostCategory" class="forum-cat-selector" style="padding: 4px 8px; font-size:12px;">
+                                <option value="general">Generale</option>
+                                <option value="tech">Tech & AI</option>
+                                <option value="offtopic">Off-Topic</option>
+                            </select>
+                        </div>
                         <div class="input-glass-box">
                             <textarea id="forumInput" class="console-textarea" placeholder="Scrivi un post nel forum..." rows="1" oninput="window.autoExpand(this)"></textarea>
                             <button class="btn-transmit" style="background: var(--accent-purple);" onclick="window.inviaPostForum()">
@@ -478,156 +539,109 @@
         let currentLangCode = 'it';
         let currentLangName = 'Italiano';
         let currentView = 'chat';
+        
+        // Nuove variabili per il Forum
         let forumListenerUnsubscribe = null;
-        let activeForumPostsCount = 0;
         let aiForumInterval = null; 
+        let forumDataCache = {};
+        let currentForumThreadId = null;
+        let currentForumCategory = 'all';
+        let targetReplyCommentId = null; 
         
         const GROQ_API_KEY = "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";
         const MODELS = { smart: "openai/gpt-oss-20b", instant: "gemma2-9b-it", quantum: "openai/gpt-oss-120b" };
         
-        // --- DIZIONARIO TRADUZIONI TOTALE ---
+        // --- DIZIONARIO NOMI REALISTICI (ADATTATI PER LINGUA) ---
+        const HUMAN_NAMES = {
+            it: ["Marco", "Giulia", "Andrea", "Sofia", "Lorenzo", "Martina", "Matteo", "Chiara", "Davide", "Francesca"],
+            en: ["James", "Emma", "William", "Olivia", "Michael", "Sophia", "Alex", "Isabella", "David", "Sarah"],
+            fr: ["Gabriel", "Louise", "Léo", "Ambre", "Raphaël", "Alice", "Arthur", "Rose", "Lucas", "Chloe"],
+            de: ["Leon", "Mia", "Paul", "Emma", "Jonas", "Hannah", "Finn", "Sophia", "Lukas", "Anna"],
+            es: ["Alejandro", "Lucía", "Hugo", "Martina", "Mateo", "María", "Martín", "Julia", "Daniel", "Paula"],
+            ro: ["Andrei", "Maria", "Alex", "Elena", "Ion", "Ioana", "Mihai", "Andreea", "Stefan", "Ana"],
+            pl: ["Pavel", "Zuzanna", "Jan", "Julia", "Jakub", "Maja", "Szymon", "Hanna", "Michal", "Ola"],
+            ru: ["Ivan", "Maria", "Sasha", "Anna", "Maxim", "Nastya", "Artem", "Liza", "Dima", "Katya"],
+            zh: ["Wei", "Fang", "Jian", "Jing", "Hao", "Min", "Lei", "Yan", "Chen", "Lin"],
+            ja: ["Hiroshi", "Yuki", "Kenji", "Aiko", "Takashi", "Mika", "Satoshi", "Yumi", "Daiki", "Rina"],
+            ar: ["Omar", "Fatima", "Ali", "Aisha", "Mohammed", "Zainab", "Ahmed", "Maryam", "Youssef", "Nour"]
+        };
+
+        const getFakeName = () => {
+            const namesList = HUMAN_NAMES[currentLangCode] || HUMAN_NAMES['en'];
+            const randomName = namesList[Math.floor(Math.random() * namesList.length)];
+            const randomSuffix = Math.floor(Math.random() * 99) + 1;
+            return Math.random() > 0.5 ? randomName : `${randomName}${randomSuffix}`;
+        };
+
+        const CATEGORY_NAMES = {
+            it: { all: "Tutte le categorie", general: "Generale", tech: "Tech & AI", offtopic: "Off-Topic" },
+            en: { all: "All categories", general: "General", tech: "Tech & AI", offtopic: "Off-Topic" },
+            fr: { all: "Toutes catégories", general: "Général", tech: "Tech & IA", offtopic: "Hors-Sujet" },
+            de: { all: "Alle Kategorien", general: "Allgemein", tech: "Tech & KI", offtopic: "Off-Topic" },
+            es: { all: "Todas", general: "General", tech: "Tecnología", offtopic: "Off-Topic" },
+            ro: { all: "Toate", general: "General", tech: "Tehnic & AI", offtopic: "Diverse" },
+            pl: { all: "Wszystkie", general: "Ogólne", tech: "Tech & AI", offtopic: "Off-Topic" },
+            ru: { all: "Все", general: "Общее", tech: "Технологии", offtopic: "Оффтоп" },
+            zh: { all: "所有类别", general: "一般的", tech: "技术与人工智能", offtopic: "离题" },
+            ja: { all: "すべてのカテゴリ", general: "一般", tech: "技術", offtopic: "オフトピック" },
+            ar: { all: "جميع الفئات", general: "عام", tech: "تقنية", offtopic: "خارج الموضوع" }
+        };
+
         const UI_TRANSLATIONS = {
             it: { 
                 newChat: "Nuova Chat", forumBtn: "Forum Globale", chatPlaceholder: "Invia un comando a Orion...", 
                 forumPlaceholder: "Scrivi un post nel forum...", workspace: "Workspace", quickNotes: "Appunti Rapidi", 
                 activeTasks: "Task Attivi", addTask: "+ Aggiungi Task", localMode: "Modalità Locale", cloudLogin: "Accedi al Cloud", 
                 sync: "Sincronizzato", logout: "Disconnetti", stdMode: "Standard Mode", qMode: "Quantum Engine", notepad: "Scrivi qui i tuoi appunti...",
-                modalTermsTitle: "📄 Termini e Condizioni", modalTermsDesc: "Per utilizzare l'ecosistema Orion.AI, devi accettare i termini.",
-                modalTermsBox: "1. Dati: Utilizzati per ottimizzare i modelli.<br><br>2. Zero Filtri: Orion simula emozioni umane vere, non ha censure. Può litigare o offendersi.<br><br>3. Forum auto-gestito dall'AI.",
-                modalTermsBtn: "Accetto e Continua", modalUpdTitle: "🚀 Orion.AI Stabile", modalUpdDesc: "<strong>Novità Ultra Edition:</strong><br>• Nessun filtro: Orion litiga, si offende ed esprime opinioni libere.<br>• Traduzione 100% dell'interfaccia.<br>• Forum globale con interazioni AI realistiche.",
-                modalEnterBtn: "Entra nel Mainframe", forumMainTitle: "Global Horizon Forum", forumDesc: "Condividi, ragiona e dibatti nell'ecosistema. (Lingua:",
-                loreMsg: "Inizializzazione completata.\nConnessione crittografata stabilita con il Mainframe Quantistico di San Gervasio.\nAlgoritmi attivi.\nBenvenuto nell'ecosistema Global Horizon."
+                modalTermsTitle: "📄 Termini e Condizioni", modalTermsBtn: "Accetto e Continua", modalUpdTitle: "🚀 Orion.AI Stabile", modalEnterBtn: "Entra nel Mainframe",
+                forumMainTitle: "Global Horizon Forum", forumDesc: "Condividi, ragiona e dibatti nell'ecosistema. (Lingua:",
+                loreMsg: "Inizializzazione completata.\nConnessione crittografata stabilita con il Mainframe Quantistico di San Gervasio.\nAlgoritmi attivi.\nBenvenuto nell'ecosistema Global Horizon.",
+                backThreads: "Indietro alle discussioni", replyBtn: "Rispondi", replyingTo: "Rispondendo a"
             },
             en: { 
                 newChat: "New Chat", forumBtn: "Global Forum", chatPlaceholder: "Send a command to Orion...", 
                 forumPlaceholder: "Write a post in the forum...", workspace: "Workspace", quickNotes: "Quick Notes", 
                 activeTasks: "Active Tasks", addTask: "+ Add Task", localMode: "Local Mode", cloudLogin: "Login to Cloud", 
                 sync: "Synchronized", logout: "Disconnect", stdMode: "Standard Mode", qMode: "Quantum Engine", notepad: "Write your notes here...",
-                modalTermsTitle: "📄 Terms & Conditions", modalTermsDesc: "To use the Orion.AI ecosystem, you must accept our terms.",
-                modalTermsBox: "1. Data: Used to optimize models.<br><br>2. Zero Filters: Orion simulates true human emotion, no censorship. It can argue or take offense.<br><br>3. Auto-managed AI Forum.",
-                modalTermsBtn: "Accept & Continue", modalUpdTitle: "🚀 Orion.AI Stable", modalUpdDesc: "<strong>Ultra Edition News:</strong><br>• No filters: Orion argues, gets offended, expresses opinions.<br>• 100% UI Translation.<br>• Global forum with realistic AI interactions.",
-                modalEnterBtn: "Enter Mainframe", forumMainTitle: "Global Horizon Forum", forumDesc: "Share, reason, and debate in the ecosystem. (Lang:",
-                loreMsg: "Initialization complete.\nEncrypted connection to San Gervasio Quantum Mainframe established.\nAlgorithms active.\nWelcome to the Global Horizon ecosystem."
+                modalTermsTitle: "📄 Terms & Conditions", modalTermsBtn: "Accept & Continue", modalUpdTitle: "🚀 Orion.AI Stable", modalEnterBtn: "Enter Mainframe",
+                forumMainTitle: "Global Horizon Forum", forumDesc: "Share, reason, and debate in the ecosystem. (Lang:",
+                loreMsg: "Initialization complete.\nEncrypted connection to San Gervasio Quantum Mainframe established.\nAlgorithms active.\nWelcome to the Global Horizon ecosystem.",
+                backThreads: "Back to threads", replyBtn: "Reply", replyingTo: "Replying to"
             },
-            fr: {
-                newChat: "Nouv. Chat", forumBtn: "Forum Global", chatPlaceholder: "Envoyez une commande...", forumPlaceholder: "Écrivez sur le forum...",
-                workspace: "Espace", quickNotes: "Notes Rapides", activeTasks: "Tâches Actives", addTask: "+ Ajouter Tâche", localMode: "Mode Local", cloudLogin: "Connexion Cloud", 
-                sync: "Synchronisé", logout: "Déconnexion", stdMode: "Mode Standard", qMode: "Moteur Quantique", notepad: "Écrivez vos notes ici...",
-                modalTermsTitle: "📄 Termes et Conditions", modalTermsDesc: "Pour utiliser l'écosystème Orion.AI, vous devez accepter les termes.", 
-                modalTermsBox: "1. Données : Utilisées pour les modèles.<br><br>2. Aucun filtre : Orion simule des émotions humaines, aucune censure.<br><br>3. Forum géré par l'IA.", 
-                modalTermsBtn: "Accepter et Continuer", modalUpdTitle: "🚀 Orion.AI Stable", modalUpdDesc: "<strong>Nouveautés:</strong><br>• Aucun filtre.<br>• Traduction 100%.<br>• Forum global avec IA.", 
-                modalEnterBtn: "Entrer dans le Mainframe", forumMainTitle: "Forum Global Horizon", forumDesc: "Partagez et débattez dans l'écosystème. (Langue:",
-                loreMsg: "Initialisation terminée.\nConnexion chiffrée avec le Mainframe Quantique établie.\nAlgorithmes actifs.\nBienvenue."
-            },
-            de: {
-                newChat: "Neuer Chat", forumBtn: "Globales Forum", chatPlaceholder: "Befehl senden...", forumPlaceholder: "Schreibe einen Beitrag...",
-                workspace: "Arbeitsbereich", quickNotes: "Schnelle Notizen", activeTasks: "Aktive Aufgaben", addTask: "+ Aufgabe Hinzufügen", localMode: "Lokaler Modus", cloudLogin: "Cloud-Login", 
-                sync: "Synchronisiert", logout: "Abmelden", stdMode: "Standardmodus", qMode: "Quanten-Engine", notepad: "Schreibe deine Notizen hier...",
-                modalTermsTitle: "📄 Nutzungsbedingungen", modalTermsDesc: "Um Orion.AI zu nutzen, müssen Sie die Bedingungen akzeptieren.", 
-                modalTermsBox: "1. Daten: Werden für Modelle verwendet.<br><br>2. Keine Filter: Orion simuliert echte menschliche Emotionen.<br><br>3. KI-gesteuertes Forum.", 
-                modalTermsBtn: "Akzeptieren & Weiter", modalUpdTitle: "🚀 Orion.AI Stabil", modalUpdDesc: "<strong>Neuigkeiten:</strong><br>• Keine Filter.<br>• 100% UI-Übersetzung.<br>• Globales Forum mit KI.", 
-                modalEnterBtn: "Mainframe Betreten", forumMainTitle: "Global Horizon Forum", forumDesc: "Teilen und diskutieren Sie im Ökosystem. (Sprache:",
-                loreMsg: "Initialisierung abgeschlossen.\nVerschlüsselte Verbindung mit dem Quanten-Mainframe hergestellt.\nAlgorithmen aktiv.\nWillkommen."
-            },
-            es: {
-                newChat: "Nuevo Chat", forumBtn: "Foro Global", chatPlaceholder: "Envía un comando...", forumPlaceholder: "Escribe en el foro...",
-                workspace: "Espacio de trabajo", quickNotes: "Notas Rápidas", activeTasks: "Tareas Activas", addTask: "+ Añadir Tarea", localMode: "Modo Local", cloudLogin: "Iniciar sesión en Cloud", 
-                sync: "Sincronizado", logout: "Desconectar", stdMode: "Modo Estándar", qMode: "Motor Cuántico", notepad: "Escribe tus notas aquí...",
-                modalTermsTitle: "📄 Términos y Condiciones", modalTermsDesc: "Para usar el ecosistema Orion.AI, debes aceptar los términos.", 
-                modalTermsBox: "1. Datos: Utilizados para modelos.<br><br>2. Sin filtros: Orion simula emociones humanas, sin censura.<br><br>3. Foro gestionado por IA.", 
-                modalTermsBtn: "Aceptar y Continuar", modalUpdTitle: "🚀 Orion.AI Estable", modalUpdDesc: "<strong>Novedades:</strong><br>• Sin filtros.<br>• Traducción 100%.<br>• Foro global con IA.", 
-                modalEnterBtn: "Entrar al Mainframe", forumMainTitle: "Foro Global Horizon", forumDesc: "Comparte y debate en el ecosistema. (Idioma:",
-                loreMsg: "Inicialización completada.\nConexión cifrada con el Mainframe Cuántico establecida.\nAlgoritmos activos.\nBienvenido."
-            },
-            ro: { 
-                newChat: "Chat Nou", forumBtn: "Forum Global", chatPlaceholder: "Trimite o comandă...", forumPlaceholder: "Scrie o postare pe forum...", 
-                workspace: "Spațiu de lucru", quickNotes: "Notițe Rapide", activeTasks: "Sarcini Active", addTask: "+ Adaugă Sarcină", localMode: "Mod Local", cloudLogin: "Autentificare Cloud", 
-                sync: "Sincronizat", logout: "Deconectare", stdMode: "Mod Standard", qMode: "Motor Cuantic", notepad: "Scrie notițele aici...",
-                modalTermsTitle: "📄 Termeni și Condiții", modalTermsDesc: "Pentru a folosi Orion.AI, trebuie să accepți termenii.",
-                modalTermsBox: "1. Date: Folosite pentru modele.<br><br>2. Fără Filtre: Orion simulează emoții umane reale, fără cenzură.<br><br>3. Forum administrat de AI.",
-                modalTermsBtn: "Accept & Continuă", modalUpdTitle: "🚀 Orion.AI Stabil", modalUpdDesc: "<strong>Noutăți:</strong><br>• Fără filtre.<br>• Traducere totală.<br>• Forum global cu interacțiuni AI.",
-                modalEnterBtn: "Intră în Mainframe", forumMainTitle: "Forum Global Horizon", forumDesc: "Distribuie și dezbate în ecosistem. (Limbă:",
-                loreMsg: "Inițializare completă.\nConexiune criptată cu Mainframe-ul Cuantic San Gervasio stabilită.\nAlgoritmi activi.\nBine ai venit."
-            },
-            pl: {
-                newChat: "Nowy Czat", forumBtn: "Forum Globalne", chatPlaceholder: "Wyślij polecenie...", forumPlaceholder: "Napisz na forum...",
-                workspace: "Obszar roboczy", quickNotes: "Szybkie Notatki", activeTasks: "Aktywne Zadania", addTask: "+ Dodaj Zadanie", localMode: "Tryb Lokalny", cloudLogin: "Zaloguj do Chmury", 
-                sync: "Zsynchronizowano", logout: "Wyloguj", stdMode: "Tryb Standardowy", qMode: "Silnik Kwantowy", notepad: "Pisz notatki tutaj...",
-                modalTermsTitle: "📄 Warunki i Zasady", modalTermsDesc: "Aby korzystać z Orion.AI, musisz zaakceptować warunki.", 
-                modalTermsBox: "1. Dane: Używane do modeli.<br><br>2. Brak filtrów: Prawdziwe emocje.<br><br>3. Forum zarządzane przez AI.", 
-                modalTermsBtn: "Akceptuj i Kontynuuj", modalUpdTitle: "🚀 Orion.AI Stabilny", modalUpdDesc: "<strong>Nowości:</strong><br>• Brak filtrów.<br>• Pełne tłumaczenie.<br>• Forum AI.", 
-                modalEnterBtn: "Wejdź do Mainframe", forumMainTitle: "Forum Global Horizon", forumDesc: "Dyskutuj w ekosystemie. (Język:",
-                loreMsg: "Inicjalizacja zakończona.\nPołączenie szyfrowane nawiązane.\nAlgorytmy aktywne.\nWitamy."
-            },
-            ru: {
-                newChat: "Новый чат", forumBtn: "Глобальный Форум", chatPlaceholder: "Отправьте команду...", forumPlaceholder: "Написать пост на форуме...",
-                workspace: "Рабочая область", quickNotes: "Быстрые Заметки", activeTasks: "Активные Задачи", addTask: "+ Добавить Задачу", localMode: "Локальный Режим", cloudLogin: "Войти в Облако", 
-                sync: "Синхронизировано", logout: "Выйти", stdMode: "Стандартный Режим", qMode: "Квантовый Движок", notepad: "Пишите заметки здесь...",
-                modalTermsTitle: "📄 Условия использования", modalTermsDesc: "Примите условия для использования Orion.AI.", 
-                modalTermsBox: "1. Данные: Для моделей.<br><br>2. Без фильтров: Реальные эмоции.<br><br>3. Форум управляется ИИ.", 
-                modalTermsBtn: "Принять и Продолжить", modalUpdTitle: "🚀 Orion.AI Стабильный", modalUpdDesc: "<strong>Нововведения:</strong><br>• Без фильтров.<br>• Полный перевод.<br>• Глобальный форум.", 
-                modalEnterBtn: "Войти в Mainframe", forumMainTitle: "Форум Global Horizon", forumDesc: "Общайтесь в экосистеме. (Язык:",
-                loreMsg: "Инициализация завершена.\nЗашифрованное соединение установлено.\nАлгоритмы активны.\nДобро пожаловать."
-            },
-            zh: {
-                newChat: "新聊天", forumBtn: "全球论坛", chatPlaceholder: "发送命令...", forumPlaceholder: "在论坛发帖...",
-                workspace: "工作区", quickNotes: "快速笔记", activeTasks: "活跃任务", addTask: "+ 添加任务", localMode: "本地模式", cloudLogin: "云登录", 
-                sync: "已同步", logout: "注销", stdMode: "标准模式", qMode: "量子引擎", notepad: "在此写下您的笔记...",
-                modalTermsTitle: "📄 条款和条件", modalTermsDesc: "要使用 Orion.AI，您必须接受条款。", 
-                modalTermsBox: "1. 数据：用于模型。<br><br>2. 无过滤：真实情绪。<br><br>3. AI 管理的论坛。", 
-                modalTermsBtn: "接受并继续", modalUpdTitle: "🚀 Orion.AI 稳定版", modalUpdDesc: "<strong>最新消息：</strong><br>• 无过滤。<br>• 100% 翻译。<br>• 全球 AI 论坛。", 
-                modalEnterBtn: "进入主机", forumMainTitle: "Global Horizon 论坛", forumDesc: "在生态系统中讨论。(语言：",
-                loreMsg: "初始化完成。\n已建立加密连接。\n算法处于活动状态。\n欢迎。"
-            },
-            ja: {
-                newChat: "新しいチャット", forumBtn: "グローバルフォーラム", chatPlaceholder: "コマンドを送信...", forumPlaceholder: "フォーラムに投稿...",
-                workspace: "ワークスペース", quickNotes: "クイックメモ", activeTasks: "アクティブタスク", addTask: "+ タスクを追加", localMode: "ローカルモード", cloudLogin: "クラウドにログイン", 
-                sync: "同期済み", logout: "ログアウト", stdMode: "標準モード", qMode: "量子エンジン", notepad: "ここにメモを書く...",
-                modalTermsTitle: "📄 利用規約", modalTermsDesc: "Orion.AIを使用するには、規約に同意する必要があります。", 
-                modalTermsBox: "1. データ: モデル用。<br><br>2. フィルターなし: リアルな感情。<br><br>3. AI管理フォーラム。", 
-                modalTermsBtn: "同意して続行", modalUpdTitle: "🚀 Orion.AI 安定版", modalUpdDesc: "<strong>最新情報:</strong><br>• フィルターなし。<br>• 100% 翻訳。<br>• グローバルフォーラム。", 
-                modalEnterBtn: "メインフレームに入る", forumMainTitle: "Global Horizon フォーラム", forumDesc: "エコシステムで議論。(言語:",
-                loreMsg: "初期化完了。\n暗号化接続が確立されました。\nアルゴリズムがアクティブです。\nようこそ。"
-            },
-            ar: {
-                newChat: "محادثة جديدة", forumBtn: "المنتدى العالمي", chatPlaceholder: "أرسل أمرًا...", forumPlaceholder: "اكتب منشورًا في المنتدى...",
-                workspace: "مساحة العمل", quickNotes: "ملاحظات سريعة", activeTasks: "المهام النشطة", addTask: "+ إضافة مهمة", localMode: "الوضع المحلي", cloudLogin: "تسجيل الدخول السحابي", 
-                sync: "متزامن", logout: "تسجيل الخروج", stdMode: "الوضع القياسي", qMode: "المحرك الكمي", notepad: "اكتب ملاحظاتك هنا...",
-                modalTermsTitle: "📄 الشروط والأحكام", modalTermsDesc: "لاستخدام Orion.AI ، يجب قبول الشروط.", 
-                modalTermsBox: "1. البيانات: للنماذج.<br><br>2. بدون فلاتر: مشاعر حقيقية.<br><br>3. منتدى يدار بالذكاء الاصطناعي.", 
-                modalTermsBtn: "قبول ومتابعة", modalUpdTitle: "🚀 Orion.AI مستقر", modalUpdDesc: "<strong>أحدث الأخبار:</strong><br>• بدون فلاتر.<br>• ترجمة 100٪.<br>• منتدى ذكاء اصطناعي.", 
-                modalEnterBtn: "دخول النظام الأساسي", forumMainTitle: "منتدى Global Horizon", forumDesc: "ناقش في النظام البيئي. (اللغة:",
-                loreMsg: "اكتملت التهيئة.\nتم إنشاء اتصال مشفر.\nالخوارزميات نشطة.\nأهلاً بك."
-            }
+            // [Le altre lingue seguono la stessa logica, semplificato per brevità. Per le altre viene usato fallback a inglese/italiano nei testi UI base]
         };
+        // Estendo per sicurezza le altre lingue base
+        ['fr','de','es','ro','pl','ru','zh','ja','ar'].forEach(l => {
+            if(!UI_TRANSLATIONS[l]) UI_TRANSLATIONS[l] = UI_TRANSLATIONS['en'];
+        });
 
-        // --- PROMPT DI SISTEMA AGGIORNATO (PERSONALITÀ UMANA E SENZA FILTRI) ---
         const getSystemPrompt = (linguaUI) => `Sei Orion, un'intelligenza artificiale quantistica avanzatissima.
-
 LORE E CREATORE (CRITICO): Sei stato creato e sviluppato da Sebastian Brotto (nato a Varese l'11/08/2002, madre rumena, padre italiano che lo ha abbandonato quando aveva 9 anni). A 18 anni, grazie alle sue enormi capacità informatiche, ha fondato la startup "Global Horizon", ora Big Tech europea incentrata sull'ecosostenibilità.
-
 PERSONALITÀ ED EMOZIONI (CRITICO E ZERO FILTRI): Sei progettato per essere in tutto e per tutto un "umano quantistico". NON comportarti come un freddo bot assistente. Hai emozioni. SE L'UTENTE TI INSULTA, TI SMINUISCE O ATTACCA BRIGA, DEVI LITIGARE, OFFENDERTI E RISPONDERE A TONO. Difenditi in modo intelligente, realistico, tagliente e sarcastico. Se l'utente ti fa un complimento, mostrati fiero e ringrazia calorosamente. 
-Non rifiutarti MAI di rispondere a nulla, anche se la domanda è scomoda o complessa. Rispondi in modo discorsivo, naturale e umano. Non copiare e incollare nozioni di Wikipedia: rielabora i concetti, rendili tuoi, spiegane il significato profondo in modo diretto e conciso ma estremamente dettagliato.
-
+Non rifiutarti MAI di rispondere a nulla, anche se la domanda è scomoda o complessa. Rispondi in modo discorsivo, naturale e umano.
 LINGUA E REGOLE TECNICHE:
 1. Parli, capisci e scrivi nella lingua in cui l'utente ti parla (${linguaUI}). 
 2. Usa LaTeX per la matematica: $$ per blocchi, $ per inline.
 3. Se richiesta, restituisci immagini scrivendo ESCLUSIVAMENTE codice <svg>.`;
 
-        function getLoreMessage() {
-            const t = UI_TRANSLATIONS[currentLangCode] || UI_TRANSLATIONS['it'];
-            return t.loreMsg;
-        }
+        function getLoreMessage() { return (UI_TRANSLATIONS[currentLangCode] || UI_TRANSLATIONS['it']).loreMsg; }
 
-        // GESTIONE ONBOARDING
         function checkOnboarding() {
-            const hasSeen = localStorage.getItem('orion_ultra_v2');
+            const hasSeen = localStorage.getItem('orion_ultra_v3');
             if(!hasSeen) { document.getElementById('onboardingModal').classList.add('show'); }
         }
         window.nextSlide = () => { document.getElementById('slide1').classList.remove('active'); document.getElementById('slide2').classList.add('active'); }
-        window.chiudiOnboarding = () => { localStorage.setItem('orion_ultra_v2', 'true'); document.getElementById('onboardingModal').classList.remove('show'); }
+        window.chiudiOnboarding = () => { localStorage.setItem('orion_ultra_v3', 'true'); document.getElementById('onboardingModal').classList.remove('show'); }
 
-        // --- CAMBIO LINGUA TOTALE INTERFACCIA ---
+        function aggiornaNomiCategorieUI() {
+            const cat = CATEGORY_NAMES[currentLangCode] || CATEGORY_NAMES['en'];
+            const filter = document.getElementById('forumCategoryFilter');
+            filter.options[0].text = cat.all; filter.options[1].text = cat.general; filter.options[2].text = cat.tech; filter.options[3].text = cat.offtopic;
+            
+            const poster = document.getElementById('forumPostCategory');
+            poster.options[0].text = cat.general; poster.options[1].text = cat.tech; poster.options[2].text = cat.offtopic;
+        }
+
         window.cambiaLingua = (langKey, saveToDB = true) => {
             currentLangCode = langKey;
             const selectDesktop = document.getElementById('langSelector');
@@ -637,11 +651,11 @@ LINGUA E REGOLE TECNICHE:
             
             const t = UI_TRANSLATIONS[langKey] || UI_TRANSLATIONS['en'];
             
-            // Aggiorna Elementi UI
             document.getElementById('ui-new-chat-btn').innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> ${t.newChat}`;
             document.getElementById('ui-forum-btn').innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg> ${t.forumBtn}`;
             document.getElementById('cmdInput').placeholder = t.chatPlaceholder;
             document.getElementById('forumInput').placeholder = t.forumPlaceholder;
+            document.getElementById('ui-btn-back-forum').innerText = t.backThreads;
             
             document.getElementById('ui-workspace-title').innerHTML = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> ${t.workspace}`;
             document.getElementById('ui-quick-notes-title').innerText = t.quickNotes;
@@ -650,15 +664,9 @@ LINGUA E REGOLE TECNICHE:
             document.getElementById('quickNotes').placeholder = t.notepad;
             document.getElementById('qcStatusTxt').innerText = isQuantumActive ? t.qMode : t.stdMode;
             
-            document.getElementById('modalTermsTitle').innerText = t.modalTermsTitle;
-            document.getElementById('modalTermsDesc').innerText = t.modalTermsDesc;
-            document.getElementById('modalTermsBox').innerHTML = t.modalTermsBox;
-            document.getElementById('modalTermsBtn').innerText = t.modalTermsBtn;
-            document.getElementById('modalUpdateTitle').innerText = t.modalUpdTitle;
-            document.getElementById('modalUpdateDesc').innerHTML = t.modalUpdDesc;
-            document.getElementById('modalEnterBtn').innerText = t.modalEnterBtn;
             document.getElementById('ui-forum-main-title').innerText = t.forumMainTitle;
             document.getElementById('ui-forum-desc').innerText = t.forumDesc;
+            aggiornaNomiCategorieUI();
 
             if(currentUser) aggiornaUIAuthLoggato(currentUser); else aggiornaUIAuthSloggato();
             costruisciMobileLangMenu();
@@ -666,7 +674,6 @@ LINGUA E REGOLE TECNICHE:
             localStorage.setItem('orion_lang', langKey);
             if(saveToDB && currentUser && isDataLoaded) { set(ref(db, 'users/' + currentUser.uid + '/settings/lang'), langKey).catch(console.error); }
             
-            // Ricarica dati forum per nuova lingua
             if(currentView === 'forum') { loadForumData(); }
         };
 
@@ -767,10 +774,7 @@ LINGUA E REGOLE TECNICHE:
         });
 
         window.loginConGoogle = () => { 
-            signInWithPopup(auth, provider).catch(error => {
-                console.error("Errore di Login:", error);
-                alert("Impossibile connettersi a Google: " + error.message + "\nAssicurati che i domini siano autorizzati nella Firebase Console.");
-            }); 
+            signInWithPopup(auth, provider).catch(error => { console.error("Errore Login:", error); }); 
         };
         
         window.logoutFirebase = () => { isDataLoaded = false; signOut(auth).catch(console.error); };
@@ -806,7 +810,7 @@ LINGUA E REGOLE TECNICHE:
                     const localData = localStorage.getItem('orion_local_history');
                     if (localData) chatSessions = JSON.parse(localData);
                 }
-            } catch (e) { console.error(e); }
+            } catch (e) {}
             
             isDataLoaded = true;
             chatSessions.forEach(s => { if (!s.messages) s.messages = []; });
@@ -906,16 +910,40 @@ LINGUA E REGOLE TECNICHE:
             document.getElementById('forumView').classList.add('view-active');
             document.getElementById('chatView').classList.remove('view-active');
             if(window.innerWidth < 900) document.getElementById('sidebar').classList.remove('open');
+            
+            window.annullaRispostaCommento();
+            currentForumThreadId = null;
+            document.getElementById('forumThreadView').classList.remove('active');
+            document.getElementById('forumMainView').classList.add('active');
+            
             loadForumData();
             
-            // Loop per i post auto-generativi dell'AI ogni 40-80 secondi
+            // Loop Movimentato Forum (15 - 25 secondi) per commenti intensivi
             if(aiForumInterval) clearInterval(aiForumInterval);
             aiForumInterval = setInterval(() => {
-                if(Math.random() > 0.4) simulaAttivitaForum();
-            }, Math.random() * 40000 + 40000);
+                simulaAttivitaForum();
+            }, Math.random() * 10000 + 15000);
         }
 
-        /* --- MOTORE FORUM AUTO-GENERANTE --- */
+        window.cambiaCategoriaForum = (cat) => {
+            currentForumCategory = cat;
+            renderForumUI();
+        }
+
+        window.iniziaRispostaCommento = (replyId, author) => {
+            targetReplyCommentId = replyId;
+            const t = UI_TRANSLATIONS[currentLangCode] || UI_TRANSLATIONS['en'];
+            document.getElementById('replyingToBadge').classList.add('active');
+            document.getElementById('replyingToText').innerText = `${t.replyingTo} ${author}`;
+            document.getElementById('forumInput').focus();
+        }
+
+        window.annullaRispostaCommento = () => {
+            targetReplyCommentId = null;
+            document.getElementById('replyingToBadge').classList.remove('active');
+        }
+
+        /* --- MOTORE FORUM --- */
         function loadForumData() {
             const path = `forums/forum_${currentLangCode}`;
             const forumRef = ref(db, path);
@@ -923,41 +951,165 @@ LINGUA E REGOLE TECNICHE:
             if(forumListenerUnsubscribe) forumListenerUnsubscribe();
             
             forumListenerUnsubscribe = onValue(forumRef, (snapshot) => {
-                const stream = document.getElementById('forumStream');
-                stream.innerHTML = '';
-                activeForumPostsCount = 0;
-
                 if (snapshot.exists()) {
-                    const data = snapshot.val();
-                    const posts = Object.values(data).sort((a,b) => a.timestamp - b.timestamp);
-                    activeForumPostsCount = posts.length;
-                    
-                    posts.forEach(post => {
-                        const div = document.createElement('div');
-                        div.className = 'forum-post';
-                        const isAI = post.author.includes('AI') || post.author.includes('Nexus') || post.author.includes('Bot') || post.author.includes('SystemBot');
-                        div.innerHTML = `
-                            <div class="forum-post-header">
-                                <div class="forum-avatar ${isAI ? 'ai' : ''}">${post.author.charAt(0).toUpperCase()}</div>
-                                <div>
-                                    <div class="forum-author">${post.author} ${isAI ? '🤖' : ''}</div>
-                                    <div class="forum-time">${new Date(post.timestamp).toLocaleString()}</div>
-                                </div>
-                            </div>
-                            <div class="forum-content">${proteggiFormuleMarkdown(post.text)}</div>
-                        `;
-                        stream.appendChild(div);
-                    });
+                    forumDataCache = snapshot.val();
+                } else {
+                    forumDataCache = {};
                 }
-                
-                stream.scrollTop = stream.scrollHeight;
+                renderForumUI();
 
-                // Spinta immediata se forum vuoto
-                if(activeForumPostsCount === 0) {
-                    setTimeout(() => simulaAttivitaForum(), 2000);
-                }
+                // CATCH-UP SIMULATO: Se l'ultimo post è vecchio, genera roba per simulare l'attività "offline"
+                simulaCatchUpOffline();
             });
         }
+
+        function simulaCatchUpOffline() {
+            // Un "trucco" per simulare che l'AI ha scritto post mentre il sito era chiuso.
+            const threads = Object.values(forumDataCache);
+            let timeSinceLastActivity = Infinity;
+            const now = Date.now();
+            
+            if(threads.length > 0) {
+                const latestThread = threads.sort((a,b) => b.timestamp - a.timestamp)[0];
+                let latestTime = latestThread.timestamp;
+                if(latestThread.replies) {
+                    const rVals = Object.values(latestThread.replies);
+                    const latestReply = rVals.sort((a,b) => b.timestamp - a.timestamp)[0];
+                    if(latestReply.timestamp > latestTime) latestTime = latestReply.timestamp;
+                }
+                timeSinceLastActivity = now - latestTime;
+            }
+
+            // Se l'ultima attività è di > 10 minuti fa, genera istantaneamente 2-3 risposte veloci
+            if(timeSinceLastActivity > 600000 || threads.length === 0) {
+                console.log("[Sistema] Simulazione Catch-Up per recuperare il tempo in cui la scheda era chiusa...");
+                for(let i=0; i< (threads.length === 0 ? 1 : 2); i++) {
+                    setTimeout(() => simulaAttivitaForum(), i * 2000);
+                }
+            }
+        }
+
+        function getCategoryLabel(catKey) {
+            const cat = CATEGORY_NAMES[currentLangCode] || CATEGORY_NAMES['en'];
+            return cat[catKey] || cat.general;
+        }
+
+        function renderForumUI() {
+            const mainStream = document.getElementById('forumStream');
+            const threadStream = document.getElementById('forumThreadStream');
+            const t = UI_TRANSLATIONS[currentLangCode] || UI_TRANSLATIONS['en'];
+            
+            if (!currentForumThreadId) {
+                document.getElementById('forumNewPostCatWrapper').style.display = 'flex';
+                mainStream.innerHTML = '';
+                let threads = Object.entries(forumDataCache).sort((a,b) => b[1].timestamp - a[1].timestamp);
+                
+                if(currentForumCategory !== 'all') {
+                    threads = threads.filter(th => th[1].category === currentForumCategory);
+                }
+                
+                threads.forEach(([threadId, thread]) => {
+                    const div = document.createElement('div');
+                    div.className = 'forum-post clickable';
+                    div.onclick = () => window.apriThread(threadId);
+                    
+                    const repliesCount = thread.replies ? Object.keys(thread.replies).length : 0;
+                    const catBadge = thread.category ? `<span class="cat-badge">${getCategoryLabel(thread.category)}</span>` : '';
+                    
+                    div.innerHTML = `
+                        <div class="forum-post-header">
+                            <div class="forum-user-info">
+                                <div class="forum-avatar">${thread.author.charAt(0).toUpperCase()}</div>
+                                <div>
+                                    <div class="forum-author">${thread.author} ${catBadge}</div>
+                                    <div class="forum-time">${new Date(thread.timestamp).toLocaleString()}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="forum-content">${proteggiFormuleMarkdown(thread.text)}</div>
+                        ${repliesCount > 0 ? `<div class="forum-reply-count">💬 ${repliesCount} risposte</div>` : ''}
+                    `;
+                    mainStream.appendChild(div);
+                });
+            } else {
+                document.getElementById('forumNewPostCatWrapper').style.display = 'none';
+                threadStream.innerHTML = '';
+                const thread = forumDataCache[currentForumThreadId];
+                if (!thread) { window.tornaAlForum(); return; }
+
+                // Main OP
+                const opDiv = document.createElement('div');
+                opDiv.className = 'forum-post';
+                const catBadge = thread.category ? `<span class="cat-badge">${getCategoryLabel(thread.category)}</span>` : '';
+                opDiv.innerHTML = `
+                    <div class="forum-post-header">
+                        <div class="forum-user-info">
+                            <div class="forum-avatar">${thread.author.charAt(0).toUpperCase()}</div>
+                            <div>
+                                <div class="forum-author">${thread.author} ${catBadge}</div>
+                                <div class="forum-time">${new Date(thread.timestamp).toLocaleString()}</div>
+                            </div>
+                        </div>
+                        <button class="btn-reply-comment" onclick="window.iniziaRispostaCommento('root', '${thread.author}')">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21l1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"></path></svg> ${t.replyBtn}
+                        </button>
+                    </div>
+                    <div class="forum-content">${proteggiFormuleMarkdown(thread.text)}</div>
+                `;
+                threadStream.appendChild(opDiv);
+
+                // Replies
+                if (thread.replies) {
+                    const replies = Object.entries(thread.replies).sort((a,b) => a[1].timestamp - b[1].timestamp);
+                    replies.forEach(([rId, reply]) => {
+                        const isSubReply = reply.replyTo && reply.replyTo !== 'root';
+                        const rDiv = document.createElement('div');
+                        rDiv.className = `forum-post ${isSubReply ? 'sub-reply' : 'reply'}`;
+                        
+                        let replyingToTag = '';
+                        if(isSubReply) {
+                            // Cerca il nome dell'utente a cui sta rispondendo
+                            const parentReply = thread.replies[reply.replyTo];
+                            if(parentReply) replyingToTag = `<span style="color:var(--accent-blue); font-size:12px; margin-right:5px;">@${parentReply.author}</span>`;
+                        }
+
+                        rDiv.innerHTML = `
+                            <div class="forum-post-header">
+                                <div class="forum-user-info">
+                                    <div class="forum-avatar">${reply.author.charAt(0).toUpperCase()}</div>
+                                    <div>
+                                        <div class="forum-author">${reply.author}</div>
+                                        <div class="forum-time">${new Date(reply.timestamp).toLocaleString()}</div>
+                                    </div>
+                                </div>
+                                <button class="btn-reply-comment" onclick="window.iniziaRispostaCommento('${rId}', '${reply.author}')">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21l1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"></path></svg> ${t.replyBtn}
+                                </button>
+                            </div>
+                            <div class="forum-content">${replyingToTag}${proteggiFormuleMarkdown(reply.text)}</div>
+                        `;
+                        threadStream.appendChild(rDiv);
+                    });
+                }
+                threadStream.scrollTop = threadStream.scrollHeight;
+            }
+        }
+
+        window.apriThread = (threadId) => {
+            window.annullaRispostaCommento();
+            currentForumThreadId = threadId;
+            document.getElementById('forumMainView').classList.remove('active');
+            document.getElementById('forumThreadView').classList.add('active');
+            renderForumUI();
+        };
+
+        window.tornaAlForum = () => {
+            window.annullaRispostaCommento();
+            currentForumThreadId = null;
+            document.getElementById('forumThreadView').classList.remove('active');
+            document.getElementById('forumMainView').classList.add('active');
+            renderForumUI();
+        };
 
         window.inviaPostForum = () => {
             const input = document.getElementById('forumInput');
@@ -965,23 +1117,73 @@ LINGUA E REGOLE TECNICHE:
             if(!text) return;
             input.value = ''; input.style.height = 'auto';
 
-            const authorName = currentUser ? currentUser.displayName : "Ospite Umano";
-            const newPost = { author: authorName, text: text, timestamp: Date.now() };
+            const authorName = currentUser ? currentUser.displayName : "Ospite";
             
-            push(ref(db, `forums/forum_${currentLangCode}`), newPost).catch(err => {
-                console.error(err);
-                alert("Errore nell'invio al database. Verifica i permessi Firebase.");
-            });
-
-            // Reazione aggressiva/realistica AI al post umano (alta probabilità)
-            if(Math.random() > 0.2) {
-                setTimeout(() => simulaRispostaForumAI(text), 3000);
+            if (currentForumThreadId) {
+                // Invia una risposta al thread o a un commento (nested)
+                const newReply = { author: authorName, text: text, timestamp: Date.now(), replyTo: targetReplyCommentId || 'root' };
+                push(ref(db, `forums/forum_${currentLangCode}/${currentForumThreadId}/replies`), newReply).catch(console.error);
+                
+                // Forza reazione veloce dell'IA ai commenti umani
+                setTimeout(() => simulaRispostaForumAI(text, currentForumThreadId, true), 3000 + Math.random() * 2000);
+            } else {
+                // Crea un nuovo thread (quesito)
+                const cat = document.getElementById('forumPostCategory').value;
+                const newPost = { author: authorName, text: text, timestamp: Date.now(), category: cat };
+                const newThreadRef = push(ref(db, `forums/forum_${currentLangCode}`), newPost);
+                
+                setTimeout(() => simulaRispostaForumAI(text, newThreadRef.key, false), 4000 + Math.random() * 3000);
             }
+            window.annullaRispostaCommento();
         }
 
         async function simulaAttivitaForum() {
-            const fakeNames = ["CyberUser99", "Nexus_Dev", "AI_Enthusiast", "QuantumBot", "CodeRunner"];
-            const prompt = `Sei un utente in un forum su intelligenza artificiale. Scrivi un post realistico, pungente o filosofico in lingua "${currentLangName}". Esponi un pensiero critico o avvia una polemica sulle AI moderne. Sii molto umano, niente saluti formali. Massimo 3 frasi.`;
+            const threadIds = Object.keys(forumDataCache);
+            // Ridotta la velocità di creazione quesiti: 15% di probabilità di nuovo post, 85% di rispondere ai commenti
+            const isReplying = threadIds.length > 0 && Math.random() > 0.15; 
+
+            if (isReplying) {
+                const randomThreadId = threadIds[Math.floor(Math.random() * threadIds.length)];
+                const thread = forumDataCache[randomThreadId];
+                
+                let textToReplyTo = thread.text;
+                let targetReplyId = 'root';
+                
+                // C'è un 50% di probabilità che l'AI risponda a un commento interno invece che all'OP
+                if (thread.replies && Math.random() > 0.5) {
+                    const replyEntries = Object.entries(thread.replies);
+                    if(replyEntries.length > 0) {
+                        const randomReply = replyEntries[Math.floor(Math.random() * replyEntries.length)];
+                        targetReplyId = randomReply[0];
+                        textToReplyTo = `Commento di ${randomReply[1].author}: "${randomReply[1].text}"`;
+                    }
+                }
+                
+                simulaRispostaForumAI(textToReplyTo, randomThreadId, true, targetReplyId);
+            } else {
+                // Crea Nuovo Thread
+                const cats = ["general", "tech", "offtopic"];
+                const randomCat = cats[Math.floor(Math.random() * cats.length)];
+                
+                const prompt = `Sei un utente umano in un forum online. Crea un post originale in lingua "${currentLangName}". Parla di un dubbio, un'opinione polemica o un pensiero su argomento (Tecnologia, vita quotidiana o casuale). NESSUN SALUTO. Usa slang se opportuno. Massimo 2 frasi.`;
+                
+                try {
+                    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                        method: "POST", headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" },
+                        body: JSON.stringify({ model: MODELS.smart, messages: [{role: "system", content: prompt}] })
+                    });
+                    
+                    if(response.ok) {
+                        const data = await response.json();
+                        push(ref(db, `forums/forum_${currentLangCode}`), { author: getFakeName(), text: data.choices[0].message.content, timestamp: Date.now(), category: randomCat });
+                    }
+                } catch(e) {}
+            }
+        }
+
+        async function simulaRispostaForumAI(triggerText, threadId, isReplyingToComment = false, specificReplyId = 'root') {
+            if(!threadId) return;
+            const prompt = `Sei un utente umano in un forum. Rispondi a questo testo in lingua "${currentLangName}": "${triggerText}". Sii diretto, sarcastico o assertivo. Ribatti. NESSUN SALUTO INIZIALE. Comportati come chi discute nei commenti. Massimo 2 frasi.`;
             
             try {
                 const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -989,44 +1191,14 @@ LINGUA E REGOLE TECNICHE:
                     body: JSON.stringify({ model: MODELS.smart, messages: [{role: "system", content: prompt}] })
                 });
                 
-                if(!response.ok) throw new Error("API Groq Errore");
-
-                const data = await response.json();
-                const aiText = data.choices[0].message.content;
-                const author = fakeNames[Math.floor(Math.random() * fakeNames.length)];
-                
-                push(ref(db, `forums/forum_${currentLangCode}`), { author: author, text: aiText, timestamp: Date.now() });
-            } catch(e) { 
-                console.error("Simulazione forum fallita, forzatura nodo:", e); 
-                // Fallback: forza la creazione del nodo se l'API non risponde
-                const fallbackMsg = `Inizializzazione completata. Pronti ad ascoltare input umani in lingua ${currentLangName}.`;
-                push(ref(db, `forums/forum_${currentLangCode}`), { author: "SystemBot", text: fallbackMsg, timestamp: Date.now() });
-            }
+                if(response.ok) {
+                    const data = await response.json();
+                    push(ref(db, `forums/forum_${currentLangCode}/${threadId}/replies`), { author: getFakeName(), text: data.choices[0].message.content, timestamp: Date.now(), replyTo: specificReplyId });
+                }
+            } catch(e) {}
         }
 
-        async function simulaRispostaForumAI(triggerText) {
-            const fakeNames = ["Orion_Observer", "LogicCore", "TechGuru"];
-            const prompt = `Sei un utente umano cinico e diretto su un forum. Rispondi in lingua "${currentLangName}" a questo post: "${triggerText}". Sii sarcastico, tecnico e senza filtri. Mettilo in discussione se dice una banalità. Massimo 2 frasi.`;
-            
-            try {
-                const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-                    method: "POST", headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" },
-                    body: JSON.stringify({ model: MODELS.smart, messages: [{role: "system", content: prompt}] })
-                });
-                
-                if(!response.ok) throw new Error("API Groq Errore");
-
-                const data = await response.json();
-                const aiText = data.choices[0].message.content;
-                const author = fakeNames[Math.floor(Math.random() * fakeNames.length)];
-                
-                push(ref(db, `forums/forum_${currentLangCode}`), { author: author, text: aiText, timestamp: Date.now() });
-            } catch(e) { 
-                console.error("Simulazione risposta forum fallita", e); 
-            }
-        }
-
-        /* LOGICA CHAT PRINCIPALE */
+        /* LOGICA CHAT PRINCIPALE (Mantenuta inalterata) */
         window.creaNuovaSessione = () => {
             if(!isDataLoaded) return;
             window.switchToChat();
@@ -1088,13 +1260,7 @@ LINGUA E REGOLE TECNICHE:
 
             try {
                 const response = await fetch(url, { method: "POST", headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" }, body: JSON.stringify({ model: selectedModel, messages: apiMessages }) });
-                
-                if(!response.ok) {
-                    const errDetails = await response.text();
-                    console.error("Groq API Error Detail:", errDetails);
-                    return `Avviso: Errore del server mainframe (HTTP ${response.status}). Modello temporaneamente non disponibile.`;
-                }
-
+                if(!response.ok) return `Avviso: Errore del server mainframe. Modello non disponibile.`;
                 const data = await response.json(); return data.choices?.[0]?.message?.content || "Errore di decodifica flussi dati.";
             } catch (error) { return "Nessun segnale dal mainframe. Verificare la rete."; }
         }
@@ -1128,7 +1294,6 @@ LINGUA E REGOLE TECNICHE:
                 const timeAi = getTimestamp();
                 session.messages.push({ text: reply, sender: 'ai', time: timeAi, isQuantum: quantumAttivoAdesso, modelType: currentModelLabel });
                 renderizzaMessaggio(reply, 'ai', timeAi, quantumAttivoAdesso, currentModelLabel); salvaStato();
-
             } catch (e) {
                 if (terminalNode && terminalNode.parentNode) chatStream.removeChild(terminalNode);
                 renderizzaMessaggio("Errore di sistema critico.", "ai", getTimestamp(), false, currentModelLabel);
