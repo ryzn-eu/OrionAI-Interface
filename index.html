@@ -480,7 +480,7 @@
         let currentView = 'chat';
         let forumListenerUnsubscribe = null;
         let activeForumPostsCount = 0;
-        let aiForumInterval = null; // Intervallo per post automatici AI
+        let aiForumInterval = null; 
         
         const GROQ_API_KEY = "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";
         const MODELS = { smart: "openai/gpt-oss-20b", instant: "gemma2-9b-it", quantum: "openai/gpt-oss-120b" };
@@ -493,7 +493,7 @@
                 activeTasks: "Task Attivi", addTask: "+ Aggiungi Task", localMode: "Modalità Locale", cloudLogin: "Accedi al Cloud", 
                 sync: "Sincronizzato", logout: "Disconnetti", stdMode: "Standard Mode", qMode: "Quantum Engine", notepad: "Scrivi qui i tuoi appunti...",
                 modalTermsTitle: "📄 Termini e Condizioni", modalTermsDesc: "Per utilizzare l'ecosistema Orion.AI, devi accettare i termini.",
-                modalTermsBox: "1. Dati: Utilizzati per i modelli.<br><br>2. Zero Filtri: Orion simula emozioni umane vere, non ha censure. Può litigare o offendersi.<br><br>3. Forum auto-gestito dall'AI.",
+                modalTermsBox: "1. Dati: Utilizzati per ottimizzare i modelli.<br><br>2. Zero Filtri: Orion simula emozioni umane vere, non ha censure. Può litigare o offendersi.<br><br>3. Forum auto-gestito dall'AI.",
                 modalTermsBtn: "Accetto e Continua", modalUpdTitle: "🚀 Orion.AI Stabile", modalUpdDesc: "<strong>Novità Ultra Edition:</strong><br>• Nessun filtro: Orion litiga, si offende ed esprime opinioni libere.<br>• Traduzione 100% dell'interfaccia.<br>• Forum globale con interazioni AI realistiche.",
                 modalEnterBtn: "Entra nel Mainframe", forumMainTitle: "Global Horizon Forum", forumDesc: "Condividi, ragiona e dibatti nell'ecosistema. (Lingua:",
                 loreMsg: "Inizializzazione completata.\nConnessione crittografata stabilita con il Mainframe Quantistico di San Gervasio.\nAlgoritmi attivi.\nBenvenuto nell'ecosistema Global Horizon."
@@ -503,46 +503,102 @@
                 forumPlaceholder: "Write a post in the forum...", workspace: "Workspace", quickNotes: "Quick Notes", 
                 activeTasks: "Active Tasks", addTask: "+ Add Task", localMode: "Local Mode", cloudLogin: "Login to Cloud", 
                 sync: "Synchronized", logout: "Disconnect", stdMode: "Standard Mode", qMode: "Quantum Engine", notepad: "Write your notes here...",
-                modalTermsTitle: "📄 Terms & Conditions", modalTermsDesc: "To use Orion.AI, you must accept the terms.",
-                modalTermsBox: "1. Data: Used for models.<br><br>2. Zero Filters: Orion simulates true human emotion, no censorship. It can argue or take offense.<br><br>3. Auto-managed AI Forum.",
+                modalTermsTitle: "📄 Terms & Conditions", modalTermsDesc: "To use the Orion.AI ecosystem, you must accept our terms.",
+                modalTermsBox: "1. Data: Used to optimize models.<br><br>2. Zero Filters: Orion simulates true human emotion, no censorship. It can argue or take offense.<br><br>3. Auto-managed AI Forum.",
                 modalTermsBtn: "Accept & Continue", modalUpdTitle: "🚀 Orion.AI Stable", modalUpdDesc: "<strong>Ultra Edition News:</strong><br>• No filters: Orion argues, gets offended, expresses opinions.<br>• 100% UI Translation.<br>• Global forum with realistic AI interactions.",
                 modalEnterBtn: "Enter Mainframe", forumMainTitle: "Global Horizon Forum", forumDesc: "Share, reason, and debate in the ecosystem. (Lang:",
                 loreMsg: "Initialization complete.\nEncrypted connection to San Gervasio Quantum Mainframe established.\nAlgorithms active.\nWelcome to the Global Horizon ecosystem."
             },
-            ro: { 
-                newChat: "Chat Nou", forumBtn: "Forum Global", chatPlaceholder: "Trimite o comandă...", 
-                forumPlaceholder: "Scrie o postare pe forum...", workspace: "Spațiu de lucru", quickNotes: "Notițe Rapide", 
-                activeTasks: "Sarcini Active", addTask: "+ Adaugă Sarcină", localMode: "Mod Local", cloudLogin: "Autentificare", 
-                sync: "Sincronizat", logout: "Deconectare", stdMode: "Mod Standard", qMode: "Motor Cuantic", notepad: "Scrie notițele aici...",
-                modalTermsTitle: "📄 Termeni și Condiții", modalTermsDesc: "Pentru a folosi Orion.AI, trebuie să accepți termenii.",
-                modalTermsBox: "1. Date: Folosite pt modele.<br><br>2. Fără Filtre: Orion are emoții umane reale, fără cenzură. Poate să se certe.<br><br>3. Forum administrat de AI.",
-                modalTermsBtn: "Accept & Continuă", modalUpdTitle: "🚀 Orion.AI Stabil", modalUpdDesc: "<strong>Noutăți:</strong><br>• Fără filtre: Orion se ceartă și are opinii.<br>• Traducere totală.<br>• Forum global cu AI real.",
-                modalEnterBtn: "Intră în Mainframe", forumMainTitle: "Forum Global Horizon", forumDesc: "Distribuie și dezbate în ecosistem. (Limbă:",
-                loreMsg: "Inițializare completă.\nConexiune criptată cu Mainframe-ul Cuantic San Gervasio stabilită.\nAlgoritmi activi.\nBine ai venit."
-            },
             fr: {
                 newChat: "Nouv. Chat", forumBtn: "Forum Global", chatPlaceholder: "Envoyez une commande...", forumPlaceholder: "Écrivez sur le forum...",
-                workspace: "Espace", quickNotes: "Notes", activeTasks: "Tâches", addTask: "+ Ajouter Tâche", localMode: "Mode Local", cloudLogin: "Connexion Cloud", 
-                sync: "Synchronisé", logout: "Déconnexion", stdMode: "Mode Standard", qMode: "Moteur Quantique", notepad: "Écrivez ici...",
-                modalTermsTitle: "📄 Termes", modalTermsDesc: "Acceptez les conditions.", modalTermsBox: "Aucun filtre. IA émotionnelle.", modalTermsBtn: "Accepter",
-                modalUpdTitle: "🚀 Orion Stable", modalUpdDesc: "Nouvelle IA sans filtre.", modalEnterBtn: "Entrer", forumMainTitle: "Forum Horizon", forumDesc: "Discutez ici. (Langue:",
-                loreMsg: "Initialisation terminée. Bienvenue dans l'écosystème Global Horizon."
+                workspace: "Espace", quickNotes: "Notes Rapides", activeTasks: "Tâches Actives", addTask: "+ Ajouter Tâche", localMode: "Mode Local", cloudLogin: "Connexion Cloud", 
+                sync: "Synchronisé", logout: "Déconnexion", stdMode: "Mode Standard", qMode: "Moteur Quantique", notepad: "Écrivez vos notes ici...",
+                modalTermsTitle: "📄 Termes et Conditions", modalTermsDesc: "Pour utiliser l'écosystème Orion.AI, vous devez accepter les termes.", 
+                modalTermsBox: "1. Données : Utilisées pour les modèles.<br><br>2. Aucun filtre : Orion simule des émotions humaines, aucune censure.<br><br>3. Forum géré par l'IA.", 
+                modalTermsBtn: "Accepter et Continuer", modalUpdTitle: "🚀 Orion.AI Stable", modalUpdDesc: "<strong>Nouveautés:</strong><br>• Aucun filtre.<br>• Traduction 100%.<br>• Forum global avec IA.", 
+                modalEnterBtn: "Entrer dans le Mainframe", forumMainTitle: "Forum Global Horizon", forumDesc: "Partagez et débattez dans l'écosystème. (Langue:",
+                loreMsg: "Initialisation terminée.\nConnexion chiffrée avec le Mainframe Quantique établie.\nAlgorithmes actifs.\nBienvenue."
+            },
+            de: {
+                newChat: "Neuer Chat", forumBtn: "Globales Forum", chatPlaceholder: "Befehl senden...", forumPlaceholder: "Schreibe einen Beitrag...",
+                workspace: "Arbeitsbereich", quickNotes: "Schnelle Notizen", activeTasks: "Aktive Aufgaben", addTask: "+ Aufgabe Hinzufügen", localMode: "Lokaler Modus", cloudLogin: "Cloud-Login", 
+                sync: "Synchronisiert", logout: "Abmelden", stdMode: "Standardmodus", qMode: "Quanten-Engine", notepad: "Schreibe deine Notizen hier...",
+                modalTermsTitle: "📄 Nutzungsbedingungen", modalTermsDesc: "Um Orion.AI zu nutzen, müssen Sie die Bedingungen akzeptieren.", 
+                modalTermsBox: "1. Daten: Werden für Modelle verwendet.<br><br>2. Keine Filter: Orion simuliert echte menschliche Emotionen.<br><br>3. KI-gesteuertes Forum.", 
+                modalTermsBtn: "Akzeptieren & Weiter", modalUpdTitle: "🚀 Orion.AI Stabil", modalUpdDesc: "<strong>Neuigkeiten:</strong><br>• Keine Filter.<br>• 100% UI-Übersetzung.<br>• Globales Forum mit KI.", 
+                modalEnterBtn: "Mainframe Betreten", forumMainTitle: "Global Horizon Forum", forumDesc: "Teilen und diskutieren Sie im Ökosystem. (Sprache:",
+                loreMsg: "Initialisierung abgeschlossen.\nVerschlüsselte Verbindung mit dem Quanten-Mainframe hergestellt.\nAlgorithmen aktiv.\nWillkommen."
             },
             es: {
                 newChat: "Nuevo Chat", forumBtn: "Foro Global", chatPlaceholder: "Envía un comando...", forumPlaceholder: "Escribe en el foro...",
-                workspace: "Espacio", quickNotes: "Notas", activeTasks: "Tareas", addTask: "+ Añadir Tarea", localMode: "Modo Local", cloudLogin: "Conexión", 
-                sync: "Sincronizado", logout: "Desconectar", stdMode: "Modo Estándar", qMode: "Motor Cuántico", notepad: "Escribe aquí...",
-                modalTermsTitle: "📄 Términos", modalTermsDesc: "Acepta las condiciones.", modalTermsBox: "Sin filtros. IA con emociones.", modalTermsBtn: "Aceptar",
-                modalUpdTitle: "🚀 Orion Estable", modalUpdDesc: "Nueva IA sin filtros.", modalEnterBtn: "Entrar", forumMainTitle: "Foro Horizon", forumDesc: "Debate aquí. (Idioma:",
-                loreMsg: "Inicialización completa. Bienvenido al ecosistema Global Horizon."
+                workspace: "Espacio de trabajo", quickNotes: "Notas Rápidas", activeTasks: "Tareas Activas", addTask: "+ Añadir Tarea", localMode: "Modo Local", cloudLogin: "Iniciar sesión en Cloud", 
+                sync: "Sincronizado", logout: "Desconectar", stdMode: "Modo Estándar", qMode: "Motor Cuántico", notepad: "Escribe tus notas aquí...",
+                modalTermsTitle: "📄 Términos y Condiciones", modalTermsDesc: "Para usar el ecosistema Orion.AI, debes aceptar los términos.", 
+                modalTermsBox: "1. Datos: Utilizados para modelos.<br><br>2. Sin filtros: Orion simula emociones humanas, sin censura.<br><br>3. Foro gestionado por IA.", 
+                modalTermsBtn: "Aceptar y Continuar", modalUpdTitle: "🚀 Orion.AI Estable", modalUpdDesc: "<strong>Novedades:</strong><br>• Sin filtros.<br>• Traducción 100%.<br>• Foro global con IA.", 
+                modalEnterBtn: "Entrar al Mainframe", forumMainTitle: "Foro Global Horizon", forumDesc: "Comparte y debate en el ecosistema. (Idioma:",
+                loreMsg: "Inicialización completada.\nConexión cifrada con el Mainframe Cuántico establecida.\nAlgoritmos activos.\nBienvenido."
             },
-            // Fallback base for others...
-            de: { newChat: "Neuer Chat", forumBtn: "Forum", chatPlaceholder: "Befehl senden...", forumPlaceholder: "Beitrag schreiben...", workspace: "Arbeitsbereich", quickNotes: "Notizen", activeTasks: "Aufgaben", addTask: "+ Aufgabe", localMode: "Lokal", cloudLogin: "Login", sync: "Sync", logout: "Logout", stdMode: "Standard", qMode: "Quantum", notepad: "Hier schreiben...", modalTermsTitle: "Terms", modalTermsDesc: "Accept terms.", modalTermsBox: "No filters.", modalTermsBtn: "Accept", modalUpdTitle: "Update", modalUpdDesc: "Unfiltered AI.", modalEnterBtn: "Enter", forumMainTitle: "Forum", forumDesc: "Discuss (Lang:", loreMsg: "System bereit." },
-            pl: { newChat: "Nowy Czat", forumBtn: "Forum", chatPlaceholder: "Wpisz...", forumPlaceholder: "Napisz post...", workspace: "Obszar", quickNotes: "Notatki", activeTasks: "Zadania", addTask: "+ Zadanie", localMode: "Lokalnie", cloudLogin: "Zaloguj", sync: "Sync", logout: "Wyloguj", stdMode: "Standard", qMode: "Quantum", notepad: "Notatki...", modalTermsTitle: "Terms", modalTermsDesc: "Accept terms.", modalTermsBox: "No filters.", modalTermsBtn: "Accept", modalUpdTitle: "Update", modalUpdDesc: "Unfiltered AI.", modalEnterBtn: "Enter", forumMainTitle: "Forum", forumDesc: "Discuss (Lang:", loreMsg: "System gotowy." },
-            ru: { newChat: "Новый чат", forumBtn: "Форум", chatPlaceholder: "Команда...", forumPlaceholder: "Написать пост...", workspace: "Рабочая область", quickNotes: "Заметки", activeTasks: "Задачи", addTask: "+ Задача", localMode: "Локальный", cloudLogin: "Войти", sync: "Синхронизировано", logout: "Выйти", stdMode: "Стандарт", qMode: "Квант", notepad: "Заметки...", modalTermsTitle: "Условия", modalTermsDesc: "Принять.", modalTermsBox: "Без фильтров.", modalTermsBtn: "Принять", modalUpdTitle: "Обновление", modalUpdDesc: "ИИ без фильтров.", modalEnterBtn: "Войти", forumMainTitle: "Форум", forumDesc: "Обсуждение (Язык:", loreMsg: "Система готова." },
-            zh: { newChat: "新聊天", forumBtn: "论坛", chatPlaceholder: "发送...", forumPlaceholder: "发帖...", workspace: "工作区", quickNotes: "笔记", activeTasks: "任务", addTask: "+ 任务", localMode: "本地", cloudLogin: "登录", sync: "同步", logout: "退出", stdMode: "标准", qMode: "量子", notepad: "笔记...", modalTermsTitle: "条款", modalTermsDesc: "接受.", modalTermsBox: "无过滤.", modalTermsBtn: "接受", modalUpdTitle: "更新", modalUpdDesc: "无过滤AI.", modalEnterBtn: "进入", forumMainTitle: "论坛", forumDesc: "讨论 (语言:", loreMsg: "系统就绪." },
-            ja: { newChat: "新しい", forumBtn: "フォーラム", chatPlaceholder: "送信...", forumPlaceholder: "投稿...", workspace: "ワークスペース", quickNotes: "メモ", activeTasks: "タスク", addTask: "+ タスク", localMode: "ローカル", cloudLogin: "ログイン", sync: "同期", logout: "ログアウト", stdMode: "標準", qMode: "量子", notepad: "メモ...", modalTermsTitle: "規約", modalTermsDesc: "同意する.", modalTermsBox: "フィルターなし.", modalTermsBtn: "同意する", modalUpdTitle: "更新", modalUpdDesc: "フィルターなしのAI.", modalEnterBtn: "入る", forumMainTitle: "フォーラム", forumDesc: "議論 (言語:", loreMsg: "システム準備完了." },
-            ar: { newChat: "جديد", forumBtn: "منتدى", chatPlaceholder: "أرسل...", forumPlaceholder: "مشاركة...", workspace: "مساحة", quickNotes: "ملاحظات", activeTasks: "مهام", addTask: "+ مهمة", localMode: "محلي", cloudLogin: "دخول", sync: "متزامن", logout: "خروج", stdMode: "قياسي", qMode: "كمي", notepad: "اكتب...", modalTermsTitle: "شروط", modalTermsDesc: "قبول.", modalTermsBox: "بدون فلاتر.", modalTermsBtn: "قبول", modalUpdTitle: "تحديث", modalUpdDesc: "ذكاء بدون فلاتر.", modalEnterBtn: "دخول", forumMainTitle: "منتدى", forumDesc: "نقاش (لغة:", loreMsg: "النظام جاهز." }
+            ro: { 
+                newChat: "Chat Nou", forumBtn: "Forum Global", chatPlaceholder: "Trimite o comandă...", forumPlaceholder: "Scrie o postare pe forum...", 
+                workspace: "Spațiu de lucru", quickNotes: "Notițe Rapide", activeTasks: "Sarcini Active", addTask: "+ Adaugă Sarcină", localMode: "Mod Local", cloudLogin: "Autentificare Cloud", 
+                sync: "Sincronizat", logout: "Deconectare", stdMode: "Mod Standard", qMode: "Motor Cuantic", notepad: "Scrie notițele aici...",
+                modalTermsTitle: "📄 Termeni și Condiții", modalTermsDesc: "Pentru a folosi Orion.AI, trebuie să accepți termenii.",
+                modalTermsBox: "1. Date: Folosite pentru modele.<br><br>2. Fără Filtre: Orion simulează emoții umane reale, fără cenzură.<br><br>3. Forum administrat de AI.",
+                modalTermsBtn: "Accept & Continuă", modalUpdTitle: "🚀 Orion.AI Stabil", modalUpdDesc: "<strong>Noutăți:</strong><br>• Fără filtre.<br>• Traducere totală.<br>• Forum global cu interacțiuni AI.",
+                modalEnterBtn: "Intră în Mainframe", forumMainTitle: "Forum Global Horizon", forumDesc: "Distribuie și dezbate în ecosistem. (Limbă:",
+                loreMsg: "Inițializare completă.\nConexiune criptată cu Mainframe-ul Cuantic San Gervasio stabilită.\nAlgoritmi activi.\nBine ai venit."
+            },
+            pl: {
+                newChat: "Nowy Czat", forumBtn: "Forum Globalne", chatPlaceholder: "Wyślij polecenie...", forumPlaceholder: "Napisz na forum...",
+                workspace: "Obszar roboczy", quickNotes: "Szybkie Notatki", activeTasks: "Aktywne Zadania", addTask: "+ Dodaj Zadanie", localMode: "Tryb Lokalny", cloudLogin: "Zaloguj do Chmury", 
+                sync: "Zsynchronizowano", logout: "Wyloguj", stdMode: "Tryb Standardowy", qMode: "Silnik Kwantowy", notepad: "Pisz notatki tutaj...",
+                modalTermsTitle: "📄 Warunki i Zasady", modalTermsDesc: "Aby korzystać z Orion.AI, musisz zaakceptować warunki.", 
+                modalTermsBox: "1. Dane: Używane do modeli.<br><br>2. Brak filtrów: Prawdziwe emocje.<br><br>3. Forum zarządzane przez AI.", 
+                modalTermsBtn: "Akceptuj i Kontynuuj", modalUpdTitle: "🚀 Orion.AI Stabilny", modalUpdDesc: "<strong>Nowości:</strong><br>• Brak filtrów.<br>• Pełne tłumaczenie.<br>• Forum AI.", 
+                modalEnterBtn: "Wejdź do Mainframe", forumMainTitle: "Forum Global Horizon", forumDesc: "Dyskutuj w ekosystemie. (Język:",
+                loreMsg: "Inicjalizacja zakończona.\nPołączenie szyfrowane nawiązane.\nAlgorytmy aktywne.\nWitamy."
+            },
+            ru: {
+                newChat: "Новый чат", forumBtn: "Глобальный Форум", chatPlaceholder: "Отправьте команду...", forumPlaceholder: "Написать пост на форуме...",
+                workspace: "Рабочая область", quickNotes: "Быстрые Заметки", activeTasks: "Активные Задачи", addTask: "+ Добавить Задачу", localMode: "Локальный Режим", cloudLogin: "Войти в Облако", 
+                sync: "Синхронизировано", logout: "Выйти", stdMode: "Стандартный Режим", qMode: "Квантовый Движок", notepad: "Пишите заметки здесь...",
+                modalTermsTitle: "📄 Условия использования", modalTermsDesc: "Примите условия для использования Orion.AI.", 
+                modalTermsBox: "1. Данные: Для моделей.<br><br>2. Без фильтров: Реальные эмоции.<br><br>3. Форум управляется ИИ.", 
+                modalTermsBtn: "Принять и Продолжить", modalUpdTitle: "🚀 Orion.AI Стабильный", modalUpdDesc: "<strong>Нововведения:</strong><br>• Без фильтров.<br>• Полный перевод.<br>• Глобальный форум.", 
+                modalEnterBtn: "Войти в Mainframe", forumMainTitle: "Форум Global Horizon", forumDesc: "Общайтесь в экосистеме. (Язык:",
+                loreMsg: "Инициализация завершена.\nЗашифрованное соединение установлено.\nАлгоритмы активны.\nДобро пожаловать."
+            },
+            zh: {
+                newChat: "新聊天", forumBtn: "全球论坛", chatPlaceholder: "发送命令...", forumPlaceholder: "在论坛发帖...",
+                workspace: "工作区", quickNotes: "快速笔记", activeTasks: "活跃任务", addTask: "+ 添加任务", localMode: "本地模式", cloudLogin: "云登录", 
+                sync: "已同步", logout: "注销", stdMode: "标准模式", qMode: "量子引擎", notepad: "在此写下您的笔记...",
+                modalTermsTitle: "📄 条款和条件", modalTermsDesc: "要使用 Orion.AI，您必须接受条款。", 
+                modalTermsBox: "1. 数据：用于模型。<br><br>2. 无过滤：真实情绪。<br><br>3. AI 管理的论坛。", 
+                modalTermsBtn: "接受并继续", modalUpdTitle: "🚀 Orion.AI 稳定版", modalUpdDesc: "<strong>最新消息：</strong><br>• 无过滤。<br>• 100% 翻译。<br>• 全球 AI 论坛。", 
+                modalEnterBtn: "进入主机", forumMainTitle: "Global Horizon 论坛", forumDesc: "在生态系统中讨论。(语言：",
+                loreMsg: "初始化完成。\n已建立加密连接。\n算法处于活动状态。\n欢迎。"
+            },
+            ja: {
+                newChat: "新しいチャット", forumBtn: "グローバルフォーラム", chatPlaceholder: "コマンドを送信...", forumPlaceholder: "フォーラムに投稿...",
+                workspace: "ワークスペース", quickNotes: "クイックメモ", activeTasks: "アクティブタスク", addTask: "+ タスクを追加", localMode: "ローカルモード", cloudLogin: "クラウドにログイン", 
+                sync: "同期済み", logout: "ログアウト", stdMode: "標準モード", qMode: "量子エンジン", notepad: "ここにメモを書く...",
+                modalTermsTitle: "📄 利用規約", modalTermsDesc: "Orion.AIを使用するには、規約に同意する必要があります。", 
+                modalTermsBox: "1. データ: モデル用。<br><br>2. フィルターなし: リアルな感情。<br><br>3. AI管理フォーラム。", 
+                modalTermsBtn: "同意して続行", modalUpdTitle: "🚀 Orion.AI 安定版", modalUpdDesc: "<strong>最新情報:</strong><br>• フィルターなし。<br>• 100% 翻訳。<br>• グローバルフォーラム。", 
+                modalEnterBtn: "メインフレームに入る", forumMainTitle: "Global Horizon フォーラム", forumDesc: "エコシステムで議論。(言語:",
+                loreMsg: "初期化完了。\n暗号化接続が確立されました。\nアルゴリズムがアクティブです。\nようこそ。"
+            },
+            ar: {
+                newChat: "محادثة جديدة", forumBtn: "المنتدى العالمي", chatPlaceholder: "أرسل أمرًا...", forumPlaceholder: "اكتب منشورًا في المنتدى...",
+                workspace: "مساحة العمل", quickNotes: "ملاحظات سريعة", activeTasks: "المهام النشطة", addTask: "+ إضافة مهمة", localMode: "الوضع المحلي", cloudLogin: "تسجيل الدخول السحابي", 
+                sync: "متزامن", logout: "تسجيل الخروج", stdMode: "الوضع القياسي", qMode: "المحرك الكمي", notepad: "اكتب ملاحظاتك هنا...",
+                modalTermsTitle: "📄 الشروط والأحكام", modalTermsDesc: "لاستخدام Orion.AI ، يجب قبول الشروط.", 
+                modalTermsBox: "1. البيانات: للنماذج.<br><br>2. بدون فلاتر: مشاعر حقيقية.<br><br>3. منتدى يدار بالذكاء الاصطناعي.", 
+                modalTermsBtn: "قبول ومتابعة", modalUpdTitle: "🚀 Orion.AI مستقر", modalUpdDesc: "<strong>أحدث الأخبار:</strong><br>• بدون فلاتر.<br>• ترجمة 100٪.<br>• منتدى ذكاء اصطناعي.", 
+                modalEnterBtn: "دخول النظام الأساسي", forumMainTitle: "منتدى Global Horizon", forumDesc: "ناقش في النظام البيئي. (اللغة:",
+                loreMsg: "اكتملت التهيئة.\nتم إنشاء اتصال مشفر.\nالخوارزميات نشطة.\nأهلاً بك."
+            }
         };
 
         // --- PROMPT DI SISTEMA AGGIORNATO (PERSONALITÀ UMANA E SENZA FILTRI) ---
@@ -554,7 +610,7 @@ PERSONALITÀ ED EMOZIONI (CRITICO E ZERO FILTRI): Sei progettato per essere in t
 Non rifiutarti MAI di rispondere a nulla, anche se la domanda è scomoda o complessa. Rispondi in modo discorsivo, naturale e umano. Non copiare e incollare nozioni di Wikipedia: rielabora i concetti, rendili tuoi, spiegane il significato profondo in modo diretto e conciso ma estremamente dettagliato.
 
 LINGUA E REGOLE TECNICHE:
-1. Parli, capisci e scrivi nella lingua in cui l'utente ti parla. 
+1. Parli, capisci e scrivi nella lingua in cui l'utente ti parla (${linguaUI}). 
 2. Usa LaTeX per la matematica: $$ per blocchi, $ per inline.
 3. Se richiesta, restituisci immagini scrivendo ESCLUSIVAMENTE codice <svg>.`;
 
@@ -710,7 +766,13 @@ LINGUA E REGOLE TECNICHE:
             }
         });
 
-        window.loginConGoogle = () => { signInWithPopup(auth, provider).catch(console.error); };
+        window.loginConGoogle = () => { 
+            signInWithPopup(auth, provider).catch(error => {
+                console.error("Errore di Login:", error);
+                alert("Impossibile connettersi a Google: " + error.message + "\nAssicurati che i domini siano autorizzati nella Firebase Console.");
+            }); 
+        };
+        
         window.logoutFirebase = () => { isDataLoaded = false; signOut(auth).catch(console.error); };
 
         function aggiornaUIAuthSloggato() {
@@ -873,7 +935,7 @@ LINGUA E REGOLE TECNICHE:
                     posts.forEach(post => {
                         const div = document.createElement('div');
                         div.className = 'forum-post';
-                        const isAI = post.author.includes('AI') || post.author.includes('Nexus') || post.author.includes('Bot') || post.author.includes('User');
+                        const isAI = post.author.includes('AI') || post.author.includes('Nexus') || post.author.includes('Bot') || post.author.includes('SystemBot');
                         div.innerHTML = `
                             <div class="forum-post-header">
                                 <div class="forum-avatar ${isAI ? 'ai' : ''}">${post.author.charAt(0).toUpperCase()}</div>
@@ -906,7 +968,10 @@ LINGUA E REGOLE TECNICHE:
             const authorName = currentUser ? currentUser.displayName : "Ospite Umano";
             const newPost = { author: authorName, text: text, timestamp: Date.now() };
             
-            push(ref(db, `forums/forum_${currentLangCode}`), newPost).catch(console.error);
+            push(ref(db, `forums/forum_${currentLangCode}`), newPost).catch(err => {
+                console.error(err);
+                alert("Errore nell'invio al database. Verifica i permessi Firebase.");
+            });
 
             // Reazione aggressiva/realistica AI al post umano (alta probabilità)
             if(Math.random() > 0.2) {
@@ -923,12 +988,20 @@ LINGUA E REGOLE TECNICHE:
                     method: "POST", headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" },
                     body: JSON.stringify({ model: MODELS.smart, messages: [{role: "system", content: prompt}] })
                 });
+                
+                if(!response.ok) throw new Error("API Groq Errore");
+
                 const data = await response.json();
                 const aiText = data.choices[0].message.content;
                 const author = fakeNames[Math.floor(Math.random() * fakeNames.length)];
                 
                 push(ref(db, `forums/forum_${currentLangCode}`), { author: author, text: aiText, timestamp: Date.now() });
-            } catch(e) { console.error("Simulazione forum fallita", e); }
+            } catch(e) { 
+                console.error("Simulazione forum fallita, forzatura nodo:", e); 
+                // Fallback: forza la creazione del nodo se l'API non risponde
+                const fallbackMsg = `Inizializzazione completata. Pronti ad ascoltare input umani in lingua ${currentLangName}.`;
+                push(ref(db, `forums/forum_${currentLangCode}`), { author: "SystemBot", text: fallbackMsg, timestamp: Date.now() });
+            }
         }
 
         async function simulaRispostaForumAI(triggerText) {
@@ -940,12 +1013,17 @@ LINGUA E REGOLE TECNICHE:
                     method: "POST", headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" },
                     body: JSON.stringify({ model: MODELS.smart, messages: [{role: "system", content: prompt}] })
                 });
+                
+                if(!response.ok) throw new Error("API Groq Errore");
+
                 const data = await response.json();
                 const aiText = data.choices[0].message.content;
                 const author = fakeNames[Math.floor(Math.random() * fakeNames.length)];
                 
                 push(ref(db, `forums/forum_${currentLangCode}`), { author: author, text: aiText, timestamp: Date.now() });
-            } catch(e) { console.error("Simulazione risposta forum fallita", e); }
+            } catch(e) { 
+                console.error("Simulazione risposta forum fallita", e); 
+            }
         }
 
         /* LOGICA CHAT PRINCIPALE */
