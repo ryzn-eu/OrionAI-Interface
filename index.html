@@ -54,18 +54,7 @@
         .auth-panel { padding: 24px; border-bottom: 1px solid var(--glass-border); }
         .brand-logo-area { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
         
-        .orion-logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-        .orion-svg { width: 36px; height: 36px; filter: drop-shadow(0 0 15px rgba(10, 132, 255, 0.8)); }
-        .orion-core-pulse { animation: pulseCore 2.5s infinite alternate; }
-        @keyframes pulseCore { 0% { r: 14; opacity: 0.9; } 100% { r: 16; opacity: 1; filter: drop-shadow(0 0 10px #fff); } }
-        .orion-ring { transform-origin: 50px 50px; animation: spinRing 12s linear infinite; stroke: rgba(255,255,255,0.6); }
-        @keyframes spinRing { 100% { transform: rotate(360deg); } }
-        
-        .orion-text-quasar { font-family: 'Roboto', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: 1.5px; color: var(--text-main); text-shadow: 0 0 20px rgba(255,255,255,0.4); text-transform: uppercase; display: inline-flex; align-items: center; }
-        .orion-i-wrapper { position: relative; display: inline-block; }
-        .i-dot-orange-white { position: absolute; top: -4px; left: 50%; transform: translateX(-50%); width: 6.5px; height: 6.5px; background: radial-gradient(circle, #ffffff 30%, #ff5100 100%); border-radius: 50%; box-shadow: 0 0 15px #ff5100, 0 0 5px #ffffff; z-index: 10; }
-        .i-dot-blue-orbit { position: absolute; top: -1.5px; left: 50%; width: 4px; height: 4px; background: #00E5FF; border-radius: 50%; box-shadow: 0 0 10px #00E5FF; z-index: 11; transform-origin: 0px 0px; animation: orbitDot 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        @keyframes orbitDot { from { transform: rotate(0deg) translateX(12px); } to { transform: rotate(360deg) translateX(12px); } }
+        .orion-logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; background: transparent; border: none; }
 
         .close-sidebar { background: none; border: none; color: var(--text-dim); font-size: 24px; cursor: pointer; }
         @media (min-width: 900px) { .close-sidebar { display: none; } }
@@ -137,8 +126,6 @@
             .input-glass-box { padding: 8px 12px 8px 16px; border-radius: 20px; }
             .console-textarea { font-size: 14px; }
             .btn-transmit { width: 34px; height: 34px; margin-left: 8px; }
-            .orion-text-quasar { font-size: 18px; }
-            .orion-svg { width: 28px; height: 28px; }
         }
 
         .glass-popup { position: absolute; top: 50px; background: rgba(30,30,32,0.95); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 8px; display: none; z-index: 60; box-shadow: 0 10px 30px rgba(0,0,0,0.5); min-width: 160px; max-height: 300px; overflow-y: auto; }
@@ -320,27 +307,24 @@
 
     <div class="app-layout">
         <aside class="sidebar" id="sidebar">
-            <div class="auth-panel">
+           <div class="auth-panel">
                 <div class="brand-logo-area">
                     <div class="orion-logo-container" onclick="window.switchToChat()">
-                        <svg class="orion-svg" viewBox="0 0 100 100">
-                            <defs>
-                                <radialGradient id="glow-core" cx="50%" cy="50%" r="50%">
-                                    <stop offset="0%" stop-color="#FFF" />
-                                    <stop offset="50%" stop-color="#70B5FF" />
-                                    <stop offset="100%" stop-color="var(--accent-blue)" />
-                                </radialGradient>
-                            </defs>
-                            <circle class="orion-core-pulse" cx="50" cy="50" r="14" fill="url(#glow-core)" />
-                            <circle class="orion-ring" cx="50" cy="50" r="35" fill="none" stroke-width="2.5" stroke-dasharray="40 20" />
-                            <circle class="orion-ring" cx="50" cy="50" r="28" fill="none" stroke="rgba(10, 132, 255, 0.4)" stroke-width="1" stroke-dasharray="10 30" style="animation-direction: reverse; animation-duration: 20s;" />
-                        </svg>
-                        <span class="orion-text-quasar">OR<span class="orion-i-wrapper">I<span class="i-dot-orange-white"></span><span class="i-dot-blue-orbit"></span></span>ON</span>
+                        <img src="https://raw.githubusercontent.com/ryzn-eu/OrionAI-Interface/main/47E493BD-D827-4C51-95CE-0270B360ED0A%20(1).png" alt="Logo GitHub" style="max-height: 45px; width: auto; background: transparent !important; border: none !important; box-shadow: none !important; display: block; outline: none;">
                     </div>
                     <button class="close-sidebar" onclick="window.toggleSidebar()">&times;</button>
                 </div>
                 
                 <div class="auth-card" id="authCard"></div>
+            </div>
+
+            <!-- INSERISCI IL BANNER AGGIORNAMENTO QUI SOTTO -->
+            <div class="update-banner" id="updateBanner">
+                <div class="update-banner-glow"></div>
+                <div class="update-banner-content">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+                    <span class="update-text">Infrastruttura Quantum v3.0: Calcolo Avanzato Attivo</span>
+                </div>
             </div>
             
             <div class="history-panel">
@@ -399,7 +383,7 @@
 
                         <div id="quantumLogo" class="quantum-logo-active">
                             <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 2L2 22h20L12 2z"/></svg>
-                            Quantum Engine
+                            Qbit Mode
                         </div>
                     </div>
                 </div>
@@ -540,7 +524,6 @@
         let currentLangName = 'Italiano';
         let currentView = 'chat';
         
-        // Nuove variabili per il Forum
         let forumListenerUnsubscribe = null;
         let aiForumInterval = null; 
         let forumDataCache = {};
@@ -551,19 +534,16 @@
        
 // Funzione per ricostruire la chiave evitando pattern riconoscibili dai bot
 function getSecret() {
-    // Usiamo array di frammenti piccoli per evitare la regex del bot
     const s = [
         "gsk_", "YC", "ffd", "KK", "ZC7", "KSH", "oMS", "0RU", "WWG", 
         "dyb", "3FY", "hxX", "QzI", "sFz", "5YR", "GYy", "AzL", "cpB", "n01"
     ];
-    // Riunisce i pezzi senza spazi e in un unico passaggio di memoria
     return s.join('');
 }
 
-// Inizializzazione della chiave
+// Inizializzazione della chiave intatta
 const GROQ_API_KEY = getSecret();
 
-// Esempio di utilizzo preciso nella chiamata (Copia esattamente questo blocco fetch)
 async function chiamaGroq(messaggio) {
     const url = "https://api.groq.com/openai/v1/chat/completions";
     
@@ -571,11 +551,10 @@ async function chiamaGroq(messaggio) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            // Usiamo il template literal per assicurarci che la stringa sia pulita
             "Authorization": `Bearer ${GROQ_API_KEY}`
         },
         body: JSON.stringify({
-            model: "llama3-8b-8192",
+            model: "llama-3.1-8b-instant",
             messages: [{ role: "user", content: messaggio }]
         })
     });
@@ -586,9 +565,13 @@ async function chiamaGroq(messaggio) {
     
     return await response.json();
 }
-        const MODELS = { smart: "openai/gpt-oss-20b", instant: "gemma2-9b-it", quantum: "openai/gpt-oss-120b" };
+        // I MODELLI AGGIORNATI E FUNZIONANTI GROQ SONO QUI
+        const MODELS = { 
+            smart: "llama-3.3-70b-versatile", 
+            instant: "llama-3.1-8b-instant", 
+            quantum: "mixtral-8x7b-32768" 
+        };
         
-        // --- DIZIONARIO NOMI REALISTICI (ADATTATI PER LINGUA) ---
         const HUMAN_NAMES = {
             it: ["Marco", "Giulia", "Andrea", "Sofia", "Lorenzo", "Martina", "Matteo", "Chiara", "Davide", "Francesca"],
             en: ["James", "Emma", "William", "Olivia", "Michael", "Sophia", "Alex", "Isabella", "David", "Sarah"],
@@ -644,10 +627,8 @@ async function chiamaGroq(messaggio) {
                 forumMainTitle: "Global Horizon Forum", forumDesc: "Share, reason, and debate in the ecosystem. (Lang:",
                 loreMsg: "Initialization complete.\nEncrypted connection to San Gervasio Quantum Mainframe established.\nAlgorithms active.\nWelcome to the Global Horizon ecosystem.",
                 backThreads: "Back to threads", replyBtn: "Reply", replyingTo: "Replying to"
-            },
-            // [Le altre lingue seguono la stessa logica, semplificato per brevità. Per le altre viene usato fallback a inglese/italiano nei testi UI base]
+            }
         };
-        // Estendo per sicurezza le altre lingue base
         ['fr','de','es','ro','pl','ru','zh','ja','ar'].forEach(l => {
             if(!UI_TRANSLATIONS[l]) UI_TRANSLATIONS[l] = UI_TRANSLATIONS['en'];
         });
@@ -955,7 +936,6 @@ LINGUA E REGOLE TECNICHE:
             
             loadForumData();
             
-            // Loop Movimentato Forum (15 - 25 secondi) per commenti intensivi
             if(aiForumInterval) clearInterval(aiForumInterval);
             aiForumInterval = setInterval(() => {
                 simulaAttivitaForum();
@@ -995,13 +975,11 @@ LINGUA E REGOLE TECNICHE:
                 }
                 renderForumUI();
 
-                // CATCH-UP SIMULATO: Se l'ultimo post è vecchio, genera roba per simulare l'attività "offline"
                 simulaCatchUpOffline();
             });
         }
 
         function simulaCatchUpOffline() {
-            // Un "trucco" per simulare che l'AI ha scritto post mentre il sito era chiuso.
             const threads = Object.values(forumDataCache);
             let timeSinceLastActivity = Infinity;
             const now = Date.now();
@@ -1017,7 +995,6 @@ LINGUA E REGOLE TECNICHE:
                 timeSinceLastActivity = now - latestTime;
             }
 
-            // Se l'ultima attività è di > 10 minuti fa, genera istantaneamente 2-3 risposte veloci
             if(timeSinceLastActivity > 600000 || threads.length === 0) {
                 console.log("[Sistema] Simulazione Catch-Up per recuperare il tempo in cui la scheda era chiusa...");
                 for(let i=0; i< (threads.length === 0 ? 1 : 2); i++) {
@@ -1074,7 +1051,6 @@ LINGUA E REGOLE TECNICHE:
                 const thread = forumDataCache[currentForumThreadId];
                 if (!thread) { window.tornaAlForum(); return; }
 
-                // Main OP
                 const opDiv = document.createElement('div');
                 opDiv.className = 'forum-post';
                 const catBadge = thread.category ? `<span class="cat-badge">${getCategoryLabel(thread.category)}</span>` : '';
@@ -1095,7 +1071,6 @@ LINGUA E REGOLE TECNICHE:
                 `;
                 threadStream.appendChild(opDiv);
 
-                // Replies
                 if (thread.replies) {
                     const replies = Object.entries(thread.replies).sort((a,b) => a[1].timestamp - b[1].timestamp);
                     replies.forEach(([rId, reply]) => {
@@ -1105,7 +1080,6 @@ LINGUA E REGOLE TECNICHE:
                         
                         let replyingToTag = '';
                         if(isSubReply) {
-                            // Cerca il nome dell'utente a cui sta rispondendo
                             const parentReply = thread.replies[reply.replyTo];
                             if(parentReply) replyingToTag = `<span style="color:var(--accent-blue); font-size:12px; margin-right:5px;">@${parentReply.author}</span>`;
                         }
@@ -1157,14 +1131,11 @@ LINGUA E REGOLE TECNICHE:
             const authorName = currentUser ? currentUser.displayName : "Ospite";
             
             if (currentForumThreadId) {
-                // Invia una risposta al thread o a un commento (nested)
                 const newReply = { author: authorName, text: text, timestamp: Date.now(), replyTo: targetReplyCommentId || 'root' };
                 push(ref(db, `forums/forum_${currentLangCode}/${currentForumThreadId}/replies`), newReply).catch(console.error);
                 
-                // Forza reazione veloce dell'IA ai commenti umani
                 setTimeout(() => simulaRispostaForumAI(text, currentForumThreadId, true), 3000 + Math.random() * 2000);
             } else {
-                // Crea un nuovo thread (quesito)
                 const cat = document.getElementById('forumPostCategory').value;
                 const newPost = { author: authorName, text: text, timestamp: Date.now(), category: cat };
                 const newThreadRef = push(ref(db, `forums/forum_${currentLangCode}`), newPost);
@@ -1176,7 +1147,6 @@ LINGUA E REGOLE TECNICHE:
 
         async function simulaAttivitaForum() {
             const threadIds = Object.keys(forumDataCache);
-            // Ridotta la velocità di creazione quesiti: 15% di probabilità di nuovo post, 85% di rispondere ai commenti
             const isReplying = threadIds.length > 0 && Math.random() > 0.15; 
 
             if (isReplying) {
@@ -1186,7 +1156,6 @@ LINGUA E REGOLE TECNICHE:
                 let textToReplyTo = thread.text;
                 let targetReplyId = 'root';
                 
-                // C'è un 50% di probabilità che l'AI risponda a un commento interno invece che all'OP
                 if (thread.replies && Math.random() > 0.5) {
                     const replyEntries = Object.entries(thread.replies);
                     if(replyEntries.length > 0) {
@@ -1198,7 +1167,6 @@ LINGUA E REGOLE TECNICHE:
                 
                 simulaRispostaForumAI(textToReplyTo, randomThreadId, true, targetReplyId);
             } else {
-                // Crea Nuovo Thread
                 const cats = ["general", "tech", "offtopic"];
                 const randomCat = cats[Math.floor(Math.random() * cats.length)];
                 
@@ -1235,7 +1203,7 @@ LINGUA E REGOLE TECNICHE:
             } catch(e) {}
         }
 
-        /* LOGICA CHAT PRINCIPALE (Mantenuta inalterata) */
+        /* LOGICA CHAT PRINCIPALE */
         window.creaNuovaSessione = () => {
             if(!isDataLoaded) return;
             window.switchToChat();
