@@ -62,7 +62,7 @@
         .auth-card { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; transition: all 0.3s ease; }
         .user-status { font-size: 12px; color: var(--text-dim); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
         
-        .btn-auth, .btn-new-chat, .btn-forum { background: rgba(255,255,255,0.1); color: var(--text-main); padding: 12px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.3s; border: 1px solid var(--glass-border); display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; }
+        .btn-auth, .btn-new-chat, .btn-forum { background: rgba(255,255,255,0.1); color: var(--text-main); padding: 12px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.3s; border: 1px solid var(--glass-border); display: flex; justify-content: center; align-items: gap: 8px; width: 100%; }
         .btn-auth:hover, .btn-new-chat:hover, .btn-forum:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         .btn-new-chat { margin-bottom: 8px; background: var(--accent-blue); color: white; border: none; box-shadow: 0 4px 15px rgba(10, 132, 255, 0.3); }
         .btn-new-chat:hover { background: #0070DF; }
@@ -309,7 +309,6 @@
         <aside class="sidebar" id="sidebar">
             <div class="auth-panel">
                 <div class="brand-logo-area">
-                    <!-- https://raw.githubusercontent.com/ryzn-eu/OrionAI-Interface/main/47E493BD-D827-4C51-95CE-0270B360ED0A%20(1).png -->
                     <div class="orion-logo-container" onclick="window.switchToChat()">
                         <img src="https://raw.githubusercontent.com/ryzn-eu/OrionAI-Interface/main/47E493BD-D827-4C51-95CE-0270B360ED0A%20(1).png" alt="Logo GitHub" style="max-height: 45px; width: auto; background: transparent !important; border: none !important; box-shadow: none !important; display: block; outline: none;">
                     </div>
@@ -561,7 +560,7 @@ async function chiamaGroq(messaggio) {
         const MODELS = { 
             smart: "llama-3.3-70b-versatile", 
             instant: "llama-3.1-8b-instant", 
-            quantum: "mixtral-8x7b-32768" 
+            quantum: "openai/gpt-oss-120b" 
         };
         
         const HUMAN_NAMES = {
