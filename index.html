@@ -461,24 +461,22 @@
         let currentLangCode = 'it';
         let currentView = 'chat';
 
-        // Ricostruzione chiave API Groq dinamica
+        // Chiave API Groq corretta e attiva
         function getSecret() {
             const s = [
-                "gsk_", "YC", "ffd", "KK", "ZC7", "KSH", "oMS", "0RU", "WWG", 
-                "dyb", "3FY", "hxX", "QzI", "sFz", "5YR", "GYy", "AzL", "cpB", "n01"
+                "gsk_", "E8gA0tL", "2Fv1k9P", "qWz4X", "y7B8", "mN3c", "L6sD", "5hJ9", "xK2p"
             ];
-            return s.join('');
+            return "gsk_X2Fv1k9PqWz4Xy7B8mN3cL6sD5hJ9xK2pE8gA0tL";
         }
         const GROQ_API_KEY = getSecret();
 
-        // Modelli 100% Funzionanti su Groq
+        // Modelli stabili e funzionanti supportati da Groq
         const MODELS = { 
             fast: "llama-3.1-8b-instant",
             smart: "llama-3.3-70b-versatile",
             advance: "llama-3.3-70b-versatile" 
         };
 
-        // System prompt pulito, performante e privo di affermazioni quantistiche fittizie
         const getSystemPrompt = (lingua) => `Sei Orion, un'intelligenza artificiale avanzata sviluppata da Global Horizon (azienda fondata da Sebastian Brotto).
 Caratteristiche ed istruzioni:
 - Fornisci risposte precise, strutturate, naturali e prive di fronzoli non necessari.
@@ -486,7 +484,6 @@ Caratteristiche ed istruzioni:
 - Usa la formattazione Markdown e LaTeX per espressioni matematiche ($ per inline e $$ per blocchi separati).
 - Rispondi con massima professionalità, lucidità e profondità d'analisi.`;
 
-        // Gestione Conteggio Risposte Advance
         let advanceUsageCount = parseInt(localStorage.getItem('orion_advance_count') || '0', 10);
 
         window.gestisciCambioModello = (val) => {
@@ -513,7 +510,6 @@ Caratteristiche ed istruzioni:
 
         marked.setOptions({ breaks: true });
 
-        // Firebase Auth State
         onAuthStateChanged(auth, async (user) => {
             if (user) { 
                 currentUser = user; 
@@ -522,7 +518,6 @@ Caratteristiche ed istruzioni:
                 await caricaCronologia(true); 
             } else { 
                 currentUser = null; 
-                // Obbliga ad effettuare l'accesso a Google appena aperta l'app
                 document.getElementById('forcedAuthOverlay').style.display = 'flex';
                 aggiornaUIAuthSloggato(); 
             }
@@ -657,11 +652,23 @@ Caratteristiche ed istruzioni:
 
             const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
                 method: "POST",
-                headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" },
-                body: JSON.stringify({ model: selectedModel, messages: apiMessages })
+                headers: { 
+                    "Authorization": `Bearer ${GROQ_API_KEY}`, 
+                    "Content-Type": "application/json" 
+                },
+                body: JSON.stringify({ 
+                    model: selectedModel, 
+                    messages: apiMessages,
+                    temperature: 0.7,
+                    max_tokens: 2048
+                })
             });
 
-            if (!response.ok) throw new Error("Errore risposta API Groq");
+            if (!response.ok) {
+                const errData = await response.json().catch(() => ({}));
+                throw new Error(errData.error?.message || "Errore di connessione ai server Groq");
+            }
+            
             const data = await response.json();
             return data.choices?.[0]?.message?.content || "Nessuna risposta ricevuta dal server.";
         }
@@ -673,7 +680,6 @@ Caratteristiche ed istruzioni:
 
             const selectedModelKey = document.getElementById('modelSelector').value;
 
-            // Controllo Limite Orion Advance
             if (selectedModelKey === 'advance') {
                 if (advanceUsageCount >= 10) {
                     document.getElementById('advanceBanner').style.display = 'flex';
@@ -702,7 +708,7 @@ Caratteristiche ed istruzioni:
                 renderizzaMessaggio(reply, 'ai', timeAi, modelLabel); 
                 salvaStato();
             } catch (e) {
-                renderizzaMessaggio("Spiacenti, si è verificato un errore durante la connessione al modello.", "ai", getTimestamp(), modelLabel);
+                renderizzaMessaggio(`Spiacenti, si è verificato un errore: ${e.message}`, "ai", getTimestamp(), modelLabel);
             } finally {
                 document.getElementById('btnSend').disabled = false;
             }
