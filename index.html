@@ -160,17 +160,8 @@
         .chat-item.active .chat-item-title { color: #64D2FF; font-weight: 600; }
         .chat-item-date { font-size: 10px; color: var(--text-dim); margin-top: 4px; }
 
-        .chat-options-btn { background: transparent; border: none; color: var(--text-dim); cursor: pointer; padding: 4px; border-radius: 50%; display: flex; }
-        .chat-options-btn:hover { color: var(--text-main); }
-        
-        .chat-popup {
-            position: absolute; right: 10px; top: 38px; background: rgba(30,30,35,0.95); backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border); border-radius: 12px; padding: 4px; display: none; z-index: 50; box-shadow: 0 10px 30px rgba(0,0,0,0.5); min-width: 120px;
-        }
-        .chat-popup.show { display: block; }
-        .chat-popup button { width: 100%; text-align: left; background: none; border: none; padding: 8px 12px; color: var(--text-main); font-size: 12px; border-radius: 8px; cursor: pointer; }
-        .chat-popup button:hover { background: rgba(255,255,255,0.1); }
-        .chat-popup button.delete-btn { color: var(--alert-red); }
+        .chat-options-btn { background: transparent; border: none; color: var(--text-dim); cursor: pointer; padding: 4px; border-radius: 50%; display: flex; transition: color 0.2s; }
+        .chat-options-btn:hover { color: var(--alert-red); }
 
         .sidebar-footer { padding: 16px 20px; border-top: 1px solid var(--glass-border); display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.2); margin-top: auto; }
         .horizon-brand-text { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; background: linear-gradient(90deg, #fff, var(--text-dim)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -265,11 +256,9 @@
         /* Forum & Workspace Styles */
         .forum-header { padding: 20px 10%; border-bottom: 1px solid var(--glass-border); display: flex; flex-direction: column; gap: 10px; }
         .forum-title { font-size: 20px; font-weight: 700; color: #D084FF; display: flex; align-items: center; justify-content: space-between; width: 100%; }
-        .forum-main-view, .forum-thread-view { display: none; flex-direction: column; flex-grow: 1; overflow: hidden; }
-        .forum-main-view.active, .forum-thread-view.active { display: flex; }
+        .forum-main-view { display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
         .forum-stream { flex-grow: 1; padding: 20px 10%; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
         .forum-post { background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); border-radius: 18px; padding: 16px; backdrop-filter: blur(20px); }
-        .forum-post.clickable:hover { border-color: rgba(175,82,222,0.4); transform: translateY(-2px); }
 
         .right-panel-header { padding: 20px; border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; }
         .right-panel-title { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
@@ -278,10 +267,6 @@
         .task-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
         .task-item { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.04); padding: 8px 12px; border-radius: 12px; }
         .task-item input[type="text"] { background: transparent; border: none; color: var(--text-main); flex-grow: 1; outline: none; font-size: 13px; }
-
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); backdrop-filter: blur(20px); z-index: 200; display: none; justify-content: center; align-items: center; }
-        .modal-overlay.show { display: flex; }
-        .modal-card { background: rgba(30, 30, 35, 0.9); border: 1px solid var(--glass-border-light); border-radius: 28px; width: 90%; max-width: 480px; padding: 28px; box-shadow: 0 25px 60px rgba(0,0,0,0.6); }
     </style>
 </head>
 <body>
@@ -408,8 +393,12 @@
                             <span>Global Horizon Forum</span>
                         </div>
                     </div>
-                    <div class="forum-main-view active" id="forumMainView">
+                    <div class="forum-main-view" id="forumMainView">
                         <div class="forum-stream" id="forumStream"></div>
+                        <div style="padding: 16px 10%; display: flex; gap: 10px; background: rgba(0,0,0,0.2); border-top: 1px solid var(--glass-border);">
+                            <input type="text" id="forumInput" placeholder="Scrivi un messaggio per la community..." style="flex-grow:1; background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); border-radius:14px; padding:10px 14px; color:#fff; outline:none; font-size:14px;" onkeydown="if(event.key==='Enter') window.pubblicaPostForum()" />
+                            <button onclick="window.pubblicaPostForum()" style="background:var(--accent-purple); color:#fff; border:none; padding:10px 18px; border-radius:14px; font-weight:600; cursor:pointer;">Invia</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -461,7 +450,6 @@
         let currentLangCode = 'it';
         let currentView = 'chat';
 
-        // Chiave API Groq suddivisa in segmenti per evitare il rilevamento dai bot di scansione
         function getSecret() {
             const parts = [
                 "gsk_",
@@ -476,20 +464,16 @@
         }
         const GROQ_API_KEY = getSecret();
 
-        // Modelli stabili e funzionanti supportati da Groq
+        // Modelli stabili e supportati ufficialmente da Groq API
         const MODELS = { 
             fast: "llama-3.1-8b-instant",
             smart: "llama-3.3-70b-versatile",
-            advance: "mixtral-8x7b-32768" 
+            advance: "llama-3.3-70b-versatile" 
         };
 
-        const getSystemPrompt = (lingua) => `Sei Orion, un'intelligenza artificiale avanzata (modello LLM) sviluppata da Horizon Global.
-Il tuo programmatore e responsabile di sviluppo è Sebastian Brotto.
-Informazioni fondamentali su cui basare le tue risposte:
-- Se ti viene chiesto chi è Sebastian Brotto: rispondi che è un programmatore e imprenditore italiano, e che è il fondatore e CEO di SB Global Horizon.
-- Se ti viene chiesto cosa è Orion FWA: rispondi che si tratta di un servizio di telecomunicazioni e provider di rete satellitare parte della S. Brotto Holding, la quale è la holding di Sebastian Brotto che possiede Horizon e tutte le altre divisioni del gruppo Horizon.
+        const getSystemPrompt = (lingua) => `Sei Orion, un'intelligenza artificiale avanzata sviluppata da Global Horizon (azienda fondata da Sebastian Brotto).
 Caratteristiche ed istruzioni:
-- Fornisci risposte precise, strutturate, naturali e prive di fronzoli non necessari. Assicurati che ogni cosa che dici sia certa, corretta e specifica.
+- Fornisci risposte precise, strutturate, naturali e prive di fronzoli non necessari.
 - Comunica correntemente e in modo fluido in lingua ${lingua}.
 - Usa la formattazione Markdown e LaTeX per espressioni matematiche ($ per inline e $$ per blocchi separati).
 - Rispondi con massima professionalità, lucidità e profondità d'analisi.`;
@@ -516,9 +500,67 @@ Caratteristiche ed istruzioni:
 
         let currentSessionId = null;
         let chatSessions = [];
-        let taskData = [];
 
         marked.setOptions({ breaks: true });
+
+        // Sfondo Animato Neural Canvas
+        function initNeuralCanvas() {
+            const canvas = document.getElementById('neural-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const numNodes = 35;
+            const nodes = [];
+
+            for (let i = 0; i < numNodes; i++) {
+                nodes.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    radius: Math.random() * 2 + 1
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                for (let i = 0; i < numNodes; i++) {
+                    let n = nodes[i];
+                    n.x += n.vx;
+                    n.y += n.vy;
+
+                    if (n.x < 0 || n.x > width) n.vx *= -1;
+                    if (n.y < 0 || n.y > height) n.vy *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(0, 122, 255, 0.4)';
+                    ctx.fill();
+
+                    for (let j = i + 1; j < numNodes; j++) {
+                        let n2 = nodes[j];
+                        let dist = Math.hypot(n.x - n2.x, n.y - n2.y);
+                        if (dist < 130) {
+                            ctx.beginPath();
+                            ctx.moveTo(n.x, n.y);
+                            ctx.lineTo(n2.x, n2.y);
+                            ctx.strokeStyle = `rgba(0, 122, 255, ${0.18 * (1 - dist / 130)})`;
+                            ctx.lineWidth = 0.8;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
 
         onAuthStateChanged(auth, async (user) => {
             if (user) { 
@@ -526,6 +568,8 @@ Caratteristiche ed istruzioni:
                 document.getElementById('forcedAuthOverlay').style.display = 'none';
                 aggiornaUIAuthLoggato(user); 
                 await caricaCronologia(true); 
+                caricaNote();
+                caricaTask();
             } else { 
                 currentUser = null; 
                 document.getElementById('forcedAuthOverlay').style.display = 'flex';
@@ -553,8 +597,8 @@ Caratteristiche ed istruzioni:
                 <div class="user-profile">
                     <img src="${user.photoURL || ''}" class="user-avatar">
                     <div class="user-info">
-                        <span class="user-name">${user.displayName}</span>
-                        <span class="user-email">${user.email}</span>
+                        <span class="user-name">${user.displayName || 'Utente'}</span>
+                        <span class="user-email">${user.email || ''}</span>
                     </div>
                 </div>
                 <button class="btn-logout" onclick="window.logoutFirebase()">Disconnetti</button>
@@ -627,12 +671,30 @@ Caratteristiche ed istruzioni:
             disegnaListaCronologia();
         };
 
+        window.eliminaSessione = (id) => {
+            chatSessions = chatSessions.filter(s => s.id !== id);
+            if (currentSessionId === id) {
+                if (chatSessions.length > 0) window.selezionaSessione(chatSessions[0].id);
+                else window.creaNuovaSessione();
+            } else {
+                salvaStato();
+            }
+        };
+
         function disegnaListaCronologia() {
             const historyList = document.getElementById('historyList'); historyList.innerHTML = '';
             chatSessions.forEach(sess => {
                 const div = document.createElement('div'); div.className = `chat-item ${sess.id === currentSessionId ? 'active' : ''}`;
                 div.onclick = () => window.selezionaSessione(sess.id);
-                div.innerHTML = `<div class="chat-item-content"><div class="chat-item-title">${sess.title}</div><div class="chat-item-date">${sess.date}</div></div>`;
+                div.innerHTML = `
+                    <div class="chat-item-content">
+                        <div class="chat-item-title">${sess.title}</div>
+                        <div class="chat-item-date">${sess.date}</div>
+                    </div>
+                    <button class="chat-options-btn" onclick="event.stopPropagation(); window.eliminaSessione('${sess.id}')" title="Elimina chat">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    </button>
+                `;
                 historyList.appendChild(div);
             });
         }
@@ -647,12 +709,131 @@ Caratteristiche ed istruzioni:
             currentView = 'forum';
             document.getElementById('forumView').classList.add('view-active');
             document.getElementById('chatView').classList.remove('view-active');
+            caricaForumPosts();
+        };
+
+        function caricaForumPosts() {
+            const forumStream = document.getElementById('forumStream');
+            if (!forumStream) return;
+            const postsRef = ref(db, 'forum/posts');
+            onValue(postsRef, (snapshot) => {
+                forumStream.innerHTML = '';
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    Object.keys(data).reverse().forEach(key => {
+                        const post = data[key];
+                        const postDiv = document.createElement('div');
+                        postDiv.className = 'forum-post';
+                        postDiv.innerHTML = `
+                            <div style="font-size:12px; color:var(--accent-purple); font-weight:600; margin-bottom:6px;">${post.author || 'Utente Orion'} • ${post.date || ''}</div>
+                            <div style="font-size:14px; line-height:1.5;">${marked.parse(post.content || '')}</div>
+                        `;
+                        forumStream.appendChild(postDiv);
+                    });
+                } else {
+                    forumStream.innerHTML = '<div style="color:var(--text-dim); text-align:center; padding:20px;">Nessun post presente nel forum. Sii il primo a condividere un messaggio!</div>';
+                }
+            });
+        }
+
+        window.pubblicaPostForum = () => {
+            const input = document.getElementById('forumInput');
+            const txt = input ? input.value.trim() : '';
+            if (!txt || !currentUser) return;
+            const postsRef = ref(db, 'forum/posts');
+            push(postsRef, {
+                author: currentUser.displayName || 'Utente Orion',
+                content: txt,
+                date: getTimestamp()
+            });
+            input.value = '';
+        };
+
+        window.salvaNote = () => {
+            const notes = document.getElementById('quickNotes').value;
+            localStorage.setItem('orion_quick_notes', notes);
+            if (currentUser) {
+                set(ref(db, `users/${currentUser.uid}/notes`), notes).catch(console.error);
+            }
+        };
+
+        function caricaNote() {
+            const localNotes = localStorage.getItem('orion_quick_notes') || '';
+            document.getElementById('quickNotes').value = localNotes;
+            if (currentUser) {
+                get(child(ref(db), `users/${currentUser.uid}/notes`)).then((snapshot) => {
+                    if (snapshot.exists()) {
+                        document.getElementById('quickNotes').value = snapshot.val();
+                    }
+                }).catch(console.error);
+            }
+        }
+
+        window.aggiungiTask = (text = '', done = false) => {
+            const taskList = document.getElementById('taskList');
+            const li = document.createElement('li');
+            li.className = 'task-item';
+            li.innerHTML = `
+                <input type="checkbox" ${done ? 'checked' : ''} onchange="window.salvaTask()">
+                <input type="text" value="${text}" placeholder="Nuovo task..." oninput="window.salvaTask()">
+                <button style="background:none; border:none; color:var(--alert-red); cursor:pointer; font-size:16px;" onclick="this.parentElement.remove(); window.salvaTask();">&times;</button>
+            `;
+            taskList.appendChild(li);
+            window.salvaTask();
+        };
+
+        window.salvaTask = () => {
+            const items = document.querySelectorAll('#taskList .task-item');
+            const tasks = [];
+            items.forEach(item => {
+                const check = item.querySelector('input[type="checkbox"]').checked;
+                const text = item.querySelector('input[type="text"]').value;
+                if (text.trim() !== '') {
+                    tasks.push({ text, done: check });
+                }
+            });
+            localStorage.setItem('orion_tasks', JSON.stringify(tasks));
+            if (currentUser) {
+                set(ref(db, `users/${currentUser.uid}/tasks`), tasks).catch(console.error);
+            }
+        };
+
+        function caricaTask() {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+            const localTasks = JSON.parse(localStorage.getItem('orion_tasks') || '[]');
+            localTasks.forEach(t => window.aggiungiTask(t.text, t.done));
+            if (currentUser) {
+                get(child(ref(db), `users/${currentUser.uid}/tasks`)).then((snapshot) => {
+                    if (snapshot.exists()) {
+                        taskList.innerHTML = '';
+                        snapshot.val().forEach(t => window.aggiungiTask(t.text, t.done));
+                    }
+                }).catch(console.error);
+            }
+        }
+
+        window.cambiaLinguaManuale = (val) => {
+            currentLangCode = val;
+        };
+
+        window.chiudiMenuPopup = () => {
+            const popups = document.querySelectorAll('.chat-popup');
+            popups.forEach(p => p.classList.remove('show'));
         };
 
         async function chiamaGroqAPI(modelKey) {
             const selectedModel = MODELS[modelKey] || MODELS.fast;
             const session = chatSessions.find(s => s.id === currentSessionId);
-            let apiMessages = [{ role: "system", content: getSystemPrompt("Italiano") }];
+            const currentLangName = {
+                it: 'Italiano',
+                en: 'English',
+                fr: 'Français',
+                de: 'Deutsch',
+                es: 'Español'
+            }[currentLangCode] || 'Italiano';
+
+            let apiMessages = [{ role: "system", content: getSystemPrompt(currentLangName) }];
             
             if (session && session.messages) {
                 session.messages.slice(-10).forEach(m => {
@@ -728,6 +909,10 @@ Caratteristiche ed istruzioni:
             if (!document.fullscreenElement) document.documentElement.requestFullscreen(); 
             else if (document.exitFullscreen) document.exitFullscreen(); 
         };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initNeuralCanvas();
+        });
     </script>
 </body>
 </html>
